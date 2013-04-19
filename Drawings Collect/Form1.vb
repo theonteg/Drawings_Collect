@@ -21,6 +21,7 @@ Public Class Form1
 		If e.Control = True And e.KeyCode = Keys.I Then
 			AboutBox1.Show()
             AboutBox1.TextBoxDescription.Text =
+                    "V0.8.6 " & vbCrLf & _
                     "V0.8.5 Adden menuitem show only drawings 'In sync with ERP'" & vbCrLf & _
                     "V0.8.3 Added click to search parents, click to open in tree" & vbCrLf & _
                     "V0.8.2 Added 'Used In' list, Fixed colouring in tree" & vbCrLf & _
@@ -60,7 +61,6 @@ Public Class Form1
 
 		MenuItem1.Checked = My.Settings.Menu1
 		MenuItem2.Checked = My.Settings.Menu2
-        MenuItem3.Checked = My.Settings.Menu3
 
 
 		Me.Text = "Manufacturing Data Collector - V" & My.Application.Info.Version.Major & "." & My.Application.Info.Version.Minor '& "." & My.Application.Info.Version.Revision
@@ -99,21 +99,6 @@ Public Class Form1
 		MultiColumnTree1.Columns.Item(7).Width = 100
 		MultiColumnTree1.Columns.Item(8).Width = 100
 		MultiColumnTree1.Columns.Item(9).Width = 250
-
-
-        'ListView1.Columns.Add("File", 150)
-        'ListView1.Columns.Add("PartNo", 70)
-        'ListView1.Columns.Add("Rev", 35)
-        'ListView1.Columns.Add("Ver", 40)
-        'ListView1.Columns.Add("Description", 200, HorizontalAlignment.Center)
-        'ListView1.Columns.Add("Description English", 200, HorizontalAlignment.Center)
-        'ListView1.Columns.Add("State", 100, HorizontalAlignment.Center)
-        'ListView1.Columns.Add("Path", 350, HorizontalAlignment.Center)
-
-
-        'TreeView2.Nodes.Add("Test1")
-        'TreeView2.Nodes.Add("Test2")
-
 
 		'Αυτόματο login με την είσοδο στο πρόγραμμα
 		vault.LoginAuto(ComboVaults.Text, Me.Handle.ToInt32())
@@ -372,9 +357,9 @@ ErrHand:
 				If getVariable(ref3, "Language") = ComboLanguage.Text Then
 					While Not pos2.IsNull
 						ref3 = ref3.GetNextParent(pos2)
-						If ref3.File.CurrentState.Name = "In Sync With ERP" Then
-							items.Add(ref3.FoundPath)
-						End If
+                        If ref3.File.CurrentState.Name = "In Sync With ERP" Or MenuItem3.Checked = False Then
+                            items.Add(ref3.FoundPath)
+                        End If
 					End While
 				End If
 				'End If
