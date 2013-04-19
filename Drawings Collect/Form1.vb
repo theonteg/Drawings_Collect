@@ -21,7 +21,7 @@ Public Class Form1
 		If e.Control = True And e.KeyCode = Keys.I Then
 			AboutBox1.Show()
             AboutBox1.TextBoxDescription.Text =
-                    "V0.8.4 " & vbCrLf & _
+                    "V0.8.5 Adden menuitem show only drawings 'In sync with ERP'" & vbCrLf & _
                     "V0.8.3 Added click to search parents, click to open in tree" & vbCrLf & _
                     "V0.8.2 Added 'Used In' list, Fixed colouring in tree" & vbCrLf & _
                     "V0.8.1 Inserted Menu" & vbCrLf & _
@@ -60,6 +60,7 @@ Public Class Form1
 
 		MenuItem1.Checked = My.Settings.Menu1
 		MenuItem2.Checked = My.Settings.Menu2
+        MenuItem3.Checked = My.Settings.Menu3
 
 
 		Me.Text = "Manufacturing Data Collector - V" & My.Application.Info.Version.Major & "." & My.Application.Info.Version.Minor '& "." & My.Application.Info.Version.Revision
@@ -507,22 +508,22 @@ ErrHand:
 					pos2 = ref3.GetFirstParentPosition(ref2.VersionRef, False)
 					While Not pos2.IsNull
 						ref3 = ref3.GetNextParent(pos2)
-						If ref3.File.CurrentState.Name = "In Sync With ERP" Then
-							check = True
-							temp3 = temp2.Nodes.Add(ref3.Name)
-							temp3.SubItems.Add(getVariable(ref3, "PartNo"))
-							temp3.SubItems.Add(getVariable(ref3, "Revision"))
-							temp3.SubItems.Add(ref3.VersionRef & "/" & ref3.File.CurrentVersion)
-							temp3.SubItems.Add(getVariable(ref3, "Description"))
-							temp3.SubItems.Add(getVariable(ref3, "Description English"))
-							temp3.SubItems.Add(ref3.File.CurrentState.Name)
-							temp3.SubItems.Add(typeName(getVariable(ref3, "Component Type")))
-							temp3.SubItems.Add(getVariable(ref3, "Component Type Subgroup"))
-							temp3.SubItems.Add(ref3.FoundPath)
-							temp2.expandAll()
-							temp3.Color = Color.DarkGreen
-							'temp3.NodeFont = New Font(temp3.NodeFont, FontStyle.Bold)
-						End If
+                        If ref3.File.CurrentState.Name = "In Sync With ERP" Or MenuItem3.Checked = False Then
+                            check = True
+                            temp3 = temp2.Nodes.Add(ref3.Name)
+                            temp3.SubItems.Add(getVariable(ref3, "PartNo"))
+                            temp3.SubItems.Add(getVariable(ref3, "Revision"))
+                            temp3.SubItems.Add(ref3.VersionRef & "/" & ref3.File.CurrentVersion)
+                            temp3.SubItems.Add(getVariable(ref3, "Description"))
+                            temp3.SubItems.Add(getVariable(ref3, "Description English"))
+                            temp3.SubItems.Add(ref3.File.CurrentState.Name)
+                            temp3.SubItems.Add(typeName(getVariable(ref3, "Component Type")))
+                            temp3.SubItems.Add(getVariable(ref3, "Component Type Subgroup"))
+                            temp3.SubItems.Add(ref3.FoundPath)
+                            temp2.expandAll()
+                            temp3.Color = Color.DarkGreen
+                            'temp3.NodeFont = New Font(temp3.NodeFont, FontStyle.Bold)
+                        End If
 					End While
 				End If
 			End If
@@ -638,28 +639,20 @@ ErrHand:
 
 
 	Private Sub MenuItem1_Click(sender As Object, e As EventArgs) Handles MenuItem1.Click
-		If MenuItem1.Checked = True Then
-			MenuItem1.Checked = False
-			My.Settings.Menu1 = False
-		Else
-			MenuItem1.Checked = True
-			My.Settings.Menu1 = True
-		End If
-	End Sub
+        My.Settings.Menu1 = MenuItem1.Checked
+    End Sub
 
 	Private Sub ExitToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExitToolStripMenuItem.Click
 		Me.Close()
 	End Sub
 
 	Private Sub MenuItem2_Click(sender As Object, e As EventArgs) Handles MenuItem2.Click
-		If MenuItem2.Checked = True Then
-			MenuItem2.Checked = False
-			My.Settings.Menu2 = False
-		Else
-			MenuItem2.Checked = True
-			My.Settings.Menu2 = True
-		End If
-	End Sub
+        My.Settings.Menu2 = MenuItem2.Checked
+    End Sub
+
+    Private Sub MenuItem3_Click(sender As Object, e As EventArgs) Handles MenuItem3.Click
+        My.Settings.Menu3 = MenuItem3.Checked
+    End Sub
 
 	Private Sub ListView1_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles ListView1.MouseDoubleClick
 		PartNo.Text = ListView1.SelectedItems.Item(0).SubItems.Item(1).Text
@@ -677,4 +670,5 @@ ErrHand:
 		file.GetFileCopy(Me.Handle, 0, 0)
 		Process.Start(MultiColumnTree1.SelectedNode.SubItems.Item(9).Value)
 	End Sub
+
 End Class
