@@ -21,7 +21,7 @@ Public Class Form1
 		If e.Control = True And e.KeyCode = Keys.I Then
 			AboutBox1.Show()
             AboutBox1.TextBoxDescription.Text =
-                    "V0.8.6 " & vbCrLf & _
+                    "V0.8.6 Show .stp, .stl, .step, .sat, files in tree" & vbCrLf & _
                     "V0.8.5 Adden menuitem show only drawings 'In sync with ERP'" & vbCrLf & _
                     "V0.8.3 Added click to search parents, click to open in tree" & vbCrLf & _
                     "V0.8.2 Added 'Used In' list, Fixed colouring in tree" & vbCrLf & _
@@ -201,7 +201,6 @@ ErrHand:
             If Not previousresult Is Nothing Then
                 If result.Path = previousresult.Path Then
                     check = False
-                    'MsgBox("OK")
                 End If
             End If
             previousresult = result
@@ -220,9 +219,6 @@ ErrHand:
                 End If
             Next
             If check = True Then
-                'item.SubItems.Add(temp(1))
-                'item.SubItems.Add(temp(2))
-
                 'Προσθέτω και τα revision στη λίστα
                 verEnum = file
                 pos = verEnum.GetFirstRevisionPosition
@@ -233,8 +229,6 @@ ErrHand:
                 Dim sMsg As String
                 Dim iVarIdx As Integer
                 Dim poVal As IEdmVariableValue6
-                Dim iCfgIdx As Integer
-                Dim sCfgName As String
                 While Not pos.IsNull
                     item = New ListViewItem()
                     item.Text = temp(0)
@@ -244,7 +238,6 @@ ErrHand:
                     folder = vault.GetFolderFromPath(System.IO.Path.GetDirectoryName(result.Path))
                     poEnum.GetVersionVars(ver.VersionNo, folder.ID, aoVars, aoCfgs, oVarData)
                     iVarIdx = LBound(aoVars)
-                    'MsgBox(ver.VersionNo)
                     While (iVarIdx <= UBound(aoVars))
                         poVal = aoVars(iVarIdx)
                         Select Case poVal.VariableName
@@ -269,7 +262,7 @@ ErrHand:
     End Sub
 
 	Private Sub CollectButton_Click(sender As Object, e As EventArgs) Handles CollectButton.Click
-		On Error GoTo ErrHand
+        On Error GoTo ErrHand
 		If ListView2.SelectedItems.Count = 0 Then
 			Exit Sub
 		End If
@@ -279,10 +272,7 @@ ErrHand:
 		Dim ref As IEdmReference5
 		Dim pos As IEdmPos5
 		Dim items As New Microsoft.VisualBasic.Collection
-		'rev = ""
-		'descrEN = ""
-		'descrGR = ""
-		descr = ""
+        descr = ""
 		folder = Nothing
 
 		'Τρέχει ο αλγόριθμος και συλλέγει στο collection items τα αρχεία προς συλλογή
@@ -296,24 +286,22 @@ ErrHand:
 		If items.Count > 0 Then
 			Dim destFolder = ""
 			file = vault.GetFileFromPath(ListView2.SelectedItems.Item(0).SubItems.Item(5).Text, folder)
-			'file.GetFileCopy(Me.Handle, 0)
-			'file.GetEnumeratorVariable.GetVar("Revision", "@", rev)
-			'file.GetEnumeratorVariable.GetVar("Description", "@", descrGR)
-			'file.GetEnumeratorVariable.GetVar("Description English", "@", descrEN)
-			Select Case ComboLanguage.Text
-				Case "EN"
-					descr = ListView2.SelectedItems.Item(0).SubItems.Item(4).Text
-				Case "GR"
-					descr = ListView2.SelectedItems.Item(0).SubItems.Item(3).Text
-			End Select
+            Select Case ComboLanguage.Text
+                Case "EN"
+                    descr = ListView2.SelectedItems.Item(0).SubItems.Item(4).Text
+                Case "GR"
+                    descr = ListView2.SelectedItems.Item(0).SubItems.Item(3).Text
+            End Select
 			destFolder = TextboxCollectPath.Text & "\" & System.IO.Path.GetFileNameWithoutExtension(file.Name) & " - Rev " & ListView2.SelectedItems.Item(0).SubItems.Item(1).Text & " - " & ComboLanguage.Text & " - " & descr & "\"
 			If (Not System.IO.Directory.Exists(destFolder)) Then
 				System.IO.Directory.CreateDirectory(destFolder)
 				For Each temp In items
 					file = vault.GetFileFromPath(temp, folder)
-					file.GetFileCopy(Me.Handle, 0)
-					' Copy the file.
-					System.IO.File.Copy(temp, destFolder & file.Name, True)
+                    file.GetFileCopy(Me.Handle, 0)
+                    ' Copy the file.
+                    If Not System.IO.File.Exists(destFolder & file.Name) Then
+                        System.IO.File.Copy(temp, destFolder & file.Name, True)
+                    End If
 				Next
 				MsgBox("Τα σχέδια σώθηκαν στο φάκελο: " & destFolder)
 			Else
@@ -446,7 +434,9 @@ ErrHand:
 		Dim project As String
 		Dim item As New ListViewItem()
 		Dim temp2, temp3 As Ai.Control.TreeNode
-		Dim check As Boolean
+        Dim check As Boolean
+        Dim extension As String
+        extension = ""
 		If path = "" Then
 			Exit Sub
 		End If
@@ -472,49 +462,47 @@ ErrHand:
 		pos = ref2.GetFirstParentPosition(ref2.VersionRef, False)
 		check = False
 		While Not pos.IsNull
-			ref2 = ref2.GetNextParent(pos)
-			If System.IO.Path.GetExtension(ref2.File.Name).ToLower = ".slddrw" Then
-				'Εμφανίζω μόνο τα part που είναι manufactured και όχι τα purchased και virtual
-				If getVariable(ref2, "Language") = ComboLanguage.Text Then
-					temp2 = temp.Nodes.Add(ref2.Name)
-					temp2.SubItems.Add(getVariable(ref2, "PartNo"))
-					temp2.SubItems.Add(getVariable(ref2, "Revision"))
-					temp2.SubItems.Add(ref2.VersionRef & "/" & ref2.File.CurrentVersion)
-					If ref2.VersionRef <> ref2.File.CurrentVersion And MenuItem1.Checked = True Then
-						temp2.Color = Color.DarkRed
-						temp2.NodeFont = New Font(temp2.NodeFont, FontStyle.Bold)
-					End If
-					temp2.SubItems.Add(getVariable(ref2, "Description"))
-					temp2.SubItems.Add(getVariable(ref2, "Description English"))
-					temp2.SubItems.Add(ref2.File.CurrentState.Name)
-					temp2.SubItems.Add(typeName(getVariable(ref2, "Component Type")))
-					temp2.SubItems.Add(getVariable(ref2, "Component Type Subgroup"))
-					temp2.SubItems.Add(ref2.FoundPath)
-					temp.expandAll()
-					ref3 = ref2.File.GetReferenceTree(folder.ID, ref2.VersionRef)
-					pos2 = ref3.GetFirstParentPosition(ref2.VersionRef, False)
-					While Not pos2.IsNull
-						ref3 = ref3.GetNextParent(pos2)
-                        If ref3.File.CurrentState.Name = "In Sync With ERP" Or MenuItem3.Checked = False Then
-                            check = True
-                            temp3 = temp2.Nodes.Add(ref3.Name)
-                            temp3.SubItems.Add(getVariable(ref3, "PartNo"))
-                            temp3.SubItems.Add(getVariable(ref3, "Revision"))
-                            temp3.SubItems.Add(ref3.VersionRef & "/" & ref3.File.CurrentVersion)
-                            temp3.SubItems.Add(getVariable(ref3, "Description"))
-                            temp3.SubItems.Add(getVariable(ref3, "Description English"))
-                            temp3.SubItems.Add(ref3.File.CurrentState.Name)
-                            temp3.SubItems.Add(typeName(getVariable(ref3, "Component Type")))
-                            temp3.SubItems.Add(getVariable(ref3, "Component Type Subgroup"))
-                            temp3.SubItems.Add(ref3.FoundPath)
-                            temp2.expandAll()
-                            temp3.Color = Color.DarkGreen
-                            'temp3.NodeFont = New Font(temp3.NodeFont, FontStyle.Bold)
-                        End If
-					End While
-				End If
-			End If
-		End While
+            ref2 = ref2.GetNextParent(pos)
+            extension = System.IO.Path.GetExtension(ref2.File.Name).ToLower
+            If (extension = ".slddrw" And getVariable(ref2, "Language") = ComboLanguage.Text) Or extension = ".step" Or extension = ".stp" Or extension = ".stl" Or extension = ".sat" Or extension = ".docm" Then
+                temp2 = temp.Nodes.Add(ref2.Name)
+                temp2.SubItems.Add(getVariable(ref2, "PartNo"))
+                temp2.SubItems.Add(getVariable(ref2, "Revision"))
+                temp2.SubItems.Add(ref2.VersionRef & "/" & ref2.File.CurrentVersion)
+                If ref2.VersionRef <> ref2.File.CurrentVersion And MenuItem1.Checked = True Then
+                    temp2.Color = Color.DarkRed
+                    temp2.NodeFont = New Font(temp2.NodeFont, FontStyle.Bold)
+                End If
+                temp2.SubItems.Add(getVariable(ref2, "Description"))
+                temp2.SubItems.Add(getVariable(ref2, "Description English"))
+                temp2.SubItems.Add(ref2.File.CurrentState.Name)
+                temp2.SubItems.Add(typeName(getVariable(ref2, "Component Type")))
+                temp2.SubItems.Add(getVariable(ref2, "Component Type Subgroup"))
+                temp2.SubItems.Add(ref2.FoundPath)
+                temp.expandAll()
+                ref3 = ref2.File.GetReferenceTree(folder.ID, ref2.VersionRef)
+                pos2 = ref3.GetFirstParentPosition(ref2.VersionRef, False)
+                While Not pos2.IsNull
+                    ref3 = ref3.GetNextParent(pos2)
+                    If ref3.File.CurrentState.Name = "In Sync With ERP" Or MenuItem3.Checked = False Then
+                        check = True
+                        temp3 = temp2.Nodes.Add(ref3.Name)
+                        temp3.SubItems.Add(getVariable(ref3, "PartNo"))
+                        temp3.SubItems.Add(getVariable(ref3, "Revision"))
+                        temp3.SubItems.Add(ref3.VersionRef & "/" & ref3.File.CurrentVersion)
+                        temp3.SubItems.Add(getVariable(ref3, "Description"))
+                        temp3.SubItems.Add(getVariable(ref3, "Description English"))
+                        temp3.SubItems.Add(ref3.File.CurrentState.Name)
+                        temp3.SubItems.Add(typeName(getVariable(ref3, "Component Type")))
+                        temp3.SubItems.Add(getVariable(ref3, "Component Type Subgroup"))
+                        temp3.SubItems.Add(ref3.FoundPath)
+                        temp2.expandAll()
+                        temp3.Color = Color.DarkGreen
+                        'temp3.NodeFont = New Font(temp3.NodeFont, FontStyle.Bold)
+                    End If
+                End While
+            End If
+        End While
 		If check = False And MenuItem2.Checked = True Then
 			temp.NodeFont = New Font(temp.NodeFont, FontStyle.Bold)
 			temp.Color = Color.DarkOrange
