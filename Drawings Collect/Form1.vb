@@ -200,86 +200,88 @@ ErrHand:
 		search = vault.CreateSearch
 		search.AddVariable("PartNo", "%" & PartNo.Text)
 
-		search.State = "In Sync With ERP"
-		search.FindHistoricStates = True
-		Dim result, previousresult As IEdmSearchResult5
-		previousresult = Nothing
-		result = search.GetFirstResult
-		While Not result Is Nothing
-			check = True
-			'temp(0) = Nothing
-			'temp(1) = Nothing
-			'temp(2) = Nothing
-			file = result
-			If Not previousresult Is Nothing Then
-				If result.Path = previousresult.Path Then
-					check = False
-					'MsgBox("OK")
-				End If
-			End If
-			previousresult = result
-			Select Case System.IO.Path.GetExtension(result.Name).ToLower
-				Case ".sldprt", ".sldasm"
-					file.GetEnumeratorVariable.GetVar("PartNo", "@", temp(0))
-					file.GetEnumeratorVariable.GetVar("Revision", "@", temp(1))
-					file.GetEnumeratorVariable.GetVar("Description", "@", temp(2))
-				Case Else
-					result = search.GetNextResult
-					Continue While
-			End Select
-			For Each listitem As ListViewItem In ListView2.Items
-				If temp(0) Like listitem.Text And temp(1) Like listitem.SubItems.Item(1).Text And temp(2) Like listitem.SubItems.Item(2).Text Then
-					check = False
-				End If
-			Next
-			If check = True Then
-				'item.SubItems.Add(temp(1))
-				'item.SubItems.Add(temp(2))
+        If MenuItem3.Checked = True Then
+            search.State = "In Sync With ERP"
+        End If
+        search.FindHistoricStates = True
+        Dim result, previousresult As IEdmSearchResult5
+        previousresult = Nothing
+        result = search.GetFirstResult
+        While Not result Is Nothing
+            check = True
+            'temp(0) = Nothing
+            'temp(1) = Nothing
+            'temp(2) = Nothing
+            file = result
+            If Not previousresult Is Nothing Then
+                If result.Path = previousresult.Path Then
+                    check = False
+                    'MsgBox("OK")
+                End If
+            End If
+            previousresult = result
+            Select Case System.IO.Path.GetExtension(result.Name).ToLower
+                Case ".sldprt", ".sldasm"
+                    file.GetEnumeratorVariable.GetVar("PartNo", "@", temp(0))
+                    file.GetEnumeratorVariable.GetVar("Revision", "@", temp(1))
+                    file.GetEnumeratorVariable.GetVar("Description", "@", temp(2))
+                Case Else
+                    result = search.GetNextResult
+                    Continue While
+            End Select
+            For Each listitem As ListViewItem In ListView2.Items
+                If temp(0) Like listitem.Text And temp(1) Like listitem.SubItems.Item(1).Text And temp(2) Like listitem.SubItems.Item(2).Text Then
+                    check = False
+                End If
+            Next
+            If check = True Then
+                'item.SubItems.Add(temp(1))
+                'item.SubItems.Add(temp(2))
 
-				'Προσθέτω και τα revision στη λίστα
-				verEnum = file
-				pos = verEnum.GetFirstRevisionPosition
-				Dim poEnum As IEdmEnumeratorVariable7
-				Dim oVarData As EdmGetVarData
-				Dim aoVars() As Object
-				Dim aoCfgs() As String
-				Dim sMsg As String
-				Dim iVarIdx As Integer
-				Dim poVal As IEdmVariableValue6
-				Dim iCfgIdx As Integer
-				Dim sCfgName As String
-				While Not pos.IsNull
-					item = New ListViewItem()
-					item.Text = temp(0)
-					sMsg = ""
-					ver = verEnum.GetNextRevision(pos)
-					poEnum = file.GetEnumeratorVariable
-					folder = vault.GetFolderFromPath(System.IO.Path.GetDirectoryName(result.Path))
-					poEnum.GetVersionVars(ver.VersionNo, folder.ID, aoVars, aoCfgs, oVarData)
-					iVarIdx = LBound(aoVars)
-					'MsgBox(ver.VersionNo)
-					While (iVarIdx <= UBound(aoVars))
-						poVal = aoVars(iVarIdx)
-						Select Case poVal.VariableName
-							Case "Revision"
-								item.SubItems.Add(poVal.GetValue("@"))
-								item.SubItems.Add(ver.VersionNo)
-							Case "Description"
-								item.SubItems.Add(poVal.GetValue("@"))
-							Case "Description English"
-								item.SubItems.Add(poVal.GetValue("@"))
-								item.SubItems.Add(result.Path)
-						End Select
-						iVarIdx = iVarIdx + 1
-					End While
-					ListView2.Items.Insert(0, item)
+                'Προσθέτω και τα revision στη λίστα
+                verEnum = file
+                pos = verEnum.GetFirstRevisionPosition
+                Dim poEnum As IEdmEnumeratorVariable7
+                Dim oVarData As EdmGetVarData
+                Dim aoVars() As Object
+                Dim aoCfgs() As String
+                Dim sMsg As String
+                Dim iVarIdx As Integer
+                Dim poVal As IEdmVariableValue6
+                Dim iCfgIdx As Integer
+                Dim sCfgName As String
+                While Not pos.IsNull
+                    item = New ListViewItem()
+                    item.Text = temp(0)
+                    sMsg = ""
+                    ver = verEnum.GetNextRevision(pos)
+                    poEnum = file.GetEnumeratorVariable
+                    folder = vault.GetFolderFromPath(System.IO.Path.GetDirectoryName(result.Path))
+                    poEnum.GetVersionVars(ver.VersionNo, folder.ID, aoVars, aoCfgs, oVarData)
+                    iVarIdx = LBound(aoVars)
+                    'MsgBox(ver.VersionNo)
+                    While (iVarIdx <= UBound(aoVars))
+                        poVal = aoVars(iVarIdx)
+                        Select Case poVal.VariableName
+                            Case "Revision"
+                                item.SubItems.Add(poVal.GetValue("@"))
+                                item.SubItems.Add(ver.VersionNo)
+                            Case "Description"
+                                item.SubItems.Add(poVal.GetValue("@"))
+                            Case "Description English"
+                                item.SubItems.Add(poVal.GetValue("@"))
+                                item.SubItems.Add(result.Path)
+                        End Select
+                        iVarIdx = iVarIdx + 1
+                    End While
+                    ListView2.Items.Insert(0, item)
 
-				End While
+                End While
 
-			End If
-			result = search.GetNextResult
-		End While
-	End Sub
+            End If
+            result = search.GetNextResult
+        End While
+    End Sub
 
 	Private Sub CollectButton_Click(sender As Object, e As EventArgs) Handles CollectButton.Click
 		On Error GoTo ErrHand
