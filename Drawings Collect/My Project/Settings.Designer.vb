@@ -89,6 +89,30 @@ Namespace My
                 Me("Menu3") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
+        Public Property Menu4() As Boolean
+            Get
+                Return CType(Me("Menu4"),Boolean)
+            End Get
+            Set
+                Me("Menu4") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property Menu5() As Boolean
+            Get
+                Return CType(Me("Menu5"),Boolean)
+            End Get
+            Set
+                Me("Menu5") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

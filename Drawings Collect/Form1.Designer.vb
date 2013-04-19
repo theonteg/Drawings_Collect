@@ -54,6 +54,8 @@ Partial Class Form1
         Me.MenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuItem3 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.MenuItem4 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.MenuItem5 = New System.Windows.Forms.ToolStripMenuItem()
         Me.StatusStrip1.SuspendLayout()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer1.Panel1.SuspendLayout()
@@ -298,7 +300,7 @@ Partial Class Form1
         '
         'OptionsToolStripMenuItem
         '
-        Me.OptionsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MenuItem1, Me.MenuItem2, Me.MenuItem3})
+        Me.OptionsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MenuItem1, Me.MenuItem2, Me.MenuItem3, Me.MenuItem4, Me.MenuItem5})
         Me.OptionsToolStripMenuItem.Name = "OptionsToolStripMenuItem"
         Me.OptionsToolStripMenuItem.Size = New System.Drawing.Size(61, 20)
         Me.OptionsToolStripMenuItem.Text = "&Options"
@@ -325,6 +327,22 @@ Partial Class Form1
         Me.MenuItem3.Name = "MenuItem3"
         Me.MenuItem3.Size = New System.Drawing.Size(348, 22)
         Me.MenuItem3.Text = "Show only drawings ""In Sync With ERP"""
+        '
+        'MenuItem4
+        '
+        Me.MenuItem4.Checked = True
+        Me.MenuItem4.CheckOnClick = True
+        Me.MenuItem4.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.MenuItem4.Name = "MenuItem4"
+        Me.MenuItem4.Size = New System.Drawing.Size(348, 22)
+        Me.MenuItem4.Text = "Show only manufacturing data documents"
+        '
+        'MenuItem5
+        '
+        Me.MenuItem5.CheckOnClick = True
+        Me.MenuItem5.Name = "MenuItem5"
+        Me.MenuItem5.Size = New System.Drawing.Size(348, 22)
+        Me.MenuItem5.Text = "Show only latest revision version in search results"
         '
         'Form1
         '
@@ -390,5 +408,7 @@ Partial Class Form1
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents MenuItem2 As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents MenuItem3 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents MenuItem4 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents MenuItem5 As System.Windows.Forms.ToolStripMenuItem
 
 End Class

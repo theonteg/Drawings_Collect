@@ -21,6 +21,7 @@ Public Class Form1
 		If e.Control = True And e.KeyCode = Keys.I Then
 			AboutBox1.Show()
             AboutBox1.TextBoxDescription.Text =
+                    "V0.8.7 Fixed bug with duplicate files error in collect, Added menuitem to show only latest revisioned versions in search results" & vbCrLf & _
                     "V0.8.6 Show .stp, .stl, .step, .sat, files in tree" & vbCrLf & _
                     "V0.8.5 Adden menuitem show only drawings 'In sync with ERP'" & vbCrLf & _
                     "V0.8.3 Added click to search parents, click to open in tree" & vbCrLf & _
@@ -61,7 +62,7 @@ Public Class Form1
 
 		MenuItem1.Checked = My.Settings.Menu1
 		MenuItem2.Checked = My.Settings.Menu2
-
+        MenuItem5.Checked = My.Settings.Menu5
 
 		Me.Text = "Manufacturing Data Collector - V" & My.Application.Info.Version.Major & "." & My.Application.Info.Version.Minor '& "." & My.Application.Info.Version.Revision
 		ListView2.Columns.Add("PartNo", 70)
@@ -172,14 +173,13 @@ ErrHand:
 		Dim file As IEdmFile5
 		Dim item As New ListViewItem()
 		Dim temp(10), test As String
-		Dim check As Boolean
+        Dim check As Boolean
 		Dim verEnum As IEdmEnumeratorVersion5
 		Dim pos As IEdmPos5
 		Dim ver As IEdmRevision5
-		Dim folder As IEdmFolder5
-		folder = Nothing
-		check = True
-		ListView2.Items.Clear()
+        Dim folder As IEdmFolder5
+        folder = Nothing
+        ListView2.Items.Clear()
 		ListView1.Items.Clear()
 		TreeView1.Nodes.Clear()
 		search = vault.CreateSearch
@@ -214,7 +214,10 @@ ErrHand:
                     Continue While
             End Select
             For Each listitem As ListViewItem In ListView2.Items
-                If temp(0) Like listitem.Text And temp(1) Like listitem.SubItems.Item(1).Text And temp(2) Like listitem.SubItems.Item(2).Text Then
+                'MenuItem 5
+                If MenuItem5.Checked = True And temp(0) Like listitem.Text And temp(1) Like listitem.SubItems.Item(1).Text Then
+                    check = False
+                ElseIf temp(0) Like listitem.Text And temp(1) Like listitem.SubItems.Item(1).Text And temp(2) Like listitem.SubItems.Item(2).Text Then
                     check = False
                 End If
             Next
@@ -252,8 +255,16 @@ ErrHand:
                         End Select
                         iVarIdx = iVarIdx + 1
                     End While
-                    ListView2.Items.Insert(0, item)
+                    'MenuItem 5
+                    If MenuItem5.Checked = True Then
+                        For Each listitem As ListViewItem In ListView2.Items
+                            If item.Text Like listitem.Text And item.SubItems.Item(1).Text Like listitem.SubItems.Item(1).Text Then
+                                ListView2.Items.Remove(listitem)
+                            End If
+                        Next
+                    End If
 
+                    ListView2.Items.Insert(0, item)
                 End While
 
             End If
@@ -613,30 +624,18 @@ ErrHand:
 	End Sub
 
 
-	Private Sub MenuItem1_Click(sender As Object, e As EventArgs) Handles MenuItem1.Click
-        My.Settings.Menu1 = MenuItem1.Checked
+    Private Sub ExitToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExitToolStripMenuItem.Click
+        Me.Close()
     End Sub
 
-	Private Sub ExitToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExitToolStripMenuItem.Click
-		Me.Close()
-	End Sub
+    Private Sub ListView1_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles ListView1.MouseDoubleClick
+        PartNo.Text = ListView1.SelectedItems.Item(0).SubItems.Item(1).Text
+        ListView1.Items.Clear()
+        ListView2.Items.Clear()
+        MultiColumnTree1.Nodes.Clear()
+        Search_Click(sender, New System.EventArgs())
 
-	Private Sub MenuItem2_Click(sender As Object, e As EventArgs) Handles MenuItem2.Click
-        My.Settings.Menu2 = MenuItem2.Checked
     End Sub
-
-    Private Sub MenuItem3_Click(sender As Object, e As EventArgs) Handles MenuItem3.Click
-        My.Settings.Menu3 = MenuItem3.Checked
-    End Sub
-
-	Private Sub ListView1_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles ListView1.MouseDoubleClick
-		PartNo.Text = ListView1.SelectedItems.Item(0).SubItems.Item(1).Text
-		ListView1.Items.Clear()
-		ListView2.Items.Clear()
-		MultiColumnTree1.Nodes.Clear()
-		Search_Click(sender, New System.EventArgs())
-
-	End Sub
 
 	Private Sub MultiColumnTree1_DoubleClick(sender As Object, e As EventArgs) Handles MultiColumnTree1.DoubleClick
 		'MsgBox(MultiColumnTree1.SelectedNode.SubItems.Item(9).Value)
@@ -646,4 +645,15 @@ ErrHand:
 		Process.Start(MultiColumnTree1.SelectedNode.SubItems.Item(9).Value)
 	End Sub
 
+    Private Sub MenuItem1_Click(sender As Object, e As EventArgs) Handles MenuItem1.Click
+        My.Settings.Menu1 = MenuItem1.Checked
+    End Sub
+
+    Private Sub MenuItem2_Click(sender As Object, e As EventArgs) Handles MenuItem2.Click
+        My.Settings.Menu2 = MenuItem2.Checked
+    End Sub
+
+    Private Sub MenuItem5_Click(sender As Object, e As EventArgs) Handles MenuItem5.Click
+        My.Settings.Menu5 = MenuItem5.Checked
+    End Sub
 End Class
