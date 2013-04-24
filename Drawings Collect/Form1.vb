@@ -1,6 +1,11 @@
 ﻿Imports EdmLib
+Imports System.Collections.Generic
+
 Public Class Form1
-	Dim vault As IEdmVault8 = New EdmVault5
+    Dim vault As IEdmVault8 = New EdmVault5
+    'Dim collectfiles() As String
+    Dim fileCollectionOnlyParent As New List(Of String)
+    Dim fileCollectionInDepth As New List(Of String)
 
 	Private Sub Login_Click(sender As Object, e As EventArgs) Handles Login.Click
 		vault.LoginAuto(ComboVaults.Text, Me.Handle.ToInt32())
@@ -14,35 +19,12 @@ Public Class Form1
 		End If
 	End Sub
 
-
-
-	Private Sub Form1_KeyUp(sender As Object, e As KeyEventArgs) Handles Me.KeyUp
-		'Splash Screen με ιστορικό αλλαγών.
-		If e.Control = True And e.KeyCode = Keys.I Then
-			AboutBox1.Show()
-            AboutBox1.TextBoxDescription.Text =
-                    "V0.8.7 Fixed bug with duplicate files error in collect, Added menuitem to show only latest revisioned versions in search results" & vbCrLf & _
-                    "V0.8.6 Show .stp, .stl, .step, .sat, files in tree" & vbCrLf & _
-                    "V0.8.5 Adden menuitem show only drawings 'In sync with ERP'" & vbCrLf & _
-                    "V0.8.3 Added click to search parents, click to open in tree" & vbCrLf & _
-                    "V0.8.2 Added 'Used In' list, Fixed colouring in tree" & vbCrLf & _
-                    "V0.8.1 Inserted Menu" & vbCrLf & _
-                    "V0.7.7 Recieve Command Line parameters" & vbCrLf & _
-                    "V0.7.6 Minor TreeList changes" & vbCrLf & _
-                    "V0.7.4 Added TreeList View" & vbCrLf & _
-                    "V0.7.3 Minor ui changes" & vbCrLf & _
-                    "V0.7.2 Minor ui changes" & vbCrLf & _
-                    "V0.7.1 Fixed treeview" & vbCrLf & _
-                    "V0.7 Changed way to display results" & vbCrLf & _
-                    "V0.6 When partno typed revision is autocopmleted." & vbCrLf & vbCrLf & _
-                    "V0.5 Corrected bug when folder exists." & vbCrLf & _
-                    "V0.4 Changed Name to MDC (Manufacturing Data Collector)" & vbCrLf & _
-                    "V0.3 Search with enter key." & vbCrLf & _
-                    "V0.2 Added PartNo, Issue, DescriptionEN in search results list. Fixed Tab Sequence. Update before app starts." & vbCrLf & _
-                    "V0.1 Added autologin, Autoresize listview with window" & vbCrLf & _
-                    "V0.0 First release"
-		End If
-	End Sub
+    Private Sub Form1_KeyUp(sender As Object, e As KeyEventArgs) Handles Me.KeyUp
+        'Splash Screen με ιστορικό αλλαγών.
+        If e.Control = True And e.KeyCode = Keys.I Then
+            showaboutbox()
+        End If
+    End Sub
 
 	Private Sub Form1_Load(sender As Object, e As EventArgs) Handles Me.Load
 		Dim views() As EdmViewInfo = {}
@@ -172,7 +154,7 @@ ErrHand:
 		Dim search As IEdmSearch5
 		Dim file As IEdmFile5
 		Dim item As New ListViewItem()
-		Dim temp(10), test As String
+        Dim temp(5) As String
         Dim check As Boolean
 		Dim verEnum As IEdmEnumeratorVersion5
 		Dim pos As IEdmPos5
@@ -181,8 +163,7 @@ ErrHand:
         folder = Nothing
         ListView2.Items.Clear()
 		ListView1.Items.Clear()
-		TreeView1.Nodes.Clear()
-		search = vault.CreateSearch
+        search = vault.CreateSearch
 		search.AddVariable("PartNo", "%" & PartNo.Text)
 
         If MenuItem3.Checked = True Then
@@ -194,9 +175,6 @@ ErrHand:
         result = search.GetFirstResult
         While Not result Is Nothing
             check = True
-            'temp(0) = Nothing
-            'temp(1) = Nothing
-            'temp(2) = Nothing
             file = result
             If Not previousresult Is Nothing Then
                 If result.Path = previousresult.Path Then
@@ -215,9 +193,7 @@ ErrHand:
             End Select
             For Each listitem As ListViewItem In ListView2.Items
                 'MenuItem 5
-                If MenuItem5.Checked = True And temp(0) Like listitem.Text And temp(1) Like listitem.SubItems.Item(1).Text Then
-                    check = False
-                ElseIf temp(0) Like listitem.Text And temp(1) Like listitem.SubItems.Item(1).Text And temp(2) Like listitem.SubItems.Item(2).Text Then
+                If temp(0) Like listitem.Text And temp(1) Like listitem.SubItems.Item(1).Text And temp(2) Like listitem.SubItems.Item(2).Text Then
                     check = False
                 End If
             Next
@@ -229,13 +205,11 @@ ErrHand:
                 Dim oVarData As EdmGetVarData
                 Dim aoVars() As Object
                 Dim aoCfgs() As String
-                Dim sMsg As String
                 Dim iVarIdx As Integer
                 Dim poVal As IEdmVariableValue6
                 While Not pos.IsNull
                     item = New ListViewItem()
                     item.Text = temp(0)
-                    sMsg = ""
                     ver = verEnum.GetNextRevision(pos)
                     poEnum = file.GetEnumeratorVariable
                     folder = vault.GetFolderFromPath(System.IO.Path.GetDirectoryName(result.Path))
@@ -263,7 +237,6 @@ ErrHand:
                             End If
                         Next
                     End If
-
                     ListView2.Items.Insert(0, item)
                 End While
 
@@ -272,293 +245,253 @@ ErrHand:
         End While
     End Sub
 
-	Private Sub CollectButton_Click(sender As Object, e As EventArgs) Handles CollectButton.Click
-        On Error GoTo ErrHand
-		If ListView2.SelectedItems.Count = 0 Then
-			Exit Sub
-		End If
-		Dim file As IEdmFile5
-		Dim rev, descrGR, descrEN, descr As String
-		Dim folder As IEdmFolder5
-		Dim ref As IEdmReference5
-		Dim pos As IEdmPos5
-		Dim items As New Microsoft.VisualBasic.Collection
-        descr = ""
-		folder = Nothing
+    Private Sub DisplayTree()
+        'On Error GoTo ErrHand
+        If PartNo.Text = "" Then
+            Exit Sub
+        End If
+        Dim tempNode As New Ai.Control.TreeNode
+        Me.Cursor = Cursors.AppStarting
 
-		'Τρέχει ο αλγόριθμος και συλλέγει στο collection items τα αρχεία προς συλλογή
-		If CheckBox1.Checked = False Then
-			CollectFiles(items, ListView2.SelectedItems.Item(0).SubItems.Item(5).Text, ListView2.SelectedItems.Item(0).SubItems.Item(2).Text, 0)
-		Else
-			CollectFiles(items, ListView2.SelectedItems.Item(0).SubItems.Item(5).Text, ListView2.SelectedItems.Item(0).SubItems.Item(2).Text)
-		End If
+        tempNode = Nothing
+        MultiColumnTree1.Nodes.Clear()
+        fileCollectionInDepth.Clear()
+        fileCollectionOnlyParent.Clear()
 
-		'Γίνεται η συλλογή των αρχείων
-		If items.Count > 0 Then
-			Dim destFolder = ""
-			file = vault.GetFileFromPath(ListView2.SelectedItems.Item(0).SubItems.Item(5).Text, folder)
-            Select Case ComboLanguage.Text
-                Case "EN"
-                    descr = ListView2.SelectedItems.Item(0).SubItems.Item(4).Text
-                Case "GR"
-                    descr = ListView2.SelectedItems.Item(0).SubItems.Item(3).Text
-            End Select
-			destFolder = TextboxCollectPath.Text & "\" & System.IO.Path.GetFileNameWithoutExtension(file.Name) & " - Rev " & ListView2.SelectedItems.Item(0).SubItems.Item(1).Text & " - " & ComboLanguage.Text & " - " & descr & "\"
-			If (Not System.IO.Directory.Exists(destFolder)) Then
-				System.IO.Directory.CreateDirectory(destFolder)
-				For Each temp In items
-					file = vault.GetFileFromPath(temp, folder)
-                    file.GetFileCopy(Me.Handle, 0)
-                    ' Copy the file.
-                    If Not System.IO.File.Exists(destFolder & file.Name) Then
-                        System.IO.File.Copy(temp, destFolder & file.Name, True)
-                    End If
-				Next
-				MsgBox("Τα σχέδια σώθηκαν στο φάκελο: " & destFolder)
-			Else
-				MsgBox("Ο φάκελος με τα αρχεία του συγκεκριμένου part υπάρχει ήδη. Η διαδικασία δεν ολοκληρώθηκε, διαγράψτε το φάκελο και ξαναπροσπαθήστε.")
-			End If
-		Else
-			MsgBox("Δεν βρέθηκαν 'In sync with ERP' σχέδια για τα κριτήρια που δώσατε")
-		End If
-		Exit Sub
+        PopulateParents(ListView2.SelectedItems.Item(0).SubItems.Item(5).Text, ListView2.SelectedItems.Item(0).SubItems.Item(2).Text)
+        PopulateTree(ListView2.SelectedItems.Item(0).SubItems.Item(5).Text, ListView2.SelectedItems.Item(0).SubItems.Item(2).Text, tempNode)
+
+        MultiColumnTree1.expandAll()
+
+        Me.Cursor = Cursors.Arrow
+        Exit Sub
 ErrHand:
-		Dim ename As String
-		Dim edesc As String
-		vault.GetErrorString(Err.Number, ename, edesc)
-		MsgBox(ename + vbLf + edesc)
+        Dim ename As String
+        Dim edesc As String
+        vault.GetErrorString(Err.Number, ename, edesc)
+        Me.Cursor = Cursors.Arrow
+        MsgBox(ename + vbLf + edesc)
+    End Sub
 
-	End Sub
+    Private Sub PopulateParents(path As String, ver As String)
+        Dim file As IEdmFile5
+        Dim folder As IEdmFolder5
+        Dim ref As IEdmReference5
+        Dim pos As IEdmPos5
+        Dim item As New ListViewItem()
+        If path = "" Then
+            Exit Sub
+        End If
+        folder = Nothing
+        ListView1.Items.Clear()
+        file = vault.GetFileFromPath(path, folder)
+        ref = file.GetReferenceTree(folder.ID, ver)
+        pos = ref.GetFirstParentPosition(ref.VersionRef, False)
+        While Not pos.IsNull
+            ref = ref.GetNextParent(pos)
+            If System.IO.Path.GetExtension(ref.File.Name).ToLower = ".sldasm" Or System.IO.Path.GetExtension(ref.File.Name).ToLower = ".sldprt" Then
+                item = New ListViewItem()
+                item.Text = ref.Name
+                item.SubItems.Add(getVariable(ref, "PartNo"))
+                item.SubItems.Add(getVariable(ref, "Revision"))
+                item.SubItems.Add(ref.VersionRef & "/" & ref.File.CurrentVersion)
+                item.SubItems.Add(getVariable(ref, "Description"))
+                item.SubItems.Add(getVariable(ref, "Description English"))
+                item.SubItems.Add(ref.FoundPath)
+                ListView1.Items.Add(item)
+            End If
+        End While
+    End Sub
 
-	Private Sub CollectFiles(ByRef items As Microsoft.VisualBasic.Collection, path As String, ver As String, Optional ByVal allLevels As Integer = 1)
-		Dim file As IEdmFile5
-		Dim folder As IEdmFolder5
-		Dim ref, ref2, ref3 As IEdmReference5
-		Dim pos, pos2 As IEdmPos5
-		Dim project As String
-		If path = "" Then
-			Exit Sub
-		End If
-		folder = Nothing
-		project = ""
-		file = vault.GetFileFromPath(path, folder)
-		ref = file.GetReferenceTree(folder.ID, ver)
+    Private Sub PopulateTree(path As String, ver As String, ByVal temp As Ai.Control.TreeNode)
+        Dim file As IEdmFile5
+        Dim folder As IEdmFolder5
+        Dim ref, ref2, ref3 As IEdmReference5
+        Dim pos, pos2 As IEdmPos5
+        Dim project As String
+        Dim item As New ListViewItem()
+        Dim temp2, temp3 As Ai.Control.TreeNode
+        Dim check, topParent As Boolean
+        Dim check2
+        topParent = False
+        If path = "" Then
+            Exit Sub
+        End If
+        folder = Nothing
+        project = ""
+        file = vault.GetFileFromPath(path, folder)
+        ref = file.GetReferenceTree(folder.ID, ver)
+        If temp Is Nothing Then
+            temp = addTreeLine(ref, MultiColumnTree1)
+            topParent = True
+        End If
 
-		'Εμφανίζονται πρώτα τα σχέδια στο δέντρο
-		ref2 = ref
-		pos = ref2.GetFirstParentPosition(ref2.VersionRef, False)
-		While Not pos.IsNull
-			ref2 = ref2.GetNextParent(pos)
-			If System.IO.Path.GetExtension(ref2.File.Name).ToLower = ".slddrw" Then
-				'If ref2.File.CurrentState.Name = "In Sync With ERP" Then
-				ref3 = ref2.File.GetReferenceTree(folder.ID, ref2.VersionRef)
-				pos2 = ref3.GetFirstParentPosition(ref2.VersionRef, False)
-				If getVariable(ref3, "Language") = ComboLanguage.Text Then
-					While Not pos2.IsNull
-						ref3 = ref3.GetNextParent(pos2)
-                        If ref3.File.CurrentState.Name = "In Sync With ERP" Or MenuItem3.Checked = False Then
-                            items.Add(ref3.FoundPath)
-                        End If
-					End While
-				End If
-				'End If
-			End If
-		End While
-
-		If allLevels = 1 Then 'Αν έχω επιλέξει να αναλύσει το δέντρο σε βάθος
-			'Έπειτα τυπώνονται τα εξαρτήματα
-			pos = ref.GetFirstChildPosition(project, False, True, 0)
-			While Not pos.IsNull
-				ref = ref.GetNextChild(pos)
-				'If ref.File.CurrentState.Name = "In Sync With ERP" Then
-				CollectFiles(items, ref.FoundPath, ref.VersionRef)
-				'End If
-			End While
-		End If
-	End Sub
-
-	Private Sub DisplayTree()
-		'On Error GoTo ErrHand
-		If PartNo.Text = "" Then
-			Exit Sub
-		End If
-		Dim temp As String
-		Dim tempNode As TreeNode
-		Dim ver
-		Me.Cursor = Cursors.AppStarting
-		'		TreeView1.Nodes.Clear()
-		MultiColumnTree1.Nodes.Clear()
-
-		temp = ""
-		tempNode = Nothing
-		PopulateParents(ListView2.SelectedItems.Item(0).SubItems.Item(5).Text, ListView2.SelectedItems.Item(0).SubItems.Item(2).Text)
-		PopulateTree(TreeView1, tempNode, ListView2.SelectedItems.Item(0).SubItems.Item(5).Text, ListView2.SelectedItems.Item(0).SubItems.Item(2).Text)
-		'		TreeView1.ExpandAll()
-		MultiColumnTree1.expandAll()
-
-		Me.Cursor = Cursors.Arrow
-		Exit Sub
-ErrHand:
-		Dim ename As String
-		Dim edesc As String
-		vault.GetErrorString(Err.Number, ename, edesc)
-		Me.Cursor = Cursors.Arrow
-		MsgBox(ename + vbLf + edesc)
-	End Sub
-
-	Private Sub PopulateParents(path As String, ver As String)
-		Dim file As IEdmFile5
-		Dim folder As IEdmFolder5
-		Dim ref As IEdmReference5
-		Dim pos As IEdmPos5
-		Dim item As New ListViewItem()
-		If path = "" Then
-			Exit Sub
-		End If
-		folder = Nothing
-		ListView1.Items.Clear()
-		file = vault.GetFileFromPath(path, folder)
-		ref = file.GetReferenceTree(folder.ID, ver)
-		pos = ref.GetFirstParentPosition(ref.VersionRef, False)
-		While Not pos.IsNull
-			ref = ref.GetNextParent(pos)
-			If System.IO.Path.GetExtension(ref.File.Name).ToLower = ".sldasm" Or System.IO.Path.GetExtension(ref.File.Name).ToLower = ".sldprt" Then
-				item = New ListViewItem()
-				item.Text = ref.Name
-				item.SubItems.Add(getVariable(ref, "PartNo"))
-				item.SubItems.Add(getVariable(ref, "Revision"))
-				item.SubItems.Add(ref.VersionRef & "/" & ref.File.CurrentVersion)
-				item.SubItems.Add(getVariable(ref, "Description"))
-				item.SubItems.Add(getVariable(ref, "Description English"))
-				item.SubItems.Add(ref.FoundPath)
-				ListView1.Items.Add(item)
-			End If
-		End While
-
-	End Sub
-
-	Private Sub PopulateTree(ByRef tree As TreeView, ByVal treenode As TreeNode, path As String, ver As String, Optional ByVal temp As Ai.Control.TreeNode = Nothing)
-		Dim file As IEdmFile5
-		Dim folder As IEdmFolder5
-		Dim ref, ref2, ref3 As IEdmReference5
-		Dim pos, pos2 As IEdmPos5
-		Dim project As String
-		Dim item As New ListViewItem()
-		Dim temp2, temp3 As Ai.Control.TreeNode
-        Dim check As Boolean
-        Dim extension As String
-        extension = ""
-		If path = "" Then
-			Exit Sub
-		End If
-		folder = Nothing
-		project = ""
-		file = vault.GetFileFromPath(path, folder)
-		ref = file.GetReferenceTree(folder.ID, ver)
-		If temp Is Nothing Then
-			temp = MultiColumnTree1.Nodes.Add(file.Name)
-			temp.SubItems.Add(getVariable(ref, "PartNo"))
-			temp.SubItems.Add(getVariable(ref, "Revision"))
-			temp.SubItems.Add(ref.VersionRef & "/" & ref.File.CurrentVersion)
-			temp.SubItems.Add(getVariable(ref, "Description"))
-			temp.SubItems.Add(getVariable(ref, "Description English"))
-			temp.SubItems.Add(ref.File.CurrentState.Name)
-			temp.SubItems.Add(typeName(getVariable(ref, "Component Type")))
-			temp.SubItems.Add(getVariable(ref, "Component Type Subgroup"))
-			temp.SubItems.Add(ref.FoundPath)
-		End If
-
-		'Εμφανίζονται πρώτα τα σχέδια στο δέντρο
-		ref2 = ref
-		pos = ref2.GetFirstParentPosition(ref2.VersionRef, False)
-		check = False
-		While Not pos.IsNull
+        'Εμφανίζονται πρώτα τα σχέδια στο δέντρο
+        ref2 = ref
+        pos = ref2.GetFirstParentPosition(ref2.VersionRef, False)
+        check = False
+        check2 = "Not Show"
+        While Not pos.IsNull
             ref2 = ref2.GetNextParent(pos)
-            extension = System.IO.Path.GetExtension(ref2.File.Name).ToLower
-            If (extension = ".slddrw" And getVariable(ref2, "Language") = ComboLanguage.Text) Or extension = ".step" Or extension = ".stp" Or extension = ".stl" Or extension = ".sat" Or extension = ".docm" Then
-                temp2 = temp.Nodes.Add(ref2.Name)
-                temp2.SubItems.Add(getVariable(ref2, "PartNo"))
-                temp2.SubItems.Add(getVariable(ref2, "Revision"))
-                temp2.SubItems.Add(ref2.VersionRef & "/" & ref2.File.CurrentVersion)
+            If System.IO.Path.GetExtension(ref2.File.Name).ToLower = ".sldasm" Then
+                check2 = "Not Show"
+            Else
+                Select Case getVariable(ref2, "Document Category")
+                    Case "DRW"
+                        check2 = "Show"
+                    Case "3GM"
+                        check2 = "Collect"
+                    Case "3RP"
+                        check2 = "Collect"
+                    Case "CMI"
+                        check2 = "Collect"
+                    Case Else
+                        If MenuItem4.Checked = True Then
+                            check2 = "Not Show"
+                        Else
+                            check2 = "Show"
+                        End If
+                End Select
+            End If
+            If (System.IO.Path.GetExtension(ref2.File.Name).ToLower = ".slddrw" And getVariable(ref2, "Language") = ComboLanguage.Text) And (ref2.File.CurrentState.Name = "In Sync With ERP" Or MenuItem3.Checked = False) Or check2 = "Show" Or check2 = "Collect" Then
+                temp2 = addTreeLine(ref2, MultiColumnTree1, temp)
+                If check2 = "Collect" Then
+                    fileCollectionInDepth.Add(ref2.FoundPath)
+                    If topParent = True Then
+                        fileCollectionOnlyParent.Add(ref2.FoundPath)
+                    End If
+                    temp2.Color = Color.DarkGreen
+                End If
                 If ref2.VersionRef <> ref2.File.CurrentVersion And MenuItem1.Checked = True Then
                     temp2.Color = Color.DarkRed
                     temp2.NodeFont = New Font(temp2.NodeFont, FontStyle.Bold)
                 End If
-                temp2.SubItems.Add(getVariable(ref2, "Description"))
-                temp2.SubItems.Add(getVariable(ref2, "Description English"))
-                temp2.SubItems.Add(ref2.File.CurrentState.Name)
-                temp2.SubItems.Add(typeName(getVariable(ref2, "Component Type")))
-                temp2.SubItems.Add(getVariable(ref2, "Component Type Subgroup"))
-                temp2.SubItems.Add(ref2.FoundPath)
-                temp.expandAll()
                 ref3 = ref2.File.GetReferenceTree(folder.ID, ref2.VersionRef)
                 pos2 = ref3.GetFirstParentPosition(ref2.VersionRef, False)
                 While Not pos2.IsNull
                     ref3 = ref3.GetNextParent(pos2)
                     If ref3.File.CurrentState.Name = "In Sync With ERP" Or MenuItem3.Checked = False Then
                         check = True
-                        temp3 = temp2.Nodes.Add(ref3.Name)
-                        temp3.SubItems.Add(getVariable(ref3, "PartNo"))
-                        temp3.SubItems.Add(getVariable(ref3, "Revision"))
-                        temp3.SubItems.Add(ref3.VersionRef & "/" & ref3.File.CurrentVersion)
-                        temp3.SubItems.Add(getVariable(ref3, "Description"))
-                        temp3.SubItems.Add(getVariable(ref3, "Description English"))
-                        temp3.SubItems.Add(ref3.File.CurrentState.Name)
-                        temp3.SubItems.Add(typeName(getVariable(ref3, "Component Type")))
-                        temp3.SubItems.Add(getVariable(ref3, "Component Type Subgroup"))
-                        temp3.SubItems.Add(ref3.FoundPath)
-                        temp2.expandAll()
+                        temp3 = addTreeLine(ref3, MultiColumnTree1, temp2)
+                        fileCollectionInDepth.Add(ref3.FoundPath)
+                        If topParent = True Then
+                            fileCollectionOnlyParent.Add(ref3.FoundPath)
+                        End If
                         temp3.Color = Color.DarkGreen
                         'temp3.NodeFont = New Font(temp3.NodeFont, FontStyle.Bold)
                     End If
                 End While
             End If
         End While
-		If check = False And MenuItem2.Checked = True Then
-			temp.NodeFont = New Font(temp.NodeFont, FontStyle.Bold)
-			temp.Color = Color.DarkOrange
-		End If
+        If check = False And MenuItem2.Checked = True Then
+            temp.NodeFont = New Font(temp.NodeFont, FontStyle.Bold)
+            temp.Color = Color.DarkOrange
+        End If
 
-		'Έπειτα τυπώνονται τα εξαρτήματα
-		pos = ref.GetFirstChildPosition(project, False, True, 0)
-		While Not pos.IsNull
-			ref = ref.GetNextChild(pos)
-			'Εμφανίζω μόνο τα part που είναι manufactured και όχι τα purchased και virtual
-			If typeName(getVariable(ref, "Component Type")) = "Manufactured" Then
-				temp2 = temp.Nodes.Add(ref.Name)
-				temp2.SubItems.Add(getVariable(ref, "PartNo"))
-				temp2.SubItems.Add(getVariable(ref, "Revision"))
-				temp2.SubItems.Add(ref.VersionRef & "/" & ref.File.CurrentVersion)
-				If ref.VersionRef <> ref.File.CurrentVersion And MenuItem1.Checked = True Then
-					temp2.Color = Color.DarkRed
-					temp2.NodeFont = New Font(temp2.NodeFont, FontStyle.Bold)
-				End If
-				temp2.SubItems.Add(getVariable(ref, "Description"))
-				temp2.SubItems.Add(getVariable(ref, "Description English"))
-				temp2.SubItems.Add(ref.File.CurrentState.Name)
-				temp2.SubItems.Add(typeName(getVariable(ref, "Component Type")))
-				temp2.SubItems.Add(getVariable(ref, "Component Type Subgroup"))
-				temp2.SubItems.Add(ref.FoundPath)
-				temp.expandAll()
-				PopulateTree(tree, Nothing, ref.FoundPath, ref.VersionRef, temp2)
-			End If
-		End While
+        'Έπειτα τυπώνονται τα εξαρτήματα
+        pos = ref.GetFirstChildPosition(project, False, True, 0)
+        While Not pos.IsNull
+            ref = ref.GetNextChild(pos)
+            'Εμφανίζω μόνο τα part που είναι manufactured και όχι τα purchased και virtual
+            If typeName(getVariable(ref, "Component Type")) = "Manufactured" Then
+                temp2 = addTreeLine(ref, MultiColumnTree1, temp)
+                If ref.VersionRef <> ref.File.CurrentVersion And MenuItem1.Checked = True Then
+                    temp2.Color = Color.DarkRed
+                    temp2.NodeFont = New Font(temp2.NodeFont, FontStyle.Bold)
+                End If
+                PopulateTree(ref.FoundPath, ref.VersionRef, temp2)
+            End If
+        End While
 
-	End Sub
+    End Sub
 
-	Private Function getVariable(ref As IEdmReference5, variable As String) As String
-		Dim temp
-		temp = ""
-		Select Case System.IO.Path.GetExtension(ref.File.Name).ToLower
-			Case ".pdf", ".docm", ".docx", ".doc", ".step"
-				ref.File.GetEnumeratorVariable.GetVar(variable, "", temp)
-			Case ".dxf"
-				ref.File.GetEnumeratorVariable.GetVar(variable, "model", temp)
-			Case ".slddrw", ".sldprt", ".sldasm"
-				ref.File.GetEnumeratorVariable.GetVar(variable, "@", temp)
-		End Select
-		Return temp
-	End Function
+    Private Function addTreeLine(ref As IEdmReference5, tree As Ai.Control.MultiColumnTree, Optional treenode As Ai.Control.TreeNode = Nothing) As Ai.Control.TreeNode
+        Dim node As Ai.Control.TreeNode
+        If Not treenode Is Nothing Then
+            node = treenode.Nodes.Add(ref.File.Name)
+        Else
+            node = tree.Nodes.Add(ref.File.Name)
+        End If
+        node.SubItems.Add(getVariable(ref, "PartNo"))
+        node.SubItems.Add(getVariable(ref, "Revision"))
+        node.SubItems.Add(ref.VersionRef & "/" & ref.File.CurrentVersion)
+        node.SubItems.Add(getVariable(ref, "Description"))
+        node.SubItems.Add(getVariable(ref, "Description English"))
+        node.SubItems.Add(ref.File.CurrentState.Name)
+        node.SubItems.Add(typeName(getVariable(ref, "Component Type")))
+        node.SubItems.Add(getVariable(ref, "Component Type Subgroup"))
+        node.SubItems.Add(ref.FoundPath)
+        If Not treenode Is Nothing Then
+            treenode.expandAll()
+        End If
+        Return node
+    End Function
+
+    Private Sub CollectButton_Click(sender As Object, e As EventArgs) Handles CollectButton.Click
+        'On Error GoTo ErrHand
+        Dim printList As New List(Of String)
+        If CheckBox1.Checked = True Then
+            printList = fileCollectionInDepth
+        Else
+            printList = fileCollectionOnlyParent
+        End If
+        If printList.Count <= 0 Then
+            MsgBox("Δεν βρέθηκαν 'In sync with ERP' σχέδια για τα κριτήρια που δώσατε")
+            Exit Sub
+        End If
+        Dim file As IEdmFile5
+        Dim descr As String
+        Dim folder As IEdmFolder5
+        folder = Nothing
+        descr = ""
+        'Γίνεται η συλλογή των αρχείων
+        Dim destFolder = ""
+        file = vault.GetFileFromPath(ListView2.SelectedItems.Item(0).SubItems.Item(5).Text, folder)
+        Select Case ComboLanguage.Text
+            Case "EN"
+                descr = ListView2.SelectedItems.Item(0).SubItems.Item(4).Text
+            Case "GR"
+                descr = ListView2.SelectedItems.Item(0).SubItems.Item(3).Text
+        End Select
+        destFolder = TextboxCollectPath.Text & "\" & System.IO.Path.GetFileNameWithoutExtension(file.Name) & " - Rev " & ListView2.SelectedItems.Item(0).SubItems.Item(1).Text & " - " & ComboLanguage.Text & " - " & descr.Replace(vbCrLf, "").Replace("\", "-").Replace("/", "-") & "\"
+        If (Not System.IO.Directory.Exists(destFolder)) Then
+            System.IO.Directory.CreateDirectory(destFolder)
+            For Each temp In printList
+                file = vault.GetFileFromPath(temp, folder)
+                file.GetFileCopy(Me.Handle, 0)
+                ' Copy the file.
+                If Not System.IO.File.Exists(destFolder & file.Name) Then
+                    System.IO.File.Copy(temp, destFolder & file.Name, True)
+                End If
+            Next
+            MsgBox("Τα σχέδια σώθηκαν στο φάκελο: " & destFolder)
+        Else
+            MsgBox("Ο φάκελος με τα αρχεία του συγκεκριμένου part υπάρχει ήδη. Η διαδικασία δεν ολοκληρώθηκε, διαγράψτε το φάκελο και ξαναπροσπαθήστε.")
+        End If
+        Exit Sub
+ErrHand:
+        Dim ename As String
+        Dim edesc As String
+        vault.GetErrorString(Err.Number, ename, edesc)
+        MsgBox(ename + vbLf + edesc)
+
+    End Sub
+
+    Private Function getVariable(ref As IEdmReference5, variable As String) As String
+        Dim temp
+        temp = ""
+        Select Case System.IO.Path.GetExtension(ref.File.Name).ToLower
+            Case ".pdf", ".docm", ".docx", ".doc", ".step"
+                ref.File.GetEnumeratorVariable.GetVar(variable, "", temp)
+            Case ".dxf"
+                ref.File.GetEnumeratorVariable.GetVar(variable, "model", temp)
+            Case ".slddrw", ".sldprt", ".sldasm"
+                ref.File.GetEnumeratorVariable.GetVar(variable, "@", temp)
+            Case Else
+                ref.File.GetEnumeratorVariable.GetVar(variable, "", temp)
+        End Select
+        Return temp
+    End Function
 
 	''' <summary>
 	''' Returns Component Type Name Of Given Id
@@ -655,5 +588,36 @@ ErrHand:
 
     Private Sub MenuItem5_Click(sender As Object, e As EventArgs) Handles MenuItem5.Click
         My.Settings.Menu5 = MenuItem5.Checked
+    End Sub
+
+    Private Sub AboutToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AboutToolStripMenuItem.Click
+        showaboutbox()
+    End Sub
+
+    Private Sub showaboutbox()
+        AboutBox1.Show()
+        AboutBox1.TextBoxDescription.Text =
+                "V0.8.9 Collect files function coded from scratch." & vbCrLf & _
+                "V0.8.8 Added menu item to show only manufacturing data documents, added help menu" & vbCrLf & _
+                "V0.8.7 Fixed bug with duplicate files error in collect, Added menu item to show only latest revisioned versions in search results" & vbCrLf & _
+                "V0.8.6 Show .stp, .stl, .step, .sat, files in tree" & vbCrLf & _
+                "V0.8.5 Adden menuitem show only drawings 'In sync with ERP'" & vbCrLf & _
+                "V0.8.3 Added click to search parents, click to open in tree" & vbCrLf & _
+                "V0.8.2 Added 'Used In' list, Fixed colouring in tree" & vbCrLf & _
+                "V0.8.1 Inserted Menu" & vbCrLf & _
+                "V0.7.7 Recieve Command Line parameters" & vbCrLf & _
+                "V0.7.6 Minor TreeList changes" & vbCrLf & _
+                "V0.7.4 Added TreeList View" & vbCrLf & _
+                "V0.7.3 Minor ui changes" & vbCrLf & _
+                "V0.7.2 Minor ui changes" & vbCrLf & _
+                "V0.7.1 Fixed treeview" & vbCrLf & _
+                "V0.7 Changed way to display results" & vbCrLf & _
+                "V0.6 When partno typed revision is autocopmleted." & vbCrLf & vbCrLf & _
+                "V0.5 Corrected bug when folder exists." & vbCrLf & _
+                "V0.4 Changed Name to MDC (Manufacturing Data Collector)" & vbCrLf & _
+                "V0.3 Search with enter key." & vbCrLf & _
+                "V0.2 Added PartNo, Issue, DescriptionEN in search results list. Fixed Tab Sequence. Update before app starts." & vbCrLf & _
+                "V0.1 Added autologin, Autoresize listview with window" & vbCrLf & _
+                "V0.0 First release"
     End Sub
 End Class
