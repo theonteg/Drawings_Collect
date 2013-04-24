@@ -41,31 +41,31 @@ Public Class Form1
 		If ComboVaults.Items.Count > 0 Then
 			ComboVaults.Text = ComboVaults.Items(0)
 		End If
-
-		MenuItem1.Checked = My.Settings.Menu1
+        DateTimePicker1.Text = Now.Date()
+        MenuItem1.Checked = My.Settings.Menu1
 		MenuItem2.Checked = My.Settings.Menu2
         MenuItem5.Checked = My.Settings.Menu5
 
 		Me.Text = "Manufacturing Data Collector - V" & My.Application.Info.Version.Major & "." & My.Application.Info.Version.Minor '& "." & My.Application.Info.Version.Revision
 		ListView2.Columns.Add("PartNo", 70)
-		ListView2.Columns.Add("Rev", 35)
-		ListView2.Columns.Add("Ver", 35)
+        ListView2.Columns.Add("Revision", 35)
+        ListView2.Columns.Add("Version", 35)
 		ListView2.Columns.Add("Description", 250)
 		ListView2.Columns.Add("Description English", 250)
 		ListView2.Columns.Add("Path", 0)
 
 		ListView1.Columns.Add("File", 120)
 		ListView1.Columns.Add("PartNo", 70)
-		ListView1.Columns.Add("Rev", 35)
-		ListView1.Columns.Add("Ver", 35)
+        ListView1.Columns.Add("Revision", 35)
+        ListView1.Columns.Add("Version", 35)
 		ListView1.Columns.Add("Description", 250)
 		ListView1.Columns.Add("Description English", 250)
 		ListView1.Columns.Add("Path", 0)
 
 		MultiColumnTree1.Columns.Add("File")
 		MultiColumnTree1.Columns.Add("PartNo")
-		MultiColumnTree1.Columns.Add("Rev")
-		MultiColumnTree1.Columns.Add("Ver")
+        MultiColumnTree1.Columns.Add("Revision")
+        MultiColumnTree1.Columns.Add("Version")
 		MultiColumnTree1.Columns.Add("Description")
 		MultiColumnTree1.Columns.Add("Description English")
 		MultiColumnTree1.Columns.Add("State")
@@ -336,22 +336,26 @@ ErrHand:
             If System.IO.Path.GetExtension(ref2.File.Name).ToLower = ".sldasm" Then
                 check2 = "Not Show"
             Else
-                Select Case getVariable(ref2, "Document Category")
-                    Case "DRW"
-                        check2 = "Show"
-                    Case "3GM"
-                        check2 = "Collect"
-                    Case "3RP"
-                        check2 = "Collect"
-                    Case "CMI"
-                        check2 = "Collect"
-                    Case Else
-                        If MenuItem4.Checked = True Then
-                            check2 = "Not Show"
-                        Else
+                If ref2.File.CurrentState.Name = "In Sync With ERP" Or MenuItem3.Checked = False Then
+                    Select Case getVariable(ref2, "Document Category")
+                        Case "DRW"
                             check2 = "Show"
-                        End If
-                End Select
+                        Case "3GM"
+                            check2 = "Collect"
+                        Case "3RP"
+                            check2 = "Collect"
+                        Case "CMI"
+                            check2 = "Collect"
+                        Case Else
+                            If MenuItem4.Checked = True Then
+                                check2 = "Not Show"
+                            Else
+                                check2 = "Show"
+                            End If
+                    End Select
+                Else
+                    check2 = "Not Show"
+                End If
             End If
             If (System.IO.Path.GetExtension(ref2.File.Name).ToLower = ".slddrw" And getVariable(ref2, "Language") = ComboLanguage.Text) And (ref2.File.CurrentState.Name = "In Sync With ERP" Or MenuItem3.Checked = False) Or check2 = "Show" Or check2 = "Collect" Then
                 temp2 = addTreeLine(ref2, MultiColumnTree1, temp)
@@ -366,6 +370,9 @@ ErrHand:
                     temp2.Color = Color.DarkRed
                     temp2.NodeFont = New Font(temp2.NodeFont, FontStyle.Bold)
                 End If
+                If checkDateChanged(ref2) = False And MenuItem6.Checked = True Then
+                    temp2.NodeFont = New Font(temp2.NodeFont, FontStyle.Bold)
+                End If
                 ref3 = ref2.File.GetReferenceTree(folder.ID, ref2.VersionRef)
                 pos2 = ref3.GetFirstParentPosition(ref2.VersionRef, False)
                 While Not pos2.IsNull
@@ -376,6 +383,9 @@ ErrHand:
                         fileCollectionInDepth.Add(ref3.FoundPath)
                         If topParent = True Then
                             fileCollectionOnlyParent.Add(ref3.FoundPath)
+                        End If
+                        If checkDateChanged(ref3) = False And MenuItem6.Checked = True Then
+                            temp3.NodeFont = New Font(temp3.NodeFont, FontStyle.Bold)
                         End If
                         temp3.Color = Color.DarkGreen
                         'temp3.NodeFont = New Font(temp3.NodeFont, FontStyle.Bold)
@@ -397,6 +407,9 @@ ErrHand:
                 temp2 = addTreeLine(ref, MultiColumnTree1, temp)
                 If ref.VersionRef <> ref.File.CurrentVersion And MenuItem1.Checked = True Then
                     temp2.Color = Color.DarkRed
+                    temp2.NodeFont = New Font(temp2.NodeFont, FontStyle.Bold)
+                End If
+                If checkDateChanged(ref) = False And MenuItem6.Checked = True Then
                     temp2.NodeFont = New Font(temp2.NodeFont, FontStyle.Bold)
                 End If
                 PopulateTree(ref.FoundPath, ref.VersionRef, temp2)
@@ -425,6 +438,32 @@ ErrHand:
             treenode.expandAll()
         End If
         Return node
+    End Function
+
+    Private Function checkDateChanged(item As IEdmReference5) As Boolean
+        Dim verEnum As IEdmEnumeratorVersion5
+        Dim folder As IEdmFolder5
+        Dim pos As IEdmPos5
+        Dim ver As IEdmRevision5
+        ver = Nothing
+        verEnum = item.File
+        pos = verEnum.GetFirstRevisionPosition
+        While Not pos.IsNull
+            ver = verEnum.GetNextRevision(pos)
+        End While
+        If Not ver Is Nothing Then
+            If DateDiff(DateInterval.Day, Date.Parse(ver.Time), Date.Parse(DateTimePicker1.Text)) > 0 Then
+                Return True
+            Else
+                Return False
+            End If
+        Else
+            If DateDiff(DateInterval.Day, Date.Parse(item.File.GetLocalFileDate(item.FolderID)), Date.Parse(DateTimePicker1.Text)) > 0 Then
+                Return True
+            Else
+                Return False
+            End If
+        End If
     End Function
 
     Private Sub CollectButton_Click(sender As Object, e As EventArgs) Handles CollectButton.Click
@@ -493,69 +532,74 @@ ErrHand:
         Return temp
     End Function
 
-	''' <summary>
-	''' Returns Component Type Name Of Given Id
-	''' </summary>
-	''' <param name="id">Component Type Id</param>
-	''' <remarks></remarks>
-	Private Function typeName(id)
-		Select Case id
-			Case "1"
-				Return "Manufactured"
-			Case "2"
-				Return "Purchaced"
-			Case "3"
-				Return "Virtual"
-			Case Else
-				Return id
-		End Select
-	End Function
+    ''' <summary>
+    ''' Returns Component Type Name Of Given Id
+    ''' </summary>
+    ''' <param name="id">Component Type Id</param>
+    ''' <remarks></remarks>
+    Private Function typeName(id)
+        Select Case id
+            Case "1"
+                Return "Manufactured"
+            Case "2"
+                Return "Purchaced"
+            Case "3"
+                Return "Virtual"
+            Case Else
+                Return id
+        End Select
+    End Function
 
-	Private Sub Browse_Click(sender As Object, e As EventArgs) Handles Browse.Click
-		FolderBrowserDialog1.ShowDialog()
-		If FolderBrowserDialog1.SelectedPath <> "" Then
-			TextboxCollectPath.Text = FolderBrowserDialog1.SelectedPath
-		End If
-	End Sub
+    Private Sub Browse_Click(sender As Object, e As EventArgs) Handles Browse.Click
+        FolderBrowserDialog1.ShowDialog()
+        If FolderBrowserDialog1.SelectedPath <> "" Then
+            TextboxCollectPath.Text = FolderBrowserDialog1.SelectedPath
+        End If
+    End Sub
 
-	Private Sub PartNo_KeyDown(sender As Object, e As KeyEventArgs) Handles PartNo.KeyDown
-		If e.KeyCode = Keys.Enter Then
-			e.SuppressKeyPress = True
-			'Προσθέτω τα revision του part στο combobox
-			Search_Click(sender, New System.EventArgs())
-		End If
-	End Sub
+    Private Sub PartNo_KeyDown(sender As Object, e As KeyEventArgs) Handles PartNo.KeyDown
+        If e.KeyCode = Keys.Enter Then
+            e.SuppressKeyPress = True
+            'Προσθέτω τα revision του part στο combobox
+            Search_Click(sender, New System.EventArgs())
+        End If
+    End Sub
 
-	Private Sub ListView2_Click(sender As Object, e As EventArgs) Handles ListView2.Click
-		Dim part
-		part = ListView2.SelectedItems.Item(0).Text
-		DisplayTree()
+    Private Sub ListView2_Click(sender As Object, e As EventArgs) Handles ListView2.Click
+        Dim part
+        part = ListView2.SelectedItems.Item(0).Text
+        DisplayTree()
 
-	End Sub
+    End Sub
 
-	Private Sub Form1_Resize(sender As Object, e As EventArgs) Handles Me.Resize
-		'Για αυτόματο resize του listview ταυτόχρονα με το παράθυρο
-		SplitContainer1.Width = Me.Width - 38
-		SplitContainer1.Height = Me.Height - 122
-	End Sub
+    Private Sub Form1_Resize(sender As Object, e As EventArgs) Handles Me.Resize
+        'Για αυτόματο resize του listview ταυτόχρονα με το παράθυρο
+        SplitContainer1.Width = Me.Width - 38
+        SplitContainer1.Height = Me.Height - 122
+    End Sub
 
-	Private Sub SplitContainer1_Resize(sender As Object, e As EventArgs) Handles SplitContainer1.Resize
-		ListView2.Width = SplitContainer1.Panel1.Width - 8
-		ListView1.Width = SplitContainer1.Panel1.Width - 8
-		ListView1.Height = SplitContainer1.Height - 367
-	End Sub
+    Private Sub SplitContainer1_Resize(sender As Object, e As EventArgs) Handles SplitContainer1.Resize
+        GroupBox1.Width = SplitContainer1.Panel1.Width - 8
+        GroupBox2.Width = SplitContainer1.Panel1.Width - 8
+        GroupBox1.Height = SplitContainer1.Height - 340
+    End Sub
 
-	Private Sub SplitContainer1_SplitterMoved(sender As Object, e As SplitterEventArgs) Handles SplitContainer1.SplitterMoved
-		ListView2.Width = SplitContainer1.Panel1.Width - 8
-		ListView1.Width = SplitContainer1.Panel1.Width - 8
-	End Sub
+    Private Sub SplitContainer1_SplitterMoved(sender As Object, e As SplitterEventArgs) Handles SplitContainer1.SplitterMoved
+        GroupBox1.Width = SplitContainer1.Panel1.Width - 8
+        GroupBox2.Width = SplitContainer1.Panel1.Width - 8
+    End Sub
 
-	Private Sub ComboLanguage_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboLanguage.SelectedIndexChanged
-		If ListView2.SelectedItems.Count > 0 Then
-			DisplayTree()
-		End If
-	End Sub
+    Private Sub ComboLanguage_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboLanguage.SelectedIndexChanged
+        If ListView2.SelectedItems.Count > 0 Then
+            DisplayTree()
+        End If
+    End Sub
 
+    Private Sub DateTimePicker1_ValueChanged(sender As Object, e As EventArgs) Handles DateTimePicker1.ValueChanged
+        If ListView2.SelectedItems.Count > 0 Then
+            DisplayTree()
+        End If
+    End Sub
 
     Private Sub ExitToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExitToolStripMenuItem.Click
         Me.Close()
@@ -570,13 +614,13 @@ ErrHand:
 
     End Sub
 
-	Private Sub MultiColumnTree1_DoubleClick(sender As Object, e As EventArgs) Handles MultiColumnTree1.DoubleClick
-		'MsgBox(MultiColumnTree1.SelectedNode.SubItems.Item(9).Value)
-		Dim file As IEdmFile5
-		file = vault.GetFileFromPath(MultiColumnTree1.SelectedNode.SubItems.Item(9).Value)
-		file.GetFileCopy(Me.Handle, 0, 0)
-		Process.Start(MultiColumnTree1.SelectedNode.SubItems.Item(9).Value)
-	End Sub
+    Private Sub MultiColumnTree1_DoubleClick(sender As Object, e As EventArgs) Handles MultiColumnTree1.DoubleClick
+        'MsgBox(MultiColumnTree1.SelectedNode.SubItems.Item(9).Value)
+        Dim file As IEdmFile5
+        file = vault.GetFileFromPath(MultiColumnTree1.SelectedNode.SubItems.Item(9).Value)
+        file.GetFileCopy(Me.Handle, 0, 0)
+        Process.Start(MultiColumnTree1.SelectedNode.SubItems.Item(9).Value)
+    End Sub
 
     Private Sub MenuItem1_Click(sender As Object, e As EventArgs) Handles MenuItem1.Click
         My.Settings.Menu1 = MenuItem1.Checked
@@ -597,6 +641,7 @@ ErrHand:
     Private Sub showaboutbox()
         AboutBox1.Show()
         AboutBox1.TextBoxDescription.Text =
+                "V0.8.10 Design updates. Function to check last edited date." & vbCrLf & _
                 "V0.8.9 Collect files function coded from scratch." & vbCrLf & _
                 "V0.8.8 Added menu item to show only manufacturing data documents, added help menu" & vbCrLf & _
                 "V0.8.7 Fixed bug with duplicate files error in collect, Added menu item to show only latest revisioned versions in search results" & vbCrLf & _
