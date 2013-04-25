@@ -294,6 +294,7 @@ ErrHand:
     End Sub
 
     Private Sub PopulateComments(path As String, version As String)
+        ListView4.Items.Clear()
         Dim file As IEdmFile5
         Dim item As New ListViewItem()
         Dim verEnum As IEdmEnumeratorVersion5
@@ -682,14 +683,7 @@ ErrHand:
 
     Private Sub ListView3_Click(sender As Object, e As EventArgs) Handles ListView3.Click
         If ListView3.SelectedItems.Count > 0 Then
-            TabControl1.SelectedTab = TabPage1
             PopulateWhereUsed(ListView3.SelectedItems.Item(0).SubItems(9).Text, Split(ListView3.SelectedItems.Item(0).SubItems(3).Text, "/")(0))
-        End If
-    End Sub
-
-    Private Sub ToolStripMenuItem2_Click(sender As Object, e As EventArgs) Handles ToolStripMenuItem2.Click
-        If ListView3.SelectedItems.Count > 0 Then
-            TabControl1.SelectedTab = TabPage2
             PopulateComments(ListView3.SelectedItems.Item(0).SubItems(9).Text, Split(ListView3.SelectedItems.Item(0).SubItems(3).Text, "/")(0))
         End If
     End Sub
@@ -697,6 +691,7 @@ ErrHand:
     Private Sub showaboutbox()
         AboutBox1.Show()
         AboutBox1.TextBoxDescription.Text =
+                "V0.9.1 Fixed comments bug" & vbCrLf & _
                 "V0.9.0 Design updates, abandoned treelistview. Function to check last edited date. Comments from history. Added version to getVariable." & vbCrLf & _
                 "V0.8.9 Collect files function coded from scratch." & vbCrLf & _
                 "V0.8.8 Added menu item to show only manufacturing data documents, added help menu" & vbCrLf & _

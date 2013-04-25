@@ -43,12 +43,21 @@ Partial Class Form1
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
         Me.ListView2 = New System.Windows.Forms.ListView()
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
+        Me.TabControl1 = New System.Windows.Forms.TabControl()
+        Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.ListView1 = New System.Windows.Forms.ListView()
+        Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.ListView4 = New System.Windows.Forms.ListView()
         Me.GroupBox4 = New System.Windows.Forms.GroupBox()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.DateTimePicker1 = New System.Windows.Forms.DateTimePicker()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
-        Me.ListView1 = New System.Windows.Forms.ListView()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
+        Me.ListView3 = New System.Windows.Forms.ListView()
+        Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.OpenToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.OpenFolderToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.FileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ExitToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -61,29 +70,19 @@ Partial Class Form1
         Me.MenuItem6 = New System.Windows.Forms.ToolStripMenuItem()
         Me.HelpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.AboutToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.TabControl1 = New System.Windows.Forms.TabControl()
-        Me.TabPage1 = New System.Windows.Forms.TabPage()
-        Me.TabPage2 = New System.Windows.Forms.TabPage()
-        Me.ListView3 = New System.Windows.Forms.ListView()
-        Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
-        Me.ListView4 = New System.Windows.Forms.ListView()
-        Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.ToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.OpenToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.OpenFolderToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.StatusStrip1.SuspendLayout()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
         Me.SplitContainer1.SuspendLayout()
-        Me.GroupBox4.SuspendLayout()
-        Me.GroupBox2.SuspendLayout()
-        Me.GroupBox3.SuspendLayout()
-        Me.MenuStrip1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.TabPage2.SuspendLayout()
+        Me.GroupBox4.SuspendLayout()
+        Me.GroupBox2.SuspendLayout()
+        Me.GroupBox3.SuspendLayout()
         Me.ContextMenuStrip1.SuspendLayout()
+        Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
         'Login
@@ -247,6 +246,62 @@ Partial Class Form1
         Me.SplitContainer1.SplitterDistance = 350
         Me.SplitContainer1.TabIndex = 0
         '
+        'TabControl1
+        '
+        Me.TabControl1.Controls.Add(Me.TabPage1)
+        Me.TabControl1.Controls.Add(Me.TabPage2)
+        Me.TabControl1.Location = New System.Drawing.Point(6, 339)
+        Me.TabControl1.Name = "TabControl1"
+        Me.TabControl1.SelectedIndex = 0
+        Me.TabControl1.Size = New System.Drawing.Size(335, 231)
+        Me.TabControl1.TabIndex = 20
+        '
+        'TabPage1
+        '
+        Me.TabPage1.Controls.Add(Me.ListView1)
+        Me.TabPage1.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage1.Name = "TabPage1"
+        Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage1.Size = New System.Drawing.Size(327, 205)
+        Me.TabPage1.TabIndex = 0
+        Me.TabPage1.Text = "Where Used"
+        Me.TabPage1.UseVisualStyleBackColor = True
+        '
+        'ListView1
+        '
+        Me.ListView1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.ListView1.FullRowSelect = True
+        Me.ListView1.HideSelection = False
+        Me.ListView1.Location = New System.Drawing.Point(3, 3)
+        Me.ListView1.Name = "ListView1"
+        Me.ListView1.Size = New System.Drawing.Size(321, 199)
+        Me.ListView1.TabIndex = 15
+        Me.ListView1.UseCompatibleStateImageBehavior = False
+        Me.ListView1.View = System.Windows.Forms.View.Details
+        '
+        'TabPage2
+        '
+        Me.TabPage2.Controls.Add(Me.ListView4)
+        Me.TabPage2.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage2.Name = "TabPage2"
+        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage2.Size = New System.Drawing.Size(327, 205)
+        Me.TabPage2.TabIndex = 1
+        Me.TabPage2.Text = "Comments"
+        Me.TabPage2.UseVisualStyleBackColor = True
+        '
+        'ListView4
+        '
+        Me.ListView4.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.ListView4.FullRowSelect = True
+        Me.ListView4.Location = New System.Drawing.Point(3, 3)
+        Me.ListView4.MultiSelect = False
+        Me.ListView4.Name = "ListView4"
+        Me.ListView4.Size = New System.Drawing.Size(321, 199)
+        Me.ListView4.TabIndex = 0
+        Me.ListView4.UseCompatibleStateImageBehavior = False
+        Me.ListView4.View = System.Windows.Forms.View.Details
+        '
         'GroupBox4
         '
         Me.GroupBox4.Controls.Add(Me.Label2)
@@ -291,18 +346,6 @@ Partial Class Form1
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Search Results:"
         '
-        'ListView1
-        '
-        Me.ListView1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ListView1.FullRowSelect = True
-        Me.ListView1.HideSelection = False
-        Me.ListView1.Location = New System.Drawing.Point(3, 3)
-        Me.ListView1.Name = "ListView1"
-        Me.ListView1.Size = New System.Drawing.Size(321, 199)
-        Me.ListView1.TabIndex = 15
-        Me.ListView1.UseCompatibleStateImageBehavior = False
-        Me.ListView1.View = System.Windows.Forms.View.Details
-        '
         'GroupBox3
         '
         Me.GroupBox3.Controls.Add(Me.ListView3)
@@ -313,6 +356,45 @@ Partial Class Form1
         Me.GroupBox3.TabIndex = 2
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Tree"
+        '
+        'ListView3
+        '
+        Me.ListView3.AllowColumnReorder = True
+        Me.ListView3.ContextMenuStrip = Me.ContextMenuStrip1
+        Me.ListView3.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.ListView3.FullRowSelect = True
+        Me.ListView3.Location = New System.Drawing.Point(3, 16)
+        Me.ListView3.MultiSelect = False
+        Me.ListView3.Name = "ListView3"
+        Me.ListView3.Size = New System.Drawing.Size(566, 554)
+        Me.ListView3.SmallImageList = Me.ImageList1
+        Me.ListView3.TabIndex = 2
+        Me.ListView3.UseCompatibleStateImageBehavior = False
+        Me.ListView3.View = System.Windows.Forms.View.Details
+        '
+        'ContextMenuStrip1
+        '
+        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.OpenToolStripMenuItem, Me.OpenFolderToolStripMenuItem})
+        Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
+        Me.ContextMenuStrip1.Size = New System.Drawing.Size(140, 48)
+        '
+        'OpenToolStripMenuItem
+        '
+        Me.OpenToolStripMenuItem.Name = "OpenToolStripMenuItem"
+        Me.OpenToolStripMenuItem.Size = New System.Drawing.Size(139, 22)
+        Me.OpenToolStripMenuItem.Text = "Open"
+        '
+        'OpenFolderToolStripMenuItem
+        '
+        Me.OpenFolderToolStripMenuItem.Name = "OpenFolderToolStripMenuItem"
+        Me.OpenFolderToolStripMenuItem.Size = New System.Drawing.Size(139, 22)
+        Me.OpenFolderToolStripMenuItem.Text = "Open Folder"
+        '
+        'ImageList1
+        '
+        Me.ImageList1.ImageStream = CType(resources.GetObject("ImageList1.ImageStream"), System.Windows.Forms.ImageListStreamer)
+        Me.ImageList1.TransparentColor = System.Drawing.Color.Transparent
+        Me.ImageList1.Images.SetKeyName(0, "pdf.bmp")
         '
         'MenuStrip1
         '
@@ -406,95 +488,6 @@ Partial Class Form1
         Me.AboutToolStripMenuItem.Size = New System.Drawing.Size(107, 22)
         Me.AboutToolStripMenuItem.Text = "&About"
         '
-        'TabControl1
-        '
-        Me.TabControl1.Controls.Add(Me.TabPage1)
-        Me.TabControl1.Controls.Add(Me.TabPage2)
-        Me.TabControl1.Location = New System.Drawing.Point(6, 339)
-        Me.TabControl1.Name = "TabControl1"
-        Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(335, 231)
-        Me.TabControl1.TabIndex = 20
-        '
-        'TabPage1
-        '
-        Me.TabPage1.Controls.Add(Me.ListView1)
-        Me.TabPage1.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage1.Name = "TabPage1"
-        Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(327, 205)
-        Me.TabPage1.TabIndex = 0
-        Me.TabPage1.Text = "Where Used"
-        Me.TabPage1.UseVisualStyleBackColor = True
-        '
-        'TabPage2
-        '
-        Me.TabPage2.Controls.Add(Me.ListView4)
-        Me.TabPage2.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage2.Name = "TabPage2"
-        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(327, 205)
-        Me.TabPage2.TabIndex = 1
-        Me.TabPage2.Text = "Comments"
-        Me.TabPage2.UseVisualStyleBackColor = True
-        '
-        'ListView3
-        '
-        Me.ListView3.AllowColumnReorder = True
-        Me.ListView3.ContextMenuStrip = Me.ContextMenuStrip1
-        Me.ListView3.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ListView3.FullRowSelect = True
-        Me.ListView3.Location = New System.Drawing.Point(3, 16)
-        Me.ListView3.MultiSelect = False
-        Me.ListView3.Name = "ListView3"
-        Me.ListView3.Size = New System.Drawing.Size(566, 554)
-        Me.ListView3.SmallImageList = Me.ImageList1
-        Me.ListView3.TabIndex = 2
-        Me.ListView3.UseCompatibleStateImageBehavior = False
-        Me.ListView3.View = System.Windows.Forms.View.Details
-        '
-        'ImageList1
-        '
-        Me.ImageList1.ImageStream = CType(resources.GetObject("ImageList1.ImageStream"), System.Windows.Forms.ImageListStreamer)
-        Me.ImageList1.TransparentColor = System.Drawing.Color.Transparent
-        Me.ImageList1.Images.SetKeyName(0, "pdf.bmp")
-        '
-        'ListView4
-        '
-        Me.ListView4.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ListView4.FullRowSelect = True
-        Me.ListView4.Location = New System.Drawing.Point(3, 3)
-        Me.ListView4.MultiSelect = False
-        Me.ListView4.Name = "ListView4"
-        Me.ListView4.Size = New System.Drawing.Size(321, 199)
-        Me.ListView4.TabIndex = 0
-        Me.ListView4.UseCompatibleStateImageBehavior = False
-        Me.ListView4.View = System.Windows.Forms.View.Details
-        '
-        'ContextMenuStrip1
-        '
-        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.OpenToolStripMenuItem, Me.OpenFolderToolStripMenuItem, Me.ToolStripMenuItem2})
-        Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
-        Me.ContextMenuStrip1.Size = New System.Drawing.Size(166, 70)
-        '
-        'ToolStripMenuItem2
-        '
-        Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
-        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(169, 22)
-        Me.ToolStripMenuItem2.Text = "Show Comments"
-        '
-        'OpenToolStripMenuItem
-        '
-        Me.OpenToolStripMenuItem.Name = "OpenToolStripMenuItem"
-        Me.OpenToolStripMenuItem.Size = New System.Drawing.Size(165, 22)
-        Me.OpenToolStripMenuItem.Text = "Open"
-        '
-        'OpenFolderToolStripMenuItem
-        '
-        Me.OpenFolderToolStripMenuItem.Name = "OpenFolderToolStripMenuItem"
-        Me.OpenFolderToolStripMenuItem.Size = New System.Drawing.Size(165, 22)
-        Me.OpenFolderToolStripMenuItem.Text = "Open Folder"
-        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -522,16 +515,16 @@ Partial Class Form1
         Me.SplitContainer1.Panel2.ResumeLayout(False)
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.SplitContainer1.ResumeLayout(False)
+        Me.TabControl1.ResumeLayout(False)
+        Me.TabPage1.ResumeLayout(False)
+        Me.TabPage2.ResumeLayout(False)
         Me.GroupBox4.ResumeLayout(False)
         Me.GroupBox4.PerformLayout()
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox3.ResumeLayout(False)
+        Me.ContextMenuStrip1.ResumeLayout(False)
         Me.MenuStrip1.ResumeLayout(False)
         Me.MenuStrip1.PerformLayout()
-        Me.TabControl1.ResumeLayout(False)
-        Me.TabPage1.ResumeLayout(False)
-        Me.TabPage2.ResumeLayout(False)
-        Me.ContextMenuStrip1.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -580,7 +573,6 @@ Partial Class Form1
     Friend WithEvents ImageList1 As System.Windows.Forms.ImageList
     Friend WithEvents ListView4 As System.Windows.Forms.ListView
     Friend WithEvents ContextMenuStrip1 As System.Windows.Forms.ContextMenuStrip
-    Friend WithEvents ToolStripMenuItem2 As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents OpenToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents OpenFolderToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 
