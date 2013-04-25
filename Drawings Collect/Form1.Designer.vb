@@ -43,8 +43,12 @@ Partial Class Form1
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
         Me.ListView2 = New System.Windows.Forms.ListView()
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
+        Me.GroupBox4 = New System.Windows.Forms.GroupBox()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.DateTimePicker1 = New System.Windows.Forms.DateTimePicker()
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
         Me.ListView1 = New System.Windows.Forms.ListView()
-        Me.MultiColumnTree1 = New Ai.Control.MultiColumnTree()
+        Me.GroupBox3 = New System.Windows.Forms.GroupBox()
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.FileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ExitToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -54,25 +58,32 @@ Partial Class Form1
         Me.MenuItem3 = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuItem4 = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuItem5 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.MenuItem6 = New System.Windows.Forms.ToolStripMenuItem()
         Me.HelpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.AboutToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
-        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
-        Me.GroupBox3 = New System.Windows.Forms.GroupBox()
-        Me.GroupBox4 = New System.Windows.Forms.GroupBox()
-        Me.DateTimePicker1 = New System.Windows.Forms.DateTimePicker()
-        Me.Label2 = New System.Windows.Forms.Label()
-        Me.MenuItem6 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.TabControl1 = New System.Windows.Forms.TabControl()
+        Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.ListView3 = New System.Windows.Forms.ListView()
+        Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
+        Me.ListView4 = New System.Windows.Forms.ListView()
+        Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.ToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.OpenToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.OpenFolderToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.StatusStrip1.SuspendLayout()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
         Me.SplitContainer1.SuspendLayout()
-        Me.MenuStrip1.SuspendLayout()
-        Me.GroupBox1.SuspendLayout()
+        Me.GroupBox4.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
-        Me.GroupBox4.SuspendLayout()
+        Me.MenuStrip1.SuspendLayout()
+        Me.TabControl1.SuspendLayout()
+        Me.TabPage1.SuspendLayout()
+        Me.TabPage2.SuspendLayout()
+        Me.ContextMenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
         'Login
@@ -209,7 +220,6 @@ Partial Class Form1
         '
         Me.ListView2.Dock = System.Windows.Forms.DockStyle.Fill
         Me.ListView2.FullRowSelect = True
-        Me.ListView2.GridLines = True
         Me.ListView2.HideSelection = False
         Me.ListView2.Location = New System.Drawing.Point(3, 16)
         Me.ListView2.Name = "ListView2"
@@ -225,9 +235,9 @@ Partial Class Form1
         '
         'SplitContainer1.Panel1
         '
+        Me.SplitContainer1.Panel1.Controls.Add(Me.TabControl1)
         Me.SplitContainer1.Panel1.Controls.Add(Me.GroupBox4)
         Me.SplitContainer1.Panel1.Controls.Add(Me.GroupBox2)
-        Me.SplitContainer1.Panel1.Controls.Add(Me.GroupBox1)
         Me.SplitContainer1.Panel1MinSize = 255
         '
         'SplitContainer1.Panel2
@@ -237,33 +247,72 @@ Partial Class Form1
         Me.SplitContainer1.SplitterDistance = 350
         Me.SplitContainer1.TabIndex = 0
         '
+        'GroupBox4
+        '
+        Me.GroupBox4.Controls.Add(Me.Label2)
+        Me.GroupBox4.Controls.Add(Me.DateTimePicker1)
+        Me.GroupBox4.Controls.Add(Me.Label1)
+        Me.GroupBox4.Controls.Add(Me.PartNo)
+        Me.GroupBox4.Controls.Add(Me.Search)
+        Me.GroupBox4.Controls.Add(Me.Label3)
+        Me.GroupBox4.Controls.Add(Me.ComboLanguage)
+        Me.GroupBox4.Location = New System.Drawing.Point(6, 3)
+        Me.GroupBox4.Name = "GroupBox4"
+        Me.GroupBox4.Size = New System.Drawing.Size(338, 65)
+        Me.GroupBox4.TabIndex = 19
+        Me.GroupBox4.TabStop = False
+        Me.GroupBox4.Text = "Search"
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(239, 16)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(80, 13)
+        Me.Label2.TabIndex = 16
+        Me.Label2.Text = "Changed Since"
+        '
+        'DateTimePicker1
+        '
+        Me.DateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.DateTimePicker1.Location = New System.Drawing.Point(237, 30)
+        Me.DateTimePicker1.Name = "DateTimePicker1"
+        Me.DateTimePicker1.Size = New System.Drawing.Size(86, 20)
+        Me.DateTimePicker1.TabIndex = 15
+        Me.DateTimePicker1.Value = New Date(2013, 4, 24, 13, 26, 16, 0)
+        '
+        'GroupBox2
+        '
+        Me.GroupBox2.Controls.Add(Me.ListView2)
+        Me.GroupBox2.Location = New System.Drawing.Point(3, 74)
+        Me.GroupBox2.Name = "GroupBox2"
+        Me.GroupBox2.Size = New System.Drawing.Size(341, 262)
+        Me.GroupBox2.TabIndex = 18
+        Me.GroupBox2.TabStop = False
+        Me.GroupBox2.Text = "Search Results:"
+        '
         'ListView1
         '
         Me.ListView1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.ListView1.FullRowSelect = True
-        Me.ListView1.GridLines = True
         Me.ListView1.HideSelection = False
-        Me.ListView1.Location = New System.Drawing.Point(3, 16)
+        Me.ListView1.Location = New System.Drawing.Point(3, 3)
         Me.ListView1.Name = "ListView1"
-        Me.ListView1.Size = New System.Drawing.Size(338, 209)
+        Me.ListView1.Size = New System.Drawing.Size(321, 199)
         Me.ListView1.TabIndex = 15
         Me.ListView1.UseCompatibleStateImageBehavior = False
         Me.ListView1.View = System.Windows.Forms.View.Details
         '
-        'MultiColumnTree1
+        'GroupBox3
         '
-        Me.MultiColumnTree1.Culture = New System.Globalization.CultureInfo("en-US")
-        Me.MultiColumnTree1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.MultiColumnTree1.FullRowSelect = True
-        Me.MultiColumnTree1.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.MultiColumnTree1.Indent = -1
-        Me.MultiColumnTree1.Location = New System.Drawing.Point(3, 16)
-        Me.MultiColumnTree1.Name = "MultiColumnTree1"
-        Me.MultiColumnTree1.Padding = New System.Windows.Forms.Padding(1)
-        Me.MultiColumnTree1.SelectedNode = Nothing
-        Me.MultiColumnTree1.ShowColumnOptions = False
-        Me.MultiColumnTree1.Size = New System.Drawing.Size(566, 554)
-        Me.MultiColumnTree1.TabIndex = 1
+        Me.GroupBox3.Controls.Add(Me.ListView3)
+        Me.GroupBox3.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.GroupBox3.Location = New System.Drawing.Point(0, 0)
+        Me.GroupBox3.Name = "GroupBox3"
+        Me.GroupBox3.Size = New System.Drawing.Size(572, 573)
+        Me.GroupBox3.TabIndex = 2
+        Me.GroupBox3.TabStop = False
+        Me.GroupBox3.Text = "Tree"
         '
         'MenuStrip1
         '
@@ -335,6 +384,15 @@ Partial Class Form1
         Me.MenuItem5.Size = New System.Drawing.Size(402, 22)
         Me.MenuItem5.Text = "Show only latest revision versioned (stamped) in search results"
         '
+        'MenuItem6
+        '
+        Me.MenuItem6.Checked = True
+        Me.MenuItem6.CheckOnClick = True
+        Me.MenuItem6.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.MenuItem6.Name = "MenuItem6"
+        Me.MenuItem6.Size = New System.Drawing.Size(402, 22)
+        Me.MenuItem6.Text = "Mark changed documents from selected date as bold"
+        '
         'HelpToolStripMenuItem
         '
         Me.HelpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AboutToolStripMenuItem})
@@ -348,79 +406,94 @@ Partial Class Form1
         Me.AboutToolStripMenuItem.Size = New System.Drawing.Size(107, 22)
         Me.AboutToolStripMenuItem.Text = "&About"
         '
-        'GroupBox1
+        'TabControl1
         '
-        Me.GroupBox1.Controls.Add(Me.ListView1)
-        Me.GroupBox1.Location = New System.Drawing.Point(3, 342)
-        Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(344, 228)
-        Me.GroupBox1.TabIndex = 17
-        Me.GroupBox1.TabStop = False
-        Me.GroupBox1.Text = "Where Used:"
+        Me.TabControl1.Controls.Add(Me.TabPage1)
+        Me.TabControl1.Controls.Add(Me.TabPage2)
+        Me.TabControl1.Location = New System.Drawing.Point(6, 339)
+        Me.TabControl1.Name = "TabControl1"
+        Me.TabControl1.SelectedIndex = 0
+        Me.TabControl1.Size = New System.Drawing.Size(335, 231)
+        Me.TabControl1.TabIndex = 20
         '
-        'GroupBox2
+        'TabPage1
         '
-        Me.GroupBox2.Controls.Add(Me.ListView2)
-        Me.GroupBox2.Location = New System.Drawing.Point(3, 74)
-        Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(341, 262)
-        Me.GroupBox2.TabIndex = 18
-        Me.GroupBox2.TabStop = False
-        Me.GroupBox2.Text = "Search Results:"
+        Me.TabPage1.Controls.Add(Me.ListView1)
+        Me.TabPage1.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage1.Name = "TabPage1"
+        Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage1.Size = New System.Drawing.Size(327, 205)
+        Me.TabPage1.TabIndex = 0
+        Me.TabPage1.Text = "Where Used"
+        Me.TabPage1.UseVisualStyleBackColor = True
         '
-        'GroupBox3
+        'TabPage2
         '
-        Me.GroupBox3.Controls.Add(Me.MultiColumnTree1)
-        Me.GroupBox3.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.GroupBox3.Location = New System.Drawing.Point(0, 0)
-        Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(572, 573)
-        Me.GroupBox3.TabIndex = 2
-        Me.GroupBox3.TabStop = False
-        Me.GroupBox3.Text = "Tree"
+        Me.TabPage2.Controls.Add(Me.ListView4)
+        Me.TabPage2.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage2.Name = "TabPage2"
+        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage2.Size = New System.Drawing.Size(327, 205)
+        Me.TabPage2.TabIndex = 1
+        Me.TabPage2.Text = "Comments"
+        Me.TabPage2.UseVisualStyleBackColor = True
         '
-        'GroupBox4
+        'ListView3
         '
-        Me.GroupBox4.Controls.Add(Me.Label2)
-        Me.GroupBox4.Controls.Add(Me.DateTimePicker1)
-        Me.GroupBox4.Controls.Add(Me.Label1)
-        Me.GroupBox4.Controls.Add(Me.PartNo)
-        Me.GroupBox4.Controls.Add(Me.Search)
-        Me.GroupBox4.Controls.Add(Me.Label3)
-        Me.GroupBox4.Controls.Add(Me.ComboLanguage)
-        Me.GroupBox4.Location = New System.Drawing.Point(6, 3)
-        Me.GroupBox4.Name = "GroupBox4"
-        Me.GroupBox4.Size = New System.Drawing.Size(338, 65)
-        Me.GroupBox4.TabIndex = 19
-        Me.GroupBox4.TabStop = False
-        Me.GroupBox4.Text = "Search"
+        Me.ListView3.AllowColumnReorder = True
+        Me.ListView3.ContextMenuStrip = Me.ContextMenuStrip1
+        Me.ListView3.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.ListView3.FullRowSelect = True
+        Me.ListView3.Location = New System.Drawing.Point(3, 16)
+        Me.ListView3.MultiSelect = False
+        Me.ListView3.Name = "ListView3"
+        Me.ListView3.Size = New System.Drawing.Size(566, 554)
+        Me.ListView3.SmallImageList = Me.ImageList1
+        Me.ListView3.TabIndex = 2
+        Me.ListView3.UseCompatibleStateImageBehavior = False
+        Me.ListView3.View = System.Windows.Forms.View.Details
         '
-        'DateTimePicker1
+        'ImageList1
         '
-        Me.DateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.DateTimePicker1.Location = New System.Drawing.Point(237, 30)
-        Me.DateTimePicker1.Name = "DateTimePicker1"
-        Me.DateTimePicker1.Size = New System.Drawing.Size(86, 20)
-        Me.DateTimePicker1.TabIndex = 15
-        Me.DateTimePicker1.Value = New Date(2013, 4, 24, 13, 26, 16, 0)
+        Me.ImageList1.ImageStream = CType(resources.GetObject("ImageList1.ImageStream"), System.Windows.Forms.ImageListStreamer)
+        Me.ImageList1.TransparentColor = System.Drawing.Color.Transparent
+        Me.ImageList1.Images.SetKeyName(0, "pdf.bmp")
         '
-        'Label2
+        'ListView4
         '
-        Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(239, 16)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(80, 13)
-        Me.Label2.TabIndex = 16
-        Me.Label2.Text = "Changed Since"
+        Me.ListView4.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.ListView4.FullRowSelect = True
+        Me.ListView4.Location = New System.Drawing.Point(3, 3)
+        Me.ListView4.MultiSelect = False
+        Me.ListView4.Name = "ListView4"
+        Me.ListView4.Size = New System.Drawing.Size(321, 199)
+        Me.ListView4.TabIndex = 0
+        Me.ListView4.UseCompatibleStateImageBehavior = False
+        Me.ListView4.View = System.Windows.Forms.View.Details
         '
-        'MenuItem6
+        'ContextMenuStrip1
         '
-        Me.MenuItem6.Checked = True
-        Me.MenuItem6.CheckOnClick = True
-        Me.MenuItem6.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.MenuItem6.Name = "MenuItem6"
-        Me.MenuItem6.Size = New System.Drawing.Size(402, 22)
-        Me.MenuItem6.Text = "Mark changed documents from selected date as bold"
+        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.OpenToolStripMenuItem, Me.OpenFolderToolStripMenuItem, Me.ToolStripMenuItem2})
+        Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
+        Me.ContextMenuStrip1.Size = New System.Drawing.Size(166, 70)
+        '
+        'ToolStripMenuItem2
+        '
+        Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
+        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(169, 22)
+        Me.ToolStripMenuItem2.Text = "Show Comments"
+        '
+        'OpenToolStripMenuItem
+        '
+        Me.OpenToolStripMenuItem.Name = "OpenToolStripMenuItem"
+        Me.OpenToolStripMenuItem.Size = New System.Drawing.Size(165, 22)
+        Me.OpenToolStripMenuItem.Text = "Open"
+        '
+        'OpenFolderToolStripMenuItem
+        '
+        Me.OpenFolderToolStripMenuItem.Name = "OpenFolderToolStripMenuItem"
+        Me.OpenFolderToolStripMenuItem.Size = New System.Drawing.Size(165, 22)
+        Me.OpenFolderToolStripMenuItem.Text = "Open Folder"
         '
         'Form1
         '
@@ -449,13 +522,16 @@ Partial Class Form1
         Me.SplitContainer1.Panel2.ResumeLayout(False)
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.SplitContainer1.ResumeLayout(False)
-        Me.MenuStrip1.ResumeLayout(False)
-        Me.MenuStrip1.PerformLayout()
-        Me.GroupBox1.ResumeLayout(False)
-        Me.GroupBox2.ResumeLayout(False)
-        Me.GroupBox3.ResumeLayout(False)
         Me.GroupBox4.ResumeLayout(False)
         Me.GroupBox4.PerformLayout()
+        Me.GroupBox2.ResumeLayout(False)
+        Me.GroupBox3.ResumeLayout(False)
+        Me.MenuStrip1.ResumeLayout(False)
+        Me.MenuStrip1.PerformLayout()
+        Me.TabControl1.ResumeLayout(False)
+        Me.TabPage1.ResumeLayout(False)
+        Me.TabPage2.ResumeLayout(False)
+        Me.ContextMenuStrip1.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -479,7 +555,6 @@ Partial Class Form1
     Friend WithEvents SaveFileDialog1 As System.Windows.Forms.SaveFileDialog
     Friend WithEvents ListView2 As System.Windows.Forms.ListView
     Friend WithEvents SplitContainer1 As System.Windows.Forms.SplitContainer
-    Friend WithEvents MultiColumnTree1 As Ai.Control.MultiColumnTree
     Friend WithEvents MenuStrip1 As System.Windows.Forms.MenuStrip
     Friend WithEvents FileToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents OptionsToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
@@ -492,12 +567,21 @@ Partial Class Form1
     Friend WithEvents MenuItem5 As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents HelpToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents AboutToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
     Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
     Friend WithEvents GroupBox3 As System.Windows.Forms.GroupBox
     Friend WithEvents GroupBox4 As System.Windows.Forms.GroupBox
     Friend WithEvents DateTimePicker1 As System.Windows.Forms.DateTimePicker
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents MenuItem6 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents TabControl1 As System.Windows.Forms.TabControl
+    Friend WithEvents TabPage1 As System.Windows.Forms.TabPage
+    Friend WithEvents TabPage2 As System.Windows.Forms.TabPage
+    Friend WithEvents ListView3 As System.Windows.Forms.ListView
+    Friend WithEvents ImageList1 As System.Windows.Forms.ImageList
+    Friend WithEvents ListView4 As System.Windows.Forms.ListView
+    Friend WithEvents ContextMenuStrip1 As System.Windows.Forms.ContextMenuStrip
+    Friend WithEvents ToolStripMenuItem2 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents OpenToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents OpenFolderToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 
 End Class
