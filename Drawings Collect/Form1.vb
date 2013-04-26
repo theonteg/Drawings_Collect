@@ -7,17 +7,38 @@ Public Class Form1
     Dim fileCollectionOnlyParent As New List(Of String)
     Dim fileCollectionInDepth As New List(Of String)
 
-	Private Sub Login_Click(sender As Object, e As EventArgs) Handles Login.Click
-		vault.LoginAuto(ComboVaults.Text, Me.Handle.ToInt32())
-		If vault.IsLoggedIn = True Then
-			ComboVaults.Visible = False
-			Login.Visible = False
-			ToolStripStatusLabel2.Text = "Logged in to " & vault.Name
-		Else
-			ToolStripStatusLabel2.Text = "Not Logged in"
-			MsgBox("Δεν έχετε κάνει login", , "Login to Vault")
-		End If
-	End Sub
+    Private Sub Form1_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
+        If RememverColumnWidthAndOrderToolStripMenuItem.Checked = True Then
+            'ListView1
+            My.Settings.List1Order = ""
+            My.Settings.List1Width = ""
+            For i = 0 To ListView1.Columns.Count - 1
+                My.Settings.List1Order = My.Settings.List1Order & ListView1.Columns.Item(i).DisplayIndex & ","
+                My.Settings.List1Width = My.Settings.List1Width & ListView1.Columns.Item(i).Width & ","
+            Next
+            'ListView2
+            My.Settings.List2Order = ""
+            My.Settings.List2Width = ""
+            For i = 0 To ListView2.Columns.Count - 1
+                My.Settings.List2Order = My.Settings.List2Order & ListView2.Columns.Item(i).DisplayIndex & ","
+                My.Settings.List2Width = My.Settings.List2Width & ListView2.Columns.Item(i).Width & ","
+            Next
+            'ListView1
+            My.Settings.List3Order = ""
+            My.Settings.List3Width = ""
+            For i = 0 To ListView3.Columns.Count - 1
+                My.Settings.List3Order = My.Settings.List3Order & ListView3.Columns.Item(i).DisplayIndex & ","
+                My.Settings.List3Width = My.Settings.List3Width & ListView3.Columns.Item(i).Width & ","
+            Next
+            'ListView1
+            My.Settings.List4Order = ""
+            My.Settings.List4Width = ""
+            For i = 0 To ListView4.Columns.Count - 1
+                My.Settings.List4Order = My.Settings.List4Order & ListView4.Columns.Item(i).DisplayIndex & ","
+                My.Settings.List4Width = My.Settings.List4Width & ListView4.Columns.Item(i).Width & ","
+            Next
+        End If
+    End Sub
 
     Private Sub Form1_KeyUp(sender As Object, e As KeyEventArgs) Handles Me.KeyUp
         'Splash Screen με ιστορικό αλλαγών.
@@ -26,138 +47,161 @@ Public Class Form1
         End If
     End Sub
 
-	Private Sub Form1_Load(sender As Object, e As EventArgs) Handles Me.Load
-		Dim views() As EdmViewInfo = {}
-		'ComboLanguage.Items.Add("")
-		ComboLanguage.Items.Add("GR")
-		ComboLanguage.Items.Add("EN")
-		ComboLanguage.SelectedIndex = 0
-		TextboxCollectPath.Text = System.Environment.GetFolderPath(Environment.SpecialFolder.Desktop) & "\MDC"
-		vault.GetVaultViews(views, False)
-		ComboVaults.Items.Clear()
-		For Each View As EdmViewInfo In views
-			ComboVaults.Items.Add(View.mbsVaultName)
-		Next
-		If ComboVaults.Items.Count > 0 Then
-			ComboVaults.Text = ComboVaults.Items(0)
-		End If
+    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles Me.Load
+        Dim views() As EdmViewInfo = {}
+        'ComboLanguage.Items.Add("")
+        ComboLanguage.Items.Add("GR")
+        ComboLanguage.Items.Add("EN")
+        ComboLanguage.SelectedIndex = 0
+        TextboxCollectPath.Text = System.Environment.GetFolderPath(Environment.SpecialFolder.Desktop) & "\MDC"
+        vault.GetVaultViews(views, False)
+        For Each View As EdmViewInfo In views
+            LoginToVaultToolStripMenuItem.DropDownItems.Add(View.mbsVaultName)
+        Next
         DateTimePicker1.Text = Now.Date()
         MenuItem1.Checked = My.Settings.Menu1
-		MenuItem2.Checked = My.Settings.Menu2
+        MenuItem2.Checked = My.Settings.Menu2
         MenuItem5.Checked = My.Settings.Menu5
 
-		Me.Text = "Manufacturing Data Collector - V" & My.Application.Info.Version.Major & "." & My.Application.Info.Version.Minor '& "." & My.Application.Info.Version.Revision
-		ListView2.Columns.Add("PartNo", 70)
-        ListView2.Columns.Add("Revision", 35)
-        ListView2.Columns.Add("Version", 35)
-		ListView2.Columns.Add("Description", 250)
-		ListView2.Columns.Add("Description English", 250)
-		ListView2.Columns.Add("Path", 0)
 
-		ListView1.Columns.Add("File", 120)
-		ListView1.Columns.Add("PartNo", 70)
-        ListView1.Columns.Add("Revision", 35)
-        ListView1.Columns.Add("Version", 35)
-		ListView1.Columns.Add("Description", 250)
-		ListView1.Columns.Add("Description English", 250)
-		ListView1.Columns.Add("Path", 0)
+        RememverColumnWidthAndOrderToolStripMenuItem.Checked = My.Settings.KeepListChanges
+        Dim columnorder As String()
+        Dim columnwidth As String()
+        'ListView1
+        columnorder = My.Settings.List1Order.Split(",")
+        columnwidth = My.Settings.List1Width.Split(",")
+        If columnorder.Length > 1 Then
+            For i = 0 To ListView1.Columns.Count - 1
+                ListView1.Columns.Item(i).DisplayIndex = columnorder(i)
+            Next
+        End If
+        If columnwidth.Length > 1 Then
+            For i = 0 To ListView1.Columns.Count - 1
+                ListView1.Columns.Item(i).Width = columnwidth(i)
+            Next
+        End If
+        'ListView2
+        columnorder = My.Settings.List2Order.Split(",")
+        columnwidth = My.Settings.List2Width.Split(",")
+        If columnorder.Length > 1 Then
+            For i = 0 To ListView2.Columns.Count - 1
+                ListView2.Columns.Item(i).DisplayIndex = columnorder(i)
+            Next
+        End If
+        If columnwidth.Length > 1 Then
+            For i = 0 To ListView2.Columns.Count - 1
+                ListView2.Columns.Item(i).Width = columnwidth(i)
+            Next
+        End If
+        'ListView3
+        columnorder = My.Settings.List3Order.Split(",")
+        columnwidth = My.Settings.List3Width.Split(",")
+        If columnorder.Length > 1 Then
+            For i = 0 To ListView3.Columns.Count - 1
+                ListView3.Columns.Item(i).DisplayIndex = columnorder(i)
+            Next
+        End If
+        If columnwidth.Length > 1 Then
+            For i = 0 To ListView3.Columns.Count - 1
+                ListView3.Columns.Item(i).Width = columnwidth(i)
+            Next
+        End If
+        'ListView4
+        columnorder = My.Settings.List4Order.Split(",")
+        columnwidth = My.Settings.List4Width.Split(",")
+        If columnorder.Length > 1 Then
+            For i = 0 To ListView4.Columns.Count - 1
+                ListView4.Columns.Item(i).DisplayIndex = columnorder(i)
+            Next
+        End If
+        If columnwidth.Length > 1 Then
+            For i = 0 To ListView4.Columns.Count - 1
+                ListView4.Columns.Item(i).Width = columnwidth(i)
+            Next
+        End If
 
-        ListView3.Columns.Add("File", 300)
-        ListView3.Columns.Add("PartNo", 70)
-        ListView3.Columns.Add("Revision", 35)
-        ListView3.Columns.Add("Version", 40)
-        ListView3.Columns.Add("Description", 200)
-        ListView3.Columns.Add("Description English", 200)
-        ListView3.Columns.Add("State", 100)
-        ListView3.Columns.Add("Type", 100)
-        ListView3.Columns.Add("Sub-Group", 100)
-        ListView3.Columns.Add("Path", 250)
 
-        ListView4.Columns.Add("Version", 50)
-        ListView4.Columns.Add("Comment", 400)
 
-		'Αυτόματο login με την είσοδο στο πρόγραμμα
-		vault.LoginAuto(ComboVaults.Text, Me.Handle.ToInt32())
-		If vault.IsLoggedIn = True Then
-			ComboVaults.Visible = False
-			Login.Visible = False
-			ToolStripStatusLabel2.Text = "Logged in to " & vault.Name
-		Else
-			ToolStripStatusLabel2.Text = "Not Logged in"
-			MsgBox("Δεν έχετε κάνει login", , "Login to Vault")
-		End If
 
-		Me.PartNo.Select()
-		Me.ActiveControl = PartNo
-	End Sub
+        Me.Text = "Manufacturing Data Collector - V" & My.Application.Info.Version.Major & "." & My.Application.Info.Version.Minor '& "." & My.Application.Info.Version.Revision
 
-	Private Sub Form1_Activated(sender As Object, e As EventArgs) Handles Me.Activated
-		Me.Show()
-		Dim returnValue, list As String()
-		Dim check As Boolean
-		check = False
-		'returnValue = Environment.GetCommandLineArgs() 'Ανάγνωση των command line arguments
-		returnValue = AppDomain.CurrentDomain.SetupInformation.ActivationArguments.ActivationData
-		If Not returnValue Is Nothing Then
-			'if returnValue.lenght > 0 then
-			list = returnValue(0).Split(",")
-			PartNo.Text = list(0)
-			populatePartno()
-			PartNo.Enabled = False
-			For Each item As ListViewItem In ListView2.Items
-				If item.Text = list(0) And item.SubItems.Item(1).Text = list(1) Then
-					item.Selected = True
-					check = True
-					Exit For
-				End If
-			Next
-			If check = True Then
-				DisplayTree()
-				ListView2.Enabled = False
-			End If
-		End If
+        'Αυτόματο login με την είσοδο στο πρόγραμμα
+        If LoginToVaultToolStripMenuItem.DropDownItems.Count > 0 Then
+            vault.LoginAuto(LoginToVaultToolStripMenuItem.DropDownItems.Item(0).Text, Me.Handle.ToInt32())
+            If vault.IsLoggedIn = True Then
+                LoginToVaultToolStripMenuItem.Enabled = False
+                ToolStripStatusLabel2.Text = "Logged in to " & vault.Name
+            Else
+                ToolStripStatusLabel2.Text = "Not Logged in"
+                MsgBox("Δεν έχετε κάνει login", , "Login to Vault")
+            End If
+        End If
+        Me.PartNo.Select()
+        Me.ActiveControl = PartNo
+    End Sub
 
-	End Sub
+    Private Sub Form1_Activated(sender As Object, e As EventArgs) Handles Me.Activated
+        Me.Show()
+        Dim returnValue, list As String()
+        Dim check As Boolean
+        check = False
+        'Ανάγνωση εξωτερικών παραμέτρων
+        'returnValue = Environment.GetCommandLineArgs() 'Ανάγνωση των command line arguments
+        returnValue = AppDomain.CurrentDomain.SetupInformation.ActivationArguments.ActivationData
+        If Not returnValue Is Nothing Then
+            'if returnValue.lenght > 0 then
+            list = returnValue(0).Split(",")
+            PartNo.Text = list(0)
+            populatePartno()
+            PartNo.Enabled = False
+            For Each item As ListViewItem In ListView2.Items
+                If item.Text = list(0) And item.SubItems.Item(1).Text = list(1) Then
+                    item.Selected = True
+                    check = True
+                    Exit For
+                End If
+            Next
+            If check = True Then
+                DisplayTree()
+                ListView2.Enabled = False
+            End If
+        End If
+    End Sub
 
-	Private Sub ToolStripStatusLabel2_Click(sender As Object, e As EventArgs) Handles ToolStripStatusLabel2.Click
-		ComboVaults.Visible = True
-		Login.Visible = True
-	End Sub
-
-	Private Sub Search_Click(sender As Object, e As EventArgs) Handles Search.Click
-		'On Error GoTo ErrHand
-		If PartNo.Text = "" Then
-			Exit Sub
-		End If
-		Me.Cursor = Cursors.AppStarting
-		populatePartno()
-		Me.Cursor = Cursors.Arrow
-		Exit Sub
+    Private Sub Search_Click(sender As Object, e As EventArgs) Handles Search.Click
+        'On Error GoTo ErrHand
+        If PartNo.Text = "" Then
+            Exit Sub
+        End If
+        Me.Cursor = Cursors.AppStarting
+        populatePartno()
+        Me.Cursor = Cursors.Arrow
+        Exit Sub
 ErrHand:
-		Dim ename As String
-		Dim edesc As String
-		Me.Cursor = Cursors.Arrow
-		vault.GetErrorString(Err.Number, ename, edesc)
-		MsgBox(ename + vbLf + edesc)
+        Dim ename As String
+        Dim edesc As String
+        Me.Cursor = Cursors.Arrow
+        vault.GetErrorString(Err.Number, ename, edesc)
+        MsgBox(ename + vbLf + edesc)
 
 
-	End Sub
+    End Sub
 
-	Private Sub populatePartno()
-		Dim search As IEdmSearch5
-		Dim file As IEdmFile5
-		Dim item As New ListViewItem()
+    Private Sub populatePartno()
+        Dim search As IEdmSearch5
+        Dim file As IEdmFile5
+        Dim item As New ListViewItem()
         Dim temp(5) As String
         Dim check As Boolean
-		Dim verEnum As IEdmEnumeratorVersion5
-		Dim pos As IEdmPos5
-		Dim ver As IEdmRevision5
+        Dim verEnum As IEdmEnumeratorVersion5
+        Dim pos As IEdmPos5
+        Dim ver As IEdmRevision5
         Dim folder As IEdmFolder5
         folder = Nothing
         ListView2.Items.Clear()
-		ListView1.Items.Clear()
+        ListView1.Items.Clear()
         search = vault.CreateSearch
-		search.AddVariable("PartNo", "%" & PartNo.Text)
+        search.AddVariable("PartNo", "%" & PartNo.Text)
 
         If MenuItem3.Checked = True Then
             search.State = "In Sync With ERP"
@@ -624,30 +668,13 @@ ErrHand:
 
     End Sub
 
-    Private Sub Form1_Resize(sender As Object, e As EventArgs) Handles Me.Resize
-        'Για αυτόματο resize του listview ταυτόχρονα με το παράθυρο
-        SplitContainer1.Width = Me.Width - 38
-        SplitContainer1.Height = Me.Height - 122
-    End Sub
-
-    Private Sub SplitContainer1_Resize(sender As Object, e As EventArgs) Handles SplitContainer1.Resize
-        TabControl1.Width = SplitContainer1.Panel1.Width - 8
-        GroupBox2.Width = SplitContainer1.Panel1.Width - 8
-        TabControl1.Height = SplitContainer1.Height - 340
-    End Sub
-
-    Private Sub SplitContainer1_SplitterMoved(sender As Object, e As SplitterEventArgs) Handles SplitContainer1.SplitterMoved
-        TabControl1.Width = SplitContainer1.Panel1.Width - 8
-        GroupBox2.Width = SplitContainer1.Panel1.Width - 8
-    End Sub
-
     Private Sub ComboLanguage_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboLanguage.SelectedIndexChanged
         If ListView2.SelectedItems.Count > 0 Then
             DisplayTree()
         End If
     End Sub
 
-    Private Sub DateTimePicker1_ValueChanged(sender As Object, e As EventArgs) Handles DateTimePicker1.ValueChanged
+    Private Sub Refresh_Click(sender As Object, e As EventArgs) Handles Refresh.Click
         If ListView2.SelectedItems.Count > 0 Then
             DisplayTree()
         End If
@@ -691,7 +718,7 @@ ErrHand:
     Private Sub showaboutbox()
         AboutBox1.Show()
         AboutBox1.TextBoxDescription.Text =
-                "V0.9.1 Fixed comments bug" & vbCrLf & _
+                "V0.10.0 Fixed comments bug. Design updates" & vbCrLf & _
                 "V0.9.0 Design updates, abandoned treelistview. Function to check last edited date. Comments from history. Added version to getVariable." & vbCrLf & _
                 "V0.8.9 Collect files function coded from scratch." & vbCrLf & _
                 "V0.8.8 Added menu item to show only manufacturing data documents, added help menu" & vbCrLf & _
@@ -718,4 +745,29 @@ ErrHand:
     End Sub
 
 
+    Private Sub LoginToVaultToolStripMenuItem_DropDownItemClicked(sender As Object, e As ToolStripItemClickedEventArgs) Handles LoginToVaultToolStripMenuItem.DropDownItemClicked
+        vault.LoginAuto(e.ClickedItem.Text, Me.Handle.ToInt32())
+        If vault.IsLoggedIn = True Then
+            LoginToVaultToolStripMenuItem.Enabled = False
+            ToolStripStatusLabel2.Text = "Logged in to " & vault.Name
+        Else
+            ToolStripStatusLabel2.Text = "Not Logged in"
+            MsgBox("Δεν έχετε κάνει login", , "Login to Vault")
+        End If
+    End Sub
+
+    Private Sub RememverColumnWidthAndOrderToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles RememverColumnWidthAndOrderToolStripMenuItem.Click
+        My.Settings.KeepListChanges = RememverColumnWidthAndOrderToolStripMenuItem.Checked
+    End Sub
+
+    Private Sub ResetAllColumnWidthAndOrderToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ResetAllColumnWidthAndOrderToolStripMenuItem.Click
+        My.Settings.List1Order = ""
+        My.Settings.List1Width = ""
+        My.Settings.List2Order = ""
+        My.Settings.List2Width = ""
+        My.Settings.List3Order = ""
+        My.Settings.List3Width = ""
+        My.Settings.List4Order = ""
+        My.Settings.List4Width = ""
+    End Sub
 End Class
