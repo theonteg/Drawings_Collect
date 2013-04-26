@@ -718,6 +718,7 @@ ErrHand:
     Private Sub showaboutbox()
         AboutBox1.Show()
         AboutBox1.TextBoxDescription.Text =
+                "V0.10.1 Design updates" & vbCrLf & _
                 "V0.10.0 Fixed comments bug. Design updates" & vbCrLf & _
                 "V0.9.0 Design updates, abandoned treelistview. Function to check last edited date. Comments from history. Added version to getVariable." & vbCrLf & _
                 "V0.8.9 Collect files function coded from scratch." & vbCrLf & _

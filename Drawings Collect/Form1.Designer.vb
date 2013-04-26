@@ -89,38 +89,53 @@ Partial Class Form1
         Me.MenuItem6 = New System.Windows.Forms.ToolStripMenuItem()
         Me.HelpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.AboutToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.Panel2 = New System.Windows.Forms.Panel()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
-        Me.TableLayoutPanel3 = New System.Windows.Forms.TableLayoutPanel()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.ViewToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ResetAllColumnWidthAndOrderToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.RememverColumnWidthAndOrderToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
+        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+        Me.Panel3 = New System.Windows.Forms.Panel()
+        Me.SplitContainer2 = New System.Windows.Forms.SplitContainer()
+        Me.SplitContainer3 = New System.Windows.Forms.SplitContainer()
         Me.StatusStrip1.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.ContextMenuStrip1.SuspendLayout()
         Me.MenuStrip1.SuspendLayout()
-        Me.TableLayoutPanel1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.TableLayoutPanel2.SuspendLayout()
         Me.Panel2.SuspendLayout()
         Me.Panel1.SuspendLayout()
-        Me.TableLayoutPanel3.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
+        CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.SplitContainer1.Panel1.SuspendLayout()
+        Me.SplitContainer1.Panel2.SuspendLayout()
+        Me.SplitContainer1.SuspendLayout()
+        Me.TableLayoutPanel1.SuspendLayout()
+        Me.Panel3.SuspendLayout()
+        CType(Me.SplitContainer2, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.SplitContainer2.Panel1.SuspendLayout()
+        Me.SplitContainer2.Panel2.SuspendLayout()
+        Me.SplitContainer2.SuspendLayout()
+        CType(Me.SplitContainer3, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.SplitContainer3.Panel1.SuspendLayout()
+        Me.SplitContainer3.Panel2.SuspendLayout()
+        Me.SplitContainer3.SuspendLayout()
         Me.SuspendLayout()
         '
         'CollectButton
         '
         Me.CollectButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.CollectButton.Location = New System.Drawing.Point(810, 1)
+        Me.CollectButton.Location = New System.Drawing.Point(1079, 1)
         Me.CollectButton.Name = "CollectButton"
         Me.CollectButton.Size = New System.Drawing.Size(75, 23)
         Me.CollectButton.TabIndex = 6
@@ -130,7 +145,7 @@ Partial Class Form1
         'PartNo
         '
         Me.PartNo.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest
-        Me.PartNo.Location = New System.Drawing.Point(52, 13)
+        Me.PartNo.Location = New System.Drawing.Point(49, 2)
         Me.PartNo.MaxLength = 8
         Me.PartNo.Name = "PartNo"
         Me.PartNo.Size = New System.Drawing.Size(83, 20)
@@ -139,7 +154,7 @@ Partial Class Form1
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(6, 16)
+        Me.Label1.Location = New System.Drawing.Point(3, 6)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(40, 13)
         Me.Label1.TabIndex = 6
@@ -148,9 +163,9 @@ Partial Class Form1
         'StatusStrip1
         '
         Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel2})
-        Me.StatusStrip1.Location = New System.Drawing.Point(0, 799)
+        Me.StatusStrip1.Location = New System.Drawing.Point(0, 664)
         Me.StatusStrip1.Name = "StatusStrip1"
-        Me.StatusStrip1.Size = New System.Drawing.Size(916, 22)
+        Me.StatusStrip1.Size = New System.Drawing.Size(1179, 22)
         Me.StatusStrip1.TabIndex = 7
         Me.StatusStrip1.Text = "StatusStrip1"
         '
@@ -166,7 +181,7 @@ Partial Class Form1
         Me.CheckBox1.AutoSize = True
         Me.CheckBox1.Checked = True
         Me.CheckBox1.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.CheckBox1.Location = New System.Drawing.Point(666, 4)
+        Me.CheckBox1.Location = New System.Drawing.Point(935, 4)
         Me.CheckBox1.Name = "CheckBox1"
         Me.CheckBox1.Size = New System.Drawing.Size(134, 17)
         Me.CheckBox1.TabIndex = 5
@@ -175,20 +190,18 @@ Partial Class Form1
         '
         'ComboLanguage
         '
-        Me.ComboLanguage.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ComboLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboLanguage.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.ComboLanguage.FormattingEnabled = True
-        Me.ComboLanguage.Location = New System.Drawing.Point(620, 2)
+        Me.ComboLanguage.Location = New System.Drawing.Point(64, 2)
         Me.ComboLanguage.Name = "ComboLanguage"
         Me.ComboLanguage.Size = New System.Drawing.Size(52, 21)
         Me.ComboLanguage.TabIndex = 2
         '
         'Label3
         '
-        Me.Label3.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(559, 6)
+        Me.Label3.Location = New System.Drawing.Point(3, 6)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(55, 13)
         Me.Label3.TabIndex = 14
@@ -196,7 +209,7 @@ Partial Class Form1
         '
         'Search
         '
-        Me.Search.Location = New System.Drawing.Point(141, 11)
+        Me.Search.Location = New System.Drawing.Point(138, 1)
         Me.Search.Name = "Search"
         Me.Search.Size = New System.Drawing.Size(75, 22)
         Me.Search.TabIndex = 1
@@ -206,7 +219,7 @@ Partial Class Form1
         'TextboxCollectPath
         '
         Me.TextboxCollectPath.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.TextboxCollectPath.Location = New System.Drawing.Point(351, 2)
+        Me.TextboxCollectPath.Location = New System.Drawing.Point(620, 2)
         Me.TextboxCollectPath.Name = "TextboxCollectPath"
         Me.TextboxCollectPath.ReadOnly = True
         Me.TextboxCollectPath.Size = New System.Drawing.Size(267, 20)
@@ -216,7 +229,7 @@ Partial Class Form1
         '
         Me.Label4.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(262, 6)
+        Me.Label4.Location = New System.Drawing.Point(531, 6)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(79, 13)
         Me.Label4.TabIndex = 26
@@ -225,7 +238,7 @@ Partial Class Form1
         'Browse
         '
         Me.Browse.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Browse.Location = New System.Drawing.Point(628, 1)
+        Me.Browse.Location = New System.Drawing.Point(897, 1)
         Me.Browse.Name = "Browse"
         Me.Browse.Size = New System.Drawing.Size(28, 23)
         Me.Browse.TabIndex = 4
@@ -234,9 +247,8 @@ Partial Class Form1
         '
         'Refresh
         '
-        Me.Refresh.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Refresh.Image = CType(resources.GetObject("Refresh.Image"), System.Drawing.Image)
-        Me.Refresh.Location = New System.Drawing.Point(856, 0)
+        Me.Refresh.Location = New System.Drawing.Point(300, 0)
         Me.Refresh.Name = "Refresh"
         Me.Refresh.Size = New System.Drawing.Size(30, 25)
         Me.Refresh.TabIndex = 17
@@ -247,14 +259,13 @@ Partial Class Form1
         'ListView2
         '
         Me.ListView2.AllowColumnReorder = True
-        Me.ListView2.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ListView2.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader3, Me.ColumnHeader4, Me.ColumnHeader5, Me.ColumnHeader6})
+        Me.ListView2.Dock = System.Windows.Forms.DockStyle.Fill
         Me.ListView2.FullRowSelect = True
         Me.ListView2.HideSelection = False
-        Me.ListView2.Location = New System.Drawing.Point(6, 39)
+        Me.ListView2.Location = New System.Drawing.Point(3, 33)
         Me.ListView2.Name = "ListView2"
-        Me.ListView2.Size = New System.Drawing.Size(437, 191)
+        Me.ListView2.Size = New System.Drawing.Size(381, 185)
         Me.ListView2.TabIndex = 3
         Me.ListView2.UseCompatibleStateImageBehavior = False
         Me.ListView2.View = System.Windows.Forms.View.Details
@@ -298,7 +309,7 @@ Partial Class Form1
         Me.ListView1.HideSelection = False
         Me.ListView1.Location = New System.Drawing.Point(3, 16)
         Me.ListView1.Name = "ListView1"
-        Me.ListView1.Size = New System.Drawing.Size(170, 217)
+        Me.ListView1.Size = New System.Drawing.Size(337, 221)
         Me.ListView1.TabIndex = 15
         Me.ListView1.UseCompatibleStateImageBehavior = False
         Me.ListView1.View = System.Windows.Forms.View.Details
@@ -347,7 +358,7 @@ Partial Class Form1
         Me.ListView4.Location = New System.Drawing.Point(3, 16)
         Me.ListView4.MultiSelect = False
         Me.ListView4.Name = "ListView4"
-        Me.ListView4.Size = New System.Drawing.Size(261, 217)
+        Me.ListView4.Size = New System.Drawing.Size(427, 221)
         Me.ListView4.TabIndex = 0
         Me.ListView4.UseCompatibleStateImageBehavior = False
         Me.ListView4.View = System.Windows.Forms.View.Details
@@ -363,23 +374,19 @@ Partial Class Form1
         '
         'GroupBox4
         '
-        Me.GroupBox4.Controls.Add(Me.ListView2)
-        Me.GroupBox4.Controls.Add(Me.Label1)
-        Me.GroupBox4.Controls.Add(Me.PartNo)
-        Me.GroupBox4.Controls.Add(Me.Search)
+        Me.GroupBox4.Controls.Add(Me.TableLayoutPanel1)
         Me.GroupBox4.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.GroupBox4.Location = New System.Drawing.Point(3, 3)
+        Me.GroupBox4.Location = New System.Drawing.Point(0, 0)
         Me.GroupBox4.Name = "GroupBox4"
-        Me.GroupBox4.Size = New System.Drawing.Size(449, 236)
+        Me.GroupBox4.Size = New System.Drawing.Size(393, 240)
         Me.GroupBox4.TabIndex = 19
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "Search"
         '
         'Label2
         '
-        Me.Label2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(678, 6)
+        Me.Label2.Location = New System.Drawing.Point(122, 6)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(80, 13)
         Me.Label2.TabIndex = 16
@@ -387,9 +394,8 @@ Partial Class Form1
         '
         'DateTimePicker1
         '
-        Me.DateTimePicker1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.DateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.DateTimePicker1.Location = New System.Drawing.Point(764, 2)
+        Me.DateTimePicker1.Location = New System.Drawing.Point(208, 2)
         Me.DateTimePicker1.Name = "DateTimePicker1"
         Me.DateTimePicker1.Size = New System.Drawing.Size(86, 20)
         Me.DateTimePicker1.TabIndex = 15
@@ -405,7 +411,7 @@ Partial Class Form1
         Me.ListView3.Location = New System.Drawing.Point(3, 33)
         Me.ListView3.MultiSelect = False
         Me.ListView3.Name = "ListView3"
-        Me.ListView3.Size = New System.Drawing.Size(890, 423)
+        Me.ListView3.Size = New System.Drawing.Size(1159, 297)
         Me.ListView3.SmallImageList = Me.ImageList1
         Me.ListView3.TabIndex = 2
         Me.ListView3.UseCompatibleStateImageBehavior = False
@@ -490,7 +496,7 @@ Partial Class Form1
         Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileToolStripMenuItem, Me.OptionsToolStripMenuItem, Me.ViewToolStripMenuItem, Me.HelpToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
-        Me.MenuStrip1.Size = New System.Drawing.Size(916, 24)
+        Me.MenuStrip1.Size = New System.Drawing.Size(1179, 24)
         Me.MenuStrip1.TabIndex = 27
         Me.MenuStrip1.Text = "MenuStrip1"
         '
@@ -583,30 +589,15 @@ Partial Class Form1
         Me.AboutToolStripMenuItem.Size = New System.Drawing.Size(107, 22)
         Me.AboutToolStripMenuItem.Text = "&About"
         '
-        'TableLayoutPanel1
-        '
-        Me.TableLayoutPanel1.ColumnCount = 1
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.TableLayoutPanel1.Controls.Add(Me.TabControl1, 0, 1)
-        Me.TableLayoutPanel1.Controls.Add(Me.TableLayoutPanel3, 0, 0)
-        Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(0, 24)
-        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
-        Me.TableLayoutPanel1.RowCount = 2
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 248.0!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.TableLayoutPanel1.Size = New System.Drawing.Size(916, 775)
-        Me.TableLayoutPanel1.TabIndex = 28
-        '
         'TabControl1
         '
         Me.TabControl1.Controls.Add(Me.TabPage1)
         Me.TabControl1.Controls.Add(Me.TabPage2)
         Me.TabControl1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TabControl1.Location = New System.Drawing.Point(3, 251)
+        Me.TabControl1.Location = New System.Drawing.Point(0, 0)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(910, 521)
+        Me.TabControl1.Size = New System.Drawing.Size(1179, 395)
         Me.TabControl1.TabIndex = 0
         '
         'TabPage1
@@ -615,7 +606,7 @@ Partial Class Form1
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(902, 495)
+        Me.TabPage1.Size = New System.Drawing.Size(1171, 369)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Manufacturing Data"
         Me.TabPage1.UseVisualStyleBackColor = True
@@ -634,7 +625,7 @@ Partial Class Form1
         Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30.0!))
         Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30.0!))
-        Me.TableLayoutPanel2.Size = New System.Drawing.Size(896, 489)
+        Me.TableLayoutPanel2.Size = New System.Drawing.Size(1165, 363)
         Me.TableLayoutPanel2.TabIndex = 0
         '
         'Panel2
@@ -645,9 +636,9 @@ Partial Class Form1
         Me.Panel2.Controls.Add(Me.TextboxCollectPath)
         Me.Panel2.Controls.Add(Me.Browse)
         Me.Panel2.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Panel2.Location = New System.Drawing.Point(3, 462)
+        Me.Panel2.Location = New System.Drawing.Point(3, 336)
         Me.Panel2.Name = "Panel2"
-        Me.Panel2.Size = New System.Drawing.Size(890, 24)
+        Me.Panel2.Size = New System.Drawing.Size(1159, 24)
         Me.Panel2.TabIndex = 29
         '
         'Panel1
@@ -660,7 +651,7 @@ Partial Class Form1
         Me.Panel1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.Panel1.Location = New System.Drawing.Point(3, 3)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(890, 24)
+        Me.Panel1.Size = New System.Drawing.Size(1159, 24)
         Me.Panel1.TabIndex = 29
         '
         'TabPage2
@@ -670,33 +661,16 @@ Partial Class Form1
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
         Me.TabPage2.Size = New System.Drawing.Size(902, 495)
         Me.TabPage2.TabIndex = 1
-        Me.TabPage2.Text = "TabPage2"
+        Me.TabPage2.Text = "BOM"
         Me.TabPage2.UseVisualStyleBackColor = True
-        '
-        'TableLayoutPanel3
-        '
-        Me.TableLayoutPanel3.ColumnCount = 3
-        Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30.0!))
-        Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
-        Me.TableLayoutPanel3.Controls.Add(Me.GroupBox3, 2, 0)
-        Me.TableLayoutPanel3.Controls.Add(Me.GroupBox1, 1, 0)
-        Me.TableLayoutPanel3.Controls.Add(Me.GroupBox4, 0, 0)
-        Me.TableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TableLayoutPanel3.Location = New System.Drawing.Point(3, 3)
-        Me.TableLayoutPanel3.Name = "TableLayoutPanel3"
-        Me.TableLayoutPanel3.RowCount = 1
-        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.TableLayoutPanel3.Size = New System.Drawing.Size(910, 242)
-        Me.TableLayoutPanel3.TabIndex = 1
         '
         'GroupBox3
         '
         Me.GroupBox3.Controls.Add(Me.ListView1)
         Me.GroupBox3.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.GroupBox3.Location = New System.Drawing.Point(731, 3)
+        Me.GroupBox3.Location = New System.Drawing.Point(0, 0)
         Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(176, 236)
+        Me.GroupBox3.Size = New System.Drawing.Size(343, 240)
         Me.GroupBox3.TabIndex = 29
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "References"
@@ -705,9 +679,9 @@ Partial Class Form1
         '
         Me.GroupBox1.Controls.Add(Me.ListView4)
         Me.GroupBox1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.GroupBox1.Location = New System.Drawing.Point(458, 3)
+        Me.GroupBox1.Location = New System.Drawing.Point(0, 0)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(267, 236)
+        Me.GroupBox1.Size = New System.Drawing.Size(433, 240)
         Me.GroupBox1.TabIndex = 29
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "History"
@@ -734,12 +708,98 @@ Partial Class Form1
         Me.RememverColumnWidthAndOrderToolStripMenuItem.Size = New System.Drawing.Size(319, 22)
         Me.RememverColumnWidthAndOrderToolStripMenuItem.Text = "Remember column width and order"
         '
+        'SplitContainer1
+        '
+        Me.SplitContainer1.BackColor = System.Drawing.SystemColors.Control
+        Me.SplitContainer1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.SplitContainer1.Location = New System.Drawing.Point(0, 24)
+        Me.SplitContainer1.Name = "SplitContainer1"
+        Me.SplitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal
+        '
+        'SplitContainer1.Panel1
+        '
+        Me.SplitContainer1.Panel1.BackColor = System.Drawing.SystemColors.Control
+        Me.SplitContainer1.Panel1.Controls.Add(Me.SplitContainer2)
+        Me.SplitContainer1.Panel1MinSize = 150
+        '
+        'SplitContainer1.Panel2
+        '
+        Me.SplitContainer1.Panel2.BackColor = System.Drawing.SystemColors.Control
+        Me.SplitContainer1.Panel2.Controls.Add(Me.TabControl1)
+        Me.SplitContainer1.Size = New System.Drawing.Size(1179, 640)
+        Me.SplitContainer1.SplitterDistance = 240
+        Me.SplitContainer1.SplitterWidth = 5
+        Me.SplitContainer1.TabIndex = 29
+        '
+        'TableLayoutPanel1
+        '
+        Me.TableLayoutPanel1.ColumnCount = 1
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.TableLayoutPanel1.Controls.Add(Me.Panel3, 0, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.ListView2, 0, 1)
+        Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(3, 16)
+        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
+        Me.TableLayoutPanel1.RowCount = 2
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel1.Size = New System.Drawing.Size(387, 221)
+        Me.TableLayoutPanel1.TabIndex = 7
+        '
+        'Panel3
+        '
+        Me.Panel3.Controls.Add(Me.Label1)
+        Me.Panel3.Controls.Add(Me.PartNo)
+        Me.Panel3.Controls.Add(Me.Search)
+        Me.Panel3.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Panel3.Location = New System.Drawing.Point(3, 3)
+        Me.Panel3.Name = "Panel3"
+        Me.Panel3.Size = New System.Drawing.Size(381, 24)
+        Me.Panel3.TabIndex = 0
+        '
+        'SplitContainer2
+        '
+        Me.SplitContainer2.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.SplitContainer2.Location = New System.Drawing.Point(0, 0)
+        Me.SplitContainer2.Name = "SplitContainer2"
+        '
+        'SplitContainer2.Panel1
+        '
+        Me.SplitContainer2.Panel1.Controls.Add(Me.GroupBox4)
+        '
+        'SplitContainer2.Panel2
+        '
+        Me.SplitContainer2.Panel2.Controls.Add(Me.SplitContainer3)
+        Me.SplitContainer2.Size = New System.Drawing.Size(1179, 240)
+        Me.SplitContainer2.SplitterDistance = 393
+        Me.SplitContainer2.SplitterWidth = 5
+        Me.SplitContainer2.TabIndex = 2
+        '
+        'SplitContainer3
+        '
+        Me.SplitContainer3.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.SplitContainer3.Location = New System.Drawing.Point(0, 0)
+        Me.SplitContainer3.Name = "SplitContainer3"
+        '
+        'SplitContainer3.Panel1
+        '
+        Me.SplitContainer3.Panel1.Controls.Add(Me.GroupBox1)
+        '
+        'SplitContainer3.Panel2
+        '
+        Me.SplitContainer3.Panel2.Controls.Add(Me.GroupBox3)
+        Me.SplitContainer3.Size = New System.Drawing.Size(781, 240)
+        Me.SplitContainer3.SplitterDistance = 433
+        Me.SplitContainer3.SplitterWidth = 5
+        Me.SplitContainer3.TabIndex = 0
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(916, 821)
-        Me.Controls.Add(Me.TableLayoutPanel1)
+        Me.ClientSize = New System.Drawing.Size(1179, 686)
+        Me.Controls.Add(Me.SplitContainer1)
         Me.Controls.Add(Me.StatusStrip1)
         Me.Controls.Add(Me.MenuStrip1)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
@@ -751,11 +811,9 @@ Partial Class Form1
         Me.StatusStrip1.ResumeLayout(False)
         Me.StatusStrip1.PerformLayout()
         Me.GroupBox4.ResumeLayout(False)
-        Me.GroupBox4.PerformLayout()
         Me.ContextMenuStrip1.ResumeLayout(False)
         Me.MenuStrip1.ResumeLayout(False)
         Me.MenuStrip1.PerformLayout()
-        Me.TableLayoutPanel1.ResumeLayout(False)
         Me.TabControl1.ResumeLayout(False)
         Me.TabPage1.ResumeLayout(False)
         Me.TableLayoutPanel2.ResumeLayout(False)
@@ -763,9 +821,23 @@ Partial Class Form1
         Me.Panel2.PerformLayout()
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
-        Me.TableLayoutPanel3.ResumeLayout(False)
         Me.GroupBox3.ResumeLayout(False)
         Me.GroupBox1.ResumeLayout(False)
+        Me.SplitContainer1.Panel1.ResumeLayout(False)
+        Me.SplitContainer1.Panel2.ResumeLayout(False)
+        CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.SplitContainer1.ResumeLayout(False)
+        Me.TableLayoutPanel1.ResumeLayout(False)
+        Me.Panel3.ResumeLayout(False)
+        Me.Panel3.PerformLayout()
+        Me.SplitContainer2.Panel1.ResumeLayout(False)
+        Me.SplitContainer2.Panel2.ResumeLayout(False)
+        CType(Me.SplitContainer2, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.SplitContainer2.ResumeLayout(False)
+        Me.SplitContainer3.Panel1.ResumeLayout(False)
+        Me.SplitContainer3.Panel2.ResumeLayout(False)
+        CType(Me.SplitContainer3, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.SplitContainer3.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -809,12 +881,10 @@ Partial Class Form1
     Friend WithEvents OpenToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents OpenFolderToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents LoginToVaultToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents TabControl1 As System.Windows.Forms.TabControl
     Friend WithEvents TabPage1 As System.Windows.Forms.TabPage
     Friend WithEvents TabPage2 As System.Windows.Forms.TabPage
     Friend WithEvents TableLayoutPanel2 As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents TableLayoutPanel3 As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents GroupBox3 As System.Windows.Forms.GroupBox
     Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
     Friend WithEvents Panel1 As System.Windows.Forms.Panel
@@ -848,5 +918,10 @@ Partial Class Form1
     Friend WithEvents ViewToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ResetAllColumnWidthAndOrderToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents RememverColumnWidthAndOrderToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents SplitContainer1 As System.Windows.Forms.SplitContainer
+    Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents Panel3 As System.Windows.Forms.Panel
+    Friend WithEvents SplitContainer2 As System.Windows.Forms.SplitContainer
+    Friend WithEvents SplitContainer3 As System.Windows.Forms.SplitContainer
 
 End Class
