@@ -105,6 +105,8 @@ Partial Class Form1
         Me.Panel3 = New System.Windows.Forms.Panel()
         Me.SplitContainer2 = New System.Windows.Forms.SplitContainer()
         Me.SplitContainer3 = New System.Windows.Forms.SplitContainer()
+        Me.ColumnHeader26 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader27 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.StatusStrip1.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.ContextMenuStrip1.SuspendLayout()
@@ -263,9 +265,10 @@ Partial Class Form1
         Me.ListView2.Dock = System.Windows.Forms.DockStyle.Fill
         Me.ListView2.FullRowSelect = True
         Me.ListView2.HideSelection = False
-        Me.ListView2.Location = New System.Drawing.Point(3, 33)
+        Me.ListView2.Location = New System.Drawing.Point(1, 31)
+        Me.ListView2.Margin = New System.Windows.Forms.Padding(1)
         Me.ListView2.Name = "ListView2"
-        Me.ListView2.Size = New System.Drawing.Size(381, 185)
+        Me.ListView2.Size = New System.Drawing.Size(385, 189)
         Me.ListView2.TabIndex = 3
         Me.ListView2.UseCompatibleStateImageBehavior = False
         Me.ListView2.View = System.Windows.Forms.View.Details
@@ -278,12 +281,12 @@ Partial Class Form1
         'ColumnHeader2
         '
         Me.ColumnHeader2.Text = "Revision"
-        Me.ColumnHeader2.Width = 35
+        Me.ColumnHeader2.Width = 42
         '
         'ColumnHeader3
         '
         Me.ColumnHeader3.Text = "Version"
-        Me.ColumnHeader3.Width = 35
+        Me.ColumnHeader3.Width = 40
         '
         'ColumnHeader4
         '
@@ -327,12 +330,12 @@ Partial Class Form1
         'ColumnHeader9
         '
         Me.ColumnHeader9.Text = "Revision"
-        Me.ColumnHeader9.Width = 35
+        Me.ColumnHeader9.Width = 42
         '
         'ColumnHeader10
         '
         Me.ColumnHeader10.Text = "Version"
-        Me.ColumnHeader10.Width = 35
+        Me.ColumnHeader10.Width = 40
         '
         'ColumnHeader11
         '
@@ -352,7 +355,7 @@ Partial Class Form1
         'ListView4
         '
         Me.ListView4.AllowColumnReorder = True
-        Me.ListView4.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader24, Me.ColumnHeader25})
+        Me.ListView4.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader24, Me.ColumnHeader25, Me.ColumnHeader26, Me.ColumnHeader27})
         Me.ListView4.Dock = System.Windows.Forms.DockStyle.Fill
         Me.ListView4.FullRowSelect = True
         Me.ListView4.Location = New System.Drawing.Point(3, 16)
@@ -366,11 +369,12 @@ Partial Class Form1
         'ColumnHeader24
         '
         Me.ColumnHeader24.Text = "Version"
+        Me.ColumnHeader24.Width = 40
         '
         'ColumnHeader25
         '
         Me.ColumnHeader25.Text = "Comment"
-        Me.ColumnHeader25.Width = 400
+        Me.ColumnHeader25.Width = 200
         '
         'GroupBox4
         '
@@ -430,7 +434,7 @@ Partial Class Form1
         'ColumnHeader16
         '
         Me.ColumnHeader16.Text = "Revision"
-        Me.ColumnHeader16.Width = 35
+        Me.ColumnHeader16.Width = 42
         '
         'ColumnHeader17
         '
@@ -510,8 +514,8 @@ Partial Class Form1
         'LoginToVaultToolStripMenuItem
         '
         Me.LoginToVaultToolStripMenuItem.Name = "LoginToVaultToolStripMenuItem"
-        Me.LoginToVaultToolStripMenuItem.Size = New System.Drawing.Size(148, 22)
-        Me.LoginToVaultToolStripMenuItem.Text = "Login to Vault"
+        Me.LoginToVaultToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.LoginToVaultToolStripMenuItem.Text = "Login to &Vault"
         '
         'ExitToolStripMenuItem
         '
@@ -739,6 +743,7 @@ Partial Class Form1
         Me.TableLayoutPanel1.Controls.Add(Me.ListView2, 0, 1)
         Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TableLayoutPanel1.Location = New System.Drawing.Point(3, 16)
+        Me.TableLayoutPanel1.Margin = New System.Windows.Forms.Padding(0)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         Me.TableLayoutPanel1.RowCount = 2
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30.0!))
@@ -793,6 +798,16 @@ Partial Class Form1
         Me.SplitContainer3.SplitterDistance = 433
         Me.SplitContainer3.SplitterWidth = 5
         Me.SplitContainer3.TabIndex = 0
+        '
+        'ColumnHeader26
+        '
+        Me.ColumnHeader26.Text = "By"
+        Me.ColumnHeader26.Width = 100
+        '
+        'ColumnHeader27
+        '
+        Me.ColumnHeader27.Text = "Date"
+        Me.ColumnHeader27.Width = 100
         '
         'Form1
         '
@@ -923,5 +938,7 @@ Partial Class Form1
     Friend WithEvents Panel3 As System.Windows.Forms.Panel
     Friend WithEvents SplitContainer2 As System.Windows.Forms.SplitContainer
     Friend WithEvents SplitContainer3 As System.Windows.Forms.SplitContainer
+    Friend WithEvents ColumnHeader26 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader27 As System.Windows.Forms.ColumnHeader
 
 End Class

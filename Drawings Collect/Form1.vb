@@ -184,7 +184,6 @@ ErrHand:
         vault.GetErrorString(Err.Number, ename, edesc)
         MsgBox(ename + vbLf + edesc)
 
-
     End Sub
 
     Private Sub populatePartno()
@@ -355,6 +354,8 @@ ErrHand:
             ver = verEnum.GetNextVersion(pos)
             item.Text = ver.VersionNo
             item.SubItems.Add(ver.Comment)
+            item.SubItems.Add(ver.User.Name)
+            item.SubItems.Add(ver.VersionDate)
             ListView4.Items.Insert(0, item)
         End While
     End Sub
@@ -491,7 +492,6 @@ ErrHand:
 
     Private Function checkDateChanged(item As IEdmReference5) As Boolean
         Dim verEnum As IEdmEnumeratorVersion5
-        Dim folder As IEdmFolder5
         Dim pos As IEdmPos5
         Dim ver As IEdmRevision5
         ver = Nothing
@@ -514,7 +514,16 @@ ErrHand:
                     Return False
                 End If
             Else
-                Return True
+                If getVariable(item, "Document Category") = "DRW" Then
+                    If DateDiff(DateInterval.Day, Date.Parse(getVariable(item, "Publication Date")), Date.Parse(DateTimePicker1.Text)) > 0 Then
+                        Return True
+                    Else
+                        Return False
+                    End If
+                Else
+                    Return True
+                End If
+
             End If
         End If
     End Function
@@ -718,6 +727,7 @@ ErrHand:
     Private Sub showaboutbox()
         AboutBox1.Show()
         AboutBox1.TextBoxDescription.Text =
+                "V0.10.2 Design updates, fixed changed date check" & vbCrLf & _
                 "V0.10.1 Design updates" & vbCrLf & _
                 "V0.10.0 Fixed comments bug. Design updates" & vbCrLf & _
                 "V0.9.0 Design updates, abandoned treelistview. Function to check last edited date. Comments from history. Added version to getVariable." & vbCrLf & _
