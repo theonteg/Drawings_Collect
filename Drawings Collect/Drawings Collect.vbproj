@@ -28,7 +28,7 @@
     <PublisherName>Mechatron</PublisherName>
     <TrustUrlParameters>true</TrustUrlParameters>
     <ApplicationRevision>44</ApplicationRevision>
-    <ApplicationVersion>0.10.2.%2a</ApplicationVersion>
+    <ApplicationVersion>0.10.3.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>

@@ -2,7 +2,7 @@
 Imports System.Collections.Generic
 
 Public Class Form1
-    Dim vault As IEdmVault8 = New EdmVault5
+    Dim vault As IEdmVault11 = New EdmVault5
     'Dim collectfiles() As String
     Dim fileCollectionOnlyParent As New List(Of String)
     Dim fileCollectionInDepth As New List(Of String)
@@ -133,12 +133,47 @@ Public Class Form1
                 ToolStripStatusLabel2.Text = "Logged in to " & vault.Name
             Else
                 ToolStripStatusLabel2.Text = "Not Logged in"
-                MsgBox("Δεν έχετε κάνει login", , "Login to Vault")
+                MsgBox("Not logged in", , "Login to Vault")
             End If
         End If
+
         Me.PartNo.Select()
         Me.ActiveControl = PartNo
     End Sub
+
+    Private Function UserInGroup(groupname As String) As Boolean
+        Dim userID As Integer
+        Dim check As Boolean
+        check = False
+        userID = vault.GetLoggedInWindowsUserID(vault.Name)
+        If userID <> 0 Then
+            Dim userMgr As IEdmUserMgr7
+            userMgr = vault.CreateUtility(EdmUtility.EdmUtil_UserMgr)
+            Dim user As IEdmUser8
+            user = userMgr.GetUser(vault.GetObject(EdmObjectType.EdmObject_User, userID).Name)
+            'Get the groups he is member of
+            Dim groups() As Object
+            groups = Nothing
+            user.GetGroupMemberships(groups)
+            'Display a message box with the group names
+            'Dim message As String
+            'message = "Groups:" + vbLf
+            Dim i As Integer
+            i = LBound(groups)
+            While (i <= UBound(groups))
+                Dim group As IEdmUserGroup7
+                group = groups(i)
+                'message = message + group.Name + vbLf
+                If group.Name = groupname Then
+                    check = True
+                End If
+                i = i + 1
+            End While
+            'MsgBox(message)
+        End If
+        Return check
+    End Function
+
 
     Private Sub Form1_Activated(sender As Object, e As EventArgs) Handles Me.Activated
         Me.Show()
@@ -356,7 +391,11 @@ ErrHand:
             item.SubItems.Add(ver.Comment)
             item.SubItems.Add(ver.User.Name)
             item.SubItems.Add(ver.VersionDate)
-            ListView4.Items.Insert(0, item)
+            If UserInGroup("Engineering - Staff") = False And ver.Comment.StartsWith("!!") = True Then
+                ListView4.Items.Insert(0, item)
+            ElseIf UserInGroup("Engineering - Staff") = True Then
+                ListView4.Items.Insert(0, item)
+            End If
         End While
     End Sub
 
@@ -537,7 +576,7 @@ ErrHand:
             printList = fileCollectionOnlyParent
         End If
         If printList.Count <= 0 Then
-            MsgBox("Δεν βρέθηκαν 'In sync with ERP' σχέδια για τα κριτήρια που δώσατε")
+            MsgBox("No drawings in state 'In sync with ERP' found")
             Exit Sub
         End If
         Dim file As IEdmFile5
@@ -565,9 +604,9 @@ ErrHand:
                     System.IO.File.Copy(temp, destFolder & file.Name, True)
                 End If
             Next
-            MsgBox("Τα σχέδια σώθηκαν στο φάκελο: " & destFolder)
+            MsgBox("Drawings saved in folder: " & destFolder)
         Else
-            MsgBox("Ο φάκελος με τα αρχεία του συγκεκριμένου part υπάρχει ήδη. Η διαδικασία δεν ολοκληρώθηκε, διαγράψτε το φάκελο και ξαναπροσπαθήστε.")
+            MsgBox("Folder with drawings of the selected part allready exists. Save is not completed, delete folder and try again.")
         End If
         Exit Sub
 ErrHand:
@@ -727,6 +766,7 @@ ErrHand:
     Private Sub showaboutbox()
         AboutBox1.Show()
         AboutBox1.TextBoxDescription.Text =
+                "V0.10.3 Users not in Engineering - Staff will see only comments starting with '!!'" & vbCrLf & _
                 "V0.10.2 Design updates, fixed changed date check" & vbCrLf & _
                 "V0.10.1 Design updates" & vbCrLf & _
                 "V0.10.0 Fixed comments bug. Design updates" & vbCrLf & _

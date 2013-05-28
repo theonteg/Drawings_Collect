@@ -58,7 +58,11 @@ Partial Class Form1
         Me.ListView4 = New System.Windows.Forms.ListView()
         Me.ColumnHeader24 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader25 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader26 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader27 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.GroupBox4 = New System.Windows.Forms.GroupBox()
+        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+        Me.Panel3 = New System.Windows.Forms.Panel()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.DateTimePicker1 = New System.Windows.Forms.DateTimePicker()
         Me.ListView3 = New System.Windows.Forms.ListView()
@@ -87,6 +91,9 @@ Partial Class Form1
         Me.MenuItem4 = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuItem5 = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuItem6 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ViewToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.RememverColumnWidthAndOrderToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ResetAllColumnWidthAndOrderToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.HelpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.AboutToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
@@ -97,18 +104,13 @@ Partial Class Form1
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
-        Me.ViewToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ResetAllColumnWidthAndOrderToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.RememverColumnWidthAndOrderToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
-        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
-        Me.Panel3 = New System.Windows.Forms.Panel()
         Me.SplitContainer2 = New System.Windows.Forms.SplitContainer()
         Me.SplitContainer3 = New System.Windows.Forms.SplitContainer()
-        Me.ColumnHeader26 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader27 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.StatusStrip1.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
+        Me.TableLayoutPanel1.SuspendLayout()
+        Me.Panel3.SuspendLayout()
         Me.ContextMenuStrip1.SuspendLayout()
         Me.MenuStrip1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
@@ -122,8 +124,6 @@ Partial Class Form1
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
         Me.SplitContainer1.SuspendLayout()
-        Me.TableLayoutPanel1.SuspendLayout()
-        Me.Panel3.SuspendLayout()
         CType(Me.SplitContainer2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer2.Panel1.SuspendLayout()
         Me.SplitContainer2.Panel2.SuspendLayout()
@@ -376,6 +376,16 @@ Partial Class Form1
         Me.ColumnHeader25.Text = "Comment"
         Me.ColumnHeader25.Width = 200
         '
+        'ColumnHeader26
+        '
+        Me.ColumnHeader26.Text = "By"
+        Me.ColumnHeader26.Width = 100
+        '
+        'ColumnHeader27
+        '
+        Me.ColumnHeader27.Text = "Date"
+        Me.ColumnHeader27.Width = 100
+        '
         'GroupBox4
         '
         Me.GroupBox4.Controls.Add(Me.TableLayoutPanel1)
@@ -386,6 +396,34 @@ Partial Class Form1
         Me.GroupBox4.TabIndex = 19
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "Search"
+        '
+        'TableLayoutPanel1
+        '
+        Me.TableLayoutPanel1.ColumnCount = 1
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.TableLayoutPanel1.Controls.Add(Me.Panel3, 0, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.ListView2, 0, 1)
+        Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(3, 16)
+        Me.TableLayoutPanel1.Margin = New System.Windows.Forms.Padding(0)
+        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
+        Me.TableLayoutPanel1.RowCount = 2
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel1.Size = New System.Drawing.Size(387, 221)
+        Me.TableLayoutPanel1.TabIndex = 7
+        '
+        'Panel3
+        '
+        Me.Panel3.Controls.Add(Me.Label1)
+        Me.Panel3.Controls.Add(Me.PartNo)
+        Me.Panel3.Controls.Add(Me.Search)
+        Me.Panel3.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Panel3.Location = New System.Drawing.Point(3, 3)
+        Me.Panel3.Name = "Panel3"
+        Me.Panel3.Size = New System.Drawing.Size(381, 24)
+        Me.Panel3.TabIndex = 0
         '
         'Label2
         '
@@ -514,7 +552,7 @@ Partial Class Form1
         'LoginToVaultToolStripMenuItem
         '
         Me.LoginToVaultToolStripMenuItem.Name = "LoginToVaultToolStripMenuItem"
-        Me.LoginToVaultToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.LoginToVaultToolStripMenuItem.Size = New System.Drawing.Size(148, 22)
         Me.LoginToVaultToolStripMenuItem.Text = "Login to &Vault"
         '
         'ExitToolStripMenuItem
@@ -579,6 +617,28 @@ Partial Class Form1
         Me.MenuItem6.Name = "MenuItem6"
         Me.MenuItem6.Size = New System.Drawing.Size(402, 22)
         Me.MenuItem6.Text = "Mark changed documents from selected date as bold"
+        '
+        'ViewToolStripMenuItem
+        '
+        Me.ViewToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.RememverColumnWidthAndOrderToolStripMenuItem, Me.ResetAllColumnWidthAndOrderToolStripMenuItem})
+        Me.ViewToolStripMenuItem.Name = "ViewToolStripMenuItem"
+        Me.ViewToolStripMenuItem.Size = New System.Drawing.Size(44, 20)
+        Me.ViewToolStripMenuItem.Text = "View"
+        '
+        'RememverColumnWidthAndOrderToolStripMenuItem
+        '
+        Me.RememverColumnWidthAndOrderToolStripMenuItem.Checked = True
+        Me.RememverColumnWidthAndOrderToolStripMenuItem.CheckOnClick = True
+        Me.RememverColumnWidthAndOrderToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.RememverColumnWidthAndOrderToolStripMenuItem.Name = "RememverColumnWidthAndOrderToolStripMenuItem"
+        Me.RememverColumnWidthAndOrderToolStripMenuItem.Size = New System.Drawing.Size(319, 22)
+        Me.RememverColumnWidthAndOrderToolStripMenuItem.Text = "Remember column width and order"
+        '
+        'ResetAllColumnWidthAndOrderToolStripMenuItem
+        '
+        Me.ResetAllColumnWidthAndOrderToolStripMenuItem.Name = "ResetAllColumnWidthAndOrderToolStripMenuItem"
+        Me.ResetAllColumnWidthAndOrderToolStripMenuItem.Size = New System.Drawing.Size(319, 22)
+        Me.ResetAllColumnWidthAndOrderToolStripMenuItem.Text = "Reset all column width and order (after restart)"
         '
         'HelpToolStripMenuItem
         '
@@ -663,7 +723,7 @@ Partial Class Form1
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(902, 495)
+        Me.TabPage2.Size = New System.Drawing.Size(1171, 369)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "BOM"
         Me.TabPage2.UseVisualStyleBackColor = True
@@ -677,7 +737,7 @@ Partial Class Form1
         Me.GroupBox3.Size = New System.Drawing.Size(343, 240)
         Me.GroupBox3.TabIndex = 29
         Me.GroupBox3.TabStop = False
-        Me.GroupBox3.Text = "References"
+        Me.GroupBox3.Text = "Where Used"
         '
         'GroupBox1
         '
@@ -689,28 +749,6 @@ Partial Class Form1
         Me.GroupBox1.TabIndex = 29
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "History"
-        '
-        'ViewToolStripMenuItem
-        '
-        Me.ViewToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.RememverColumnWidthAndOrderToolStripMenuItem, Me.ResetAllColumnWidthAndOrderToolStripMenuItem})
-        Me.ViewToolStripMenuItem.Name = "ViewToolStripMenuItem"
-        Me.ViewToolStripMenuItem.Size = New System.Drawing.Size(44, 20)
-        Me.ViewToolStripMenuItem.Text = "View"
-        '
-        'ResetAllColumnWidthAndOrderToolStripMenuItem
-        '
-        Me.ResetAllColumnWidthAndOrderToolStripMenuItem.Name = "ResetAllColumnWidthAndOrderToolStripMenuItem"
-        Me.ResetAllColumnWidthAndOrderToolStripMenuItem.Size = New System.Drawing.Size(319, 22)
-        Me.ResetAllColumnWidthAndOrderToolStripMenuItem.Text = "Reset all column width and order (after restart)"
-        '
-        'RememverColumnWidthAndOrderToolStripMenuItem
-        '
-        Me.RememverColumnWidthAndOrderToolStripMenuItem.Checked = True
-        Me.RememverColumnWidthAndOrderToolStripMenuItem.CheckOnClick = True
-        Me.RememverColumnWidthAndOrderToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.RememverColumnWidthAndOrderToolStripMenuItem.Name = "RememverColumnWidthAndOrderToolStripMenuItem"
-        Me.RememverColumnWidthAndOrderToolStripMenuItem.Size = New System.Drawing.Size(319, 22)
-        Me.RememverColumnWidthAndOrderToolStripMenuItem.Text = "Remember column width and order"
         '
         'SplitContainer1
         '
@@ -734,34 +772,6 @@ Partial Class Form1
         Me.SplitContainer1.SplitterDistance = 240
         Me.SplitContainer1.SplitterWidth = 5
         Me.SplitContainer1.TabIndex = 29
-        '
-        'TableLayoutPanel1
-        '
-        Me.TableLayoutPanel1.ColumnCount = 1
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.TableLayoutPanel1.Controls.Add(Me.Panel3, 0, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.ListView2, 0, 1)
-        Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(3, 16)
-        Me.TableLayoutPanel1.Margin = New System.Windows.Forms.Padding(0)
-        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
-        Me.TableLayoutPanel1.RowCount = 2
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30.0!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.TableLayoutPanel1.Size = New System.Drawing.Size(387, 221)
-        Me.TableLayoutPanel1.TabIndex = 7
-        '
-        'Panel3
-        '
-        Me.Panel3.Controls.Add(Me.Label1)
-        Me.Panel3.Controls.Add(Me.PartNo)
-        Me.Panel3.Controls.Add(Me.Search)
-        Me.Panel3.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Panel3.Location = New System.Drawing.Point(3, 3)
-        Me.Panel3.Name = "Panel3"
-        Me.Panel3.Size = New System.Drawing.Size(381, 24)
-        Me.Panel3.TabIndex = 0
         '
         'SplitContainer2
         '
@@ -799,16 +809,6 @@ Partial Class Form1
         Me.SplitContainer3.SplitterWidth = 5
         Me.SplitContainer3.TabIndex = 0
         '
-        'ColumnHeader26
-        '
-        Me.ColumnHeader26.Text = "By"
-        Me.ColumnHeader26.Width = 100
-        '
-        'ColumnHeader27
-        '
-        Me.ColumnHeader27.Text = "Date"
-        Me.ColumnHeader27.Width = 100
-        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -826,6 +826,9 @@ Partial Class Form1
         Me.StatusStrip1.ResumeLayout(False)
         Me.StatusStrip1.PerformLayout()
         Me.GroupBox4.ResumeLayout(False)
+        Me.TableLayoutPanel1.ResumeLayout(False)
+        Me.Panel3.ResumeLayout(False)
+        Me.Panel3.PerformLayout()
         Me.ContextMenuStrip1.ResumeLayout(False)
         Me.MenuStrip1.ResumeLayout(False)
         Me.MenuStrip1.PerformLayout()
@@ -842,9 +845,6 @@ Partial Class Form1
         Me.SplitContainer1.Panel2.ResumeLayout(False)
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.SplitContainer1.ResumeLayout(False)
-        Me.TableLayoutPanel1.ResumeLayout(False)
-        Me.Panel3.ResumeLayout(False)
-        Me.Panel3.PerformLayout()
         Me.SplitContainer2.Panel1.ResumeLayout(False)
         Me.SplitContainer2.Panel2.ResumeLayout(False)
         CType(Me.SplitContainer2, System.ComponentModel.ISupportInitialize).EndInit()
