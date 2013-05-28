@@ -62,7 +62,7 @@ Public Class Form1
         MenuItem1.Checked = My.Settings.Menu1
         MenuItem2.Checked = My.Settings.Menu2
         MenuItem5.Checked = My.Settings.Menu5
-
+        MenuItem7.Checked = My.Settings.Comments
 
         RememverColumnWidthAndOrderToolStripMenuItem.Checked = My.Settings.KeepListChanges
         Dim columnorder As String()
@@ -391,10 +391,12 @@ ErrHand:
             item.SubItems.Add(ver.Comment)
             item.SubItems.Add(ver.User.Name)
             item.SubItems.Add(ver.VersionDate)
-            If UserInGroup("Engineering - Staff") = False And ver.Comment.StartsWith("!!") = True Then
-                ListView4.Items.Insert(0, item)
-            ElseIf UserInGroup("Engineering - Staff") = True Then
-                ListView4.Items.Insert(0, item)
+            If Not (MenuItem7.Checked = False And ver.Comment = "") Then
+                If UserInGroup("Engineering - Staff") = False And ver.Comment.StartsWith("!!") = True Then
+                    ListView4.Items.Insert(0, item)
+                ElseIf UserInGroup("Engineering - Staff") = True Then
+                    ListView4.Items.Insert(0, item)
+                End If
             End If
         End While
     End Sub
@@ -752,6 +754,13 @@ ErrHand:
         My.Settings.Menu5 = MenuItem5.Checked
     End Sub
 
+    Private Sub MenuItem7_Click(sender As Object, e As EventArgs) Handles MenuItem7.Click
+        My.Settings.Comments = MenuItem7.Checked
+        If ListView3.SelectedItems.Count > 0 Then
+            PopulateComments(ListView3.SelectedItems.Item(0).SubItems(9).Text, Split(ListView3.SelectedItems.Item(0).SubItems(3).Text, "/")(0))
+        End If
+    End Sub
+
     Private Sub AboutToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AboutToolStripMenuItem.Click
         showaboutbox()
     End Sub
@@ -766,7 +775,7 @@ ErrHand:
     Private Sub showaboutbox()
         AboutBox1.Show()
         AboutBox1.TextBoxDescription.Text =
-                "V0.10.3 Users not in Engineering - Staff will see only comments starting with '!!'" & vbCrLf & _
+                "V0.10.3 Users not in Engineering - Staff will see only comments starting with '!!', added menu to hide blank comments" & vbCrLf & _
                 "V0.10.2 Design updates, fixed changed date check" & vbCrLf & _
                 "V0.10.1 Design updates" & vbCrLf & _
                 "V0.10.0 Fixed comments bug. Design updates" & vbCrLf & _
@@ -821,4 +830,5 @@ ErrHand:
         My.Settings.List4Order = ""
         My.Settings.List4Width = ""
     End Sub
+
 End Class
