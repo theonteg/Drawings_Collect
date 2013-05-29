@@ -233,6 +233,30 @@ Namespace My
                 Me("Comments") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property List5Order() As String
+            Get
+                Return CType(Me("List5Order"),String)
+            End Get
+            Set
+                Me("List5Order") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property List5Width() As String
+            Get
+                Return CType(Me("List5Width"),String)
+            End Get
+            Set
+                Me("List5Width") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

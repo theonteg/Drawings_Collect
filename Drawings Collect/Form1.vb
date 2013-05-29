@@ -23,19 +23,26 @@ Public Class Form1
                 My.Settings.List2Order = My.Settings.List2Order & ListView2.Columns.Item(i).DisplayIndex & ","
                 My.Settings.List2Width = My.Settings.List2Width & ListView2.Columns.Item(i).Width & ","
             Next
-            'ListView1
+            'ListView3
             My.Settings.List3Order = ""
             My.Settings.List3Width = ""
             For i = 0 To ListView3.Columns.Count - 1
                 My.Settings.List3Order = My.Settings.List3Order & ListView3.Columns.Item(i).DisplayIndex & ","
                 My.Settings.List3Width = My.Settings.List3Width & ListView3.Columns.Item(i).Width & ","
             Next
-            'ListView1
+            'ListView4
             My.Settings.List4Order = ""
             My.Settings.List4Width = ""
             For i = 0 To ListView4.Columns.Count - 1
                 My.Settings.List4Order = My.Settings.List4Order & ListView4.Columns.Item(i).DisplayIndex & ","
                 My.Settings.List4Width = My.Settings.List4Width & ListView4.Columns.Item(i).Width & ","
+            Next
+            'ListView5
+            My.Settings.List5Order = ""
+            My.Settings.List5Width = ""
+            For i = 0 To ListView5.Columns.Count - 1
+                My.Settings.List5Order = My.Settings.List5Order & ListView5.Columns.Item(i).DisplayIndex & ","
+                My.Settings.List5Width = My.Settings.List5Width & ListView5.Columns.Item(i).Width & ","
             Next
         End If
     End Sub
@@ -117,6 +124,19 @@ Public Class Form1
         If columnwidth.Length > 1 Then
             For i = 0 To ListView4.Columns.Count - 1
                 ListView4.Columns.Item(i).Width = columnwidth(i)
+            Next
+        End If
+        'ListView5
+        columnorder = My.Settings.List5Order.Split(",")
+        columnwidth = My.Settings.List5Width.Split(",")
+        If columnorder.Length > 1 Then
+            For i = 0 To ListView5.Columns.Count - 1
+                ListView5.Columns.Item(i).DisplayIndex = columnorder(i)
+            Next
+        End If
+        If columnwidth.Length > 1 Then
+            For i = 0 To ListView5.Columns.Count - 1
+                ListView5.Columns.Item(i).Width = columnwidth(i)
             Next
         End If
 
@@ -234,6 +254,7 @@ ErrHand:
         folder = Nothing
         ListView2.Items.Clear()
         ListView1.Items.Clear()
+        ListView5.Items.Clear()
         search = vault.CreateSearch
         search.AddVariable("PartNo", "%" & PartNo.Text)
 
@@ -328,6 +349,7 @@ ErrHand:
         fileCollectionOnlyParent.Clear()
 
         PopulateWhereUsed(ListView2.SelectedItems.Item(0).SubItems.Item(5).Text, ListView2.SelectedItems.Item(0).SubItems.Item(2).Text)
+        PopulateContains(ListView2.SelectedItems.Item(0).SubItems.Item(5).Text, ListView2.SelectedItems.Item(0).SubItems.Item(2).Text)
         PopulateTree(ListView2.SelectedItems.Item(0).SubItems.Item(5).Text, ListView2.SelectedItems.Item(0).SubItems.Item(2).Text)
 
 
@@ -357,7 +379,7 @@ ErrHand:
         pos = ref.GetFirstParentPosition(ref.VersionRef, False)
         While Not pos.IsNull
             ref = ref.GetNextParent(pos)
-            If System.IO.Path.GetExtension(ref.File.Name).ToLower = ".sldasm" Or System.IO.Path.GetExtension(ref.File.Name).ToLower = ".sldprt" Then
+            If UserInGroup("Engineering - Staff") Or (System.IO.Path.GetExtension(ref.File.Name).ToLower = ".sldasm" Or System.IO.Path.GetExtension(ref.File.Name).ToLower = ".sldprt") Then
                 item = New ListViewItem()
                 item.Text = ref.Name
                 item.SubItems.Add(getVariable(ref, "PartNo"))
@@ -368,6 +390,38 @@ ErrHand:
                 item.SubItems.Add(ref.FoundPath)
                 ListView1.Items.Add(item)
             End If
+        End While
+    End Sub
+
+    Private Sub PopulateContains(path As String, ver As String)
+        Dim file As IEdmFile5
+        Dim folder As IEdmFolder5
+        Dim ref As IEdmReference5
+        Dim pos As IEdmPos5
+        Dim item As New ListViewItem()
+        Dim project As String
+        project = ""
+        If path = "" Then
+            Exit Sub
+        End If
+        folder = Nothing
+        ListView5.Items.Clear()
+        file = vault.GetFileFromPath(path, folder)
+        ref = file.GetReferenceTree(folder.ID, ver)
+        pos = ref.GetFirstChildPosition(project, False, True, 0)
+        While Not pos.IsNull
+            ref = ref.GetNextChild(pos)
+            'If System.IO.Path.GetExtension(ref.File.Name).ToLower = ".sldasm" Or System.IO.Path.GetExtension(ref.File.Name).ToLower = ".sldprt" Then
+            item = New ListViewItem()
+            item.Text = ref.Name
+            item.SubItems.Add(getVariable(ref, "PartNo"))
+            item.SubItems.Add(getVariable(ref, "Revision"))
+            item.SubItems.Add(ref.VersionRef & "/" & ref.File.CurrentVersion)
+            item.SubItems.Add(getVariable(ref, "Description"))
+            item.SubItems.Add(getVariable(ref, "Description English"))
+            item.SubItems.Add(ref.FoundPath)
+            ListView5.Items.Add(item)
+            'End If
         End While
     End Sub
 
@@ -388,13 +442,21 @@ ErrHand:
             item = New ListViewItem()
             ver = verEnum.GetNextVersion(pos)
             item.Text = ver.VersionNo
-            item.SubItems.Add(ver.Comment)
+            item.SubItems.Add(ver.Comment.Replace(vbCrLf, " "))
             item.SubItems.Add(ver.User.Name)
             item.SubItems.Add(ver.VersionDate)
             If Not (MenuItem7.Checked = False And ver.Comment = "") Then
                 If UserInGroup("Engineering - Staff") = False And ver.Comment.StartsWith("!!") = True Then
+                    If item.SubItems(1).Text.StartsWith("!!") = True Then
+                        item.SubItems(1).Text = item.SubItems(1).Text.TrimStart("!!")
+                        item.Font = New Font(item.Font, FontStyle.Bold)
+                    End If
                     ListView4.Items.Insert(0, item)
                 ElseIf UserInGroup("Engineering - Staff") = True Then
+                    If item.SubItems(1).Text.StartsWith("!!") = True Then
+                        item.SubItems(1).Text = item.SubItems(1).Text.TrimStart("!!")
+                        item.Font = New Font(item.Font, FontStyle.Bold)
+                    End If
                     ListView4.Items.Insert(0, item)
                 End If
             End If
@@ -738,6 +800,7 @@ ErrHand:
         PartNo.Text = ListView1.SelectedItems.Item(0).SubItems.Item(1).Text
         ListView1.Items.Clear()
         ListView2.Items.Clear()
+        ListView5.Items.Clear()
         Search_Click(sender, New System.EventArgs())
 
     End Sub
@@ -768,6 +831,7 @@ ErrHand:
     Private Sub ListView3_Click(sender As Object, e As EventArgs) Handles ListView3.Click
         If ListView3.SelectedItems.Count > 0 Then
             PopulateWhereUsed(ListView3.SelectedItems.Item(0).SubItems(9).Text, Split(ListView3.SelectedItems.Item(0).SubItems(3).Text, "/")(0))
+            PopulateContains(ListView3.SelectedItems.Item(0).SubItems(9).Text, Split(ListView3.SelectedItems.Item(0).SubItems(3).Text, "/")(0))
             PopulateComments(ListView3.SelectedItems.Item(0).SubItems(9).Text, Split(ListView3.SelectedItems.Item(0).SubItems(3).Text, "/")(0))
         End If
     End Sub
@@ -775,6 +839,7 @@ ErrHand:
     Private Sub showaboutbox()
         AboutBox1.Show()
         AboutBox1.TextBoxDescription.Text =
+                "V0.10.4 Added contains tab, fixed '!!' comments display" & vbCrLf & _
                 "V0.10.3 Users not in Engineering - Staff will see only comments starting with '!!', added menu to hide blank comments" & vbCrLf & _
                 "V0.10.2 Design updates, fixed changed date check" & vbCrLf & _
                 "V0.10.1 Design updates" & vbCrLf & _
@@ -829,6 +894,8 @@ ErrHand:
         My.Settings.List3Width = ""
         My.Settings.List4Order = ""
         My.Settings.List4Width = ""
+        My.Settings.List5Order = ""
+        My.Settings.List5Width = ""
     End Sub
 
 End Class

@@ -91,6 +91,7 @@ Partial Class Form1
         Me.MenuItem4 = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuItem5 = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuItem6 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.MenuItem7 = New System.Windows.Forms.ToolStripMenuItem()
         Me.ViewToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.RememverColumnWidthAndOrderToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ResetAllColumnWidthAndOrderToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -102,12 +103,21 @@ Partial Class Form1
         Me.Panel2 = New System.Windows.Forms.Panel()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
-        Me.GroupBox3 = New System.Windows.Forms.GroupBox()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
         Me.SplitContainer2 = New System.Windows.Forms.SplitContainer()
         Me.SplitContainer3 = New System.Windows.Forms.SplitContainer()
-        Me.MenuItem7 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.TabControl2 = New System.Windows.Forms.TabControl()
+        Me.TabPage3 = New System.Windows.Forms.TabPage()
+        Me.TabPage4 = New System.Windows.Forms.TabPage()
+        Me.ListView5 = New System.Windows.Forms.ListView()
+        Me.ColumnHeader28 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader29 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader30 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader31 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader32 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader33 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader34 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.StatusStrip1.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.TableLayoutPanel1.SuspendLayout()
@@ -119,7 +129,6 @@ Partial Class Form1
         Me.TableLayoutPanel2.SuspendLayout()
         Me.Panel2.SuspendLayout()
         Me.Panel1.SuspendLayout()
-        Me.GroupBox3.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer1.Panel1.SuspendLayout()
@@ -133,6 +142,9 @@ Partial Class Form1
         Me.SplitContainer3.Panel1.SuspendLayout()
         Me.SplitContainer3.Panel2.SuspendLayout()
         Me.SplitContainer3.SuspendLayout()
+        Me.TabControl2.SuspendLayout()
+        Me.TabPage3.SuspendLayout()
+        Me.TabPage4.SuspendLayout()
         Me.SuspendLayout()
         '
         'CollectButton
@@ -311,9 +323,9 @@ Partial Class Form1
         Me.ListView1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.ListView1.FullRowSelect = True
         Me.ListView1.HideSelection = False
-        Me.ListView1.Location = New System.Drawing.Point(3, 16)
+        Me.ListView1.Location = New System.Drawing.Point(3, 3)
         Me.ListView1.Name = "ListView1"
-        Me.ListView1.Size = New System.Drawing.Size(337, 221)
+        Me.ListView1.Size = New System.Drawing.Size(352, 208)
         Me.ListView1.TabIndex = 15
         Me.ListView1.UseCompatibleStateImageBehavior = False
         Me.ListView1.View = System.Windows.Forms.View.Details
@@ -362,7 +374,7 @@ Partial Class Form1
         Me.ListView4.Location = New System.Drawing.Point(3, 16)
         Me.ListView4.MultiSelect = False
         Me.ListView4.Name = "ListView4"
-        Me.ListView4.Size = New System.Drawing.Size(427, 221)
+        Me.ListView4.Size = New System.Drawing.Size(404, 221)
         Me.ListView4.TabIndex = 0
         Me.ListView4.UseCompatibleStateImageBehavior = False
         Me.ListView4.View = System.Windows.Forms.View.Details
@@ -619,6 +631,13 @@ Partial Class Form1
         Me.MenuItem6.Size = New System.Drawing.Size(402, 22)
         Me.MenuItem6.Text = "Mark changed documents from selected date as bold"
         '
+        'MenuItem7
+        '
+        Me.MenuItem7.CheckOnClick = True
+        Me.MenuItem7.Name = "MenuItem7"
+        Me.MenuItem7.Size = New System.Drawing.Size(402, 22)
+        Me.MenuItem7.Text = "Show all comments (include blank comments)"
+        '
         'ViewToolStripMenuItem
         '
         Me.ViewToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.RememverColumnWidthAndOrderToolStripMenuItem, Me.ResetAllColumnWidthAndOrderToolStripMenuItem})
@@ -729,24 +748,13 @@ Partial Class Form1
         Me.TabPage2.Text = "BOM"
         Me.TabPage2.UseVisualStyleBackColor = True
         '
-        'GroupBox3
-        '
-        Me.GroupBox3.Controls.Add(Me.ListView1)
-        Me.GroupBox3.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.GroupBox3.Location = New System.Drawing.Point(0, 0)
-        Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(343, 240)
-        Me.GroupBox3.TabIndex = 29
-        Me.GroupBox3.TabStop = False
-        Me.GroupBox3.Text = "Where Used"
-        '
         'GroupBox1
         '
         Me.GroupBox1.Controls.Add(Me.ListView4)
         Me.GroupBox1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.GroupBox1.Location = New System.Drawing.Point(0, 0)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(433, 240)
+        Me.GroupBox1.Size = New System.Drawing.Size(410, 240)
         Me.GroupBox1.TabIndex = 29
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "History"
@@ -804,18 +812,93 @@ Partial Class Form1
         '
         'SplitContainer3.Panel2
         '
-        Me.SplitContainer3.Panel2.Controls.Add(Me.GroupBox3)
+        Me.SplitContainer3.Panel2.Controls.Add(Me.TabControl2)
         Me.SplitContainer3.Size = New System.Drawing.Size(781, 240)
-        Me.SplitContainer3.SplitterDistance = 433
+        Me.SplitContainer3.SplitterDistance = 410
         Me.SplitContainer3.SplitterWidth = 5
         Me.SplitContainer3.TabIndex = 0
         '
-        'MenuItem7
+        'TabControl2
         '
-        Me.MenuItem7.CheckOnClick = True
-        Me.MenuItem7.Name = "MenuItem7"
-        Me.MenuItem7.Size = New System.Drawing.Size(402, 22)
-        Me.MenuItem7.Text = "Show all comments (include blank comments)"
+        Me.TabControl2.Controls.Add(Me.TabPage3)
+        Me.TabControl2.Controls.Add(Me.TabPage4)
+        Me.TabControl2.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TabControl2.Location = New System.Drawing.Point(0, 0)
+        Me.TabControl2.Name = "TabControl2"
+        Me.TabControl2.SelectedIndex = 0
+        Me.TabControl2.Size = New System.Drawing.Size(366, 240)
+        Me.TabControl2.TabIndex = 30
+        '
+        'TabPage3
+        '
+        Me.TabPage3.Controls.Add(Me.ListView1)
+        Me.TabPage3.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage3.Name = "TabPage3"
+        Me.TabPage3.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage3.Size = New System.Drawing.Size(358, 214)
+        Me.TabPage3.TabIndex = 0
+        Me.TabPage3.Text = "Where Used"
+        Me.TabPage3.UseVisualStyleBackColor = True
+        '
+        'TabPage4
+        '
+        Me.TabPage4.Controls.Add(Me.ListView5)
+        Me.TabPage4.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage4.Name = "TabPage4"
+        Me.TabPage4.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage4.Size = New System.Drawing.Size(358, 214)
+        Me.TabPage4.TabIndex = 1
+        Me.TabPage4.Text = "Contains"
+        Me.TabPage4.UseVisualStyleBackColor = True
+        '
+        'ListView5
+        '
+        Me.ListView5.AllowColumnReorder = True
+        Me.ListView5.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader28, Me.ColumnHeader29, Me.ColumnHeader30, Me.ColumnHeader31, Me.ColumnHeader32, Me.ColumnHeader33, Me.ColumnHeader34})
+        Me.ListView5.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.ListView5.FullRowSelect = True
+        Me.ListView5.HideSelection = False
+        Me.ListView5.Location = New System.Drawing.Point(3, 3)
+        Me.ListView5.Name = "ListView5"
+        Me.ListView5.Size = New System.Drawing.Size(352, 208)
+        Me.ListView5.TabIndex = 16
+        Me.ListView5.UseCompatibleStateImageBehavior = False
+        Me.ListView5.View = System.Windows.Forms.View.Details
+        '
+        'ColumnHeader28
+        '
+        Me.ColumnHeader28.Text = "File"
+        Me.ColumnHeader28.Width = 120
+        '
+        'ColumnHeader29
+        '
+        Me.ColumnHeader29.Text = "PartNo"
+        Me.ColumnHeader29.Width = 70
+        '
+        'ColumnHeader30
+        '
+        Me.ColumnHeader30.Text = "Revision"
+        Me.ColumnHeader30.Width = 42
+        '
+        'ColumnHeader31
+        '
+        Me.ColumnHeader31.Text = "Version"
+        Me.ColumnHeader31.Width = 40
+        '
+        'ColumnHeader32
+        '
+        Me.ColumnHeader32.Text = "Description"
+        Me.ColumnHeader32.Width = 250
+        '
+        'ColumnHeader33
+        '
+        Me.ColumnHeader33.Text = "Description English"
+        Me.ColumnHeader33.Width = 250
+        '
+        'ColumnHeader34
+        '
+        Me.ColumnHeader34.Text = "Path"
+        Me.ColumnHeader34.Width = 0
         '
         'Form1
         '
@@ -847,7 +930,6 @@ Partial Class Form1
         Me.Panel2.PerformLayout()
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
-        Me.GroupBox3.ResumeLayout(False)
         Me.GroupBox1.ResumeLayout(False)
         Me.SplitContainer1.Panel1.ResumeLayout(False)
         Me.SplitContainer1.Panel2.ResumeLayout(False)
@@ -861,6 +943,9 @@ Partial Class Form1
         Me.SplitContainer3.Panel2.ResumeLayout(False)
         CType(Me.SplitContainer3, System.ComponentModel.ISupportInitialize).EndInit()
         Me.SplitContainer3.ResumeLayout(False)
+        Me.TabControl2.ResumeLayout(False)
+        Me.TabPage3.ResumeLayout(False)
+        Me.TabPage4.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -908,7 +993,6 @@ Partial Class Form1
     Friend WithEvents TabPage1 As System.Windows.Forms.TabPage
     Friend WithEvents TabPage2 As System.Windows.Forms.TabPage
     Friend WithEvents TableLayoutPanel2 As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents GroupBox3 As System.Windows.Forms.GroupBox
     Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
     Friend WithEvents Panel1 As System.Windows.Forms.Panel
     Friend WithEvents Panel2 As System.Windows.Forms.Panel
@@ -949,5 +1033,16 @@ Partial Class Form1
     Friend WithEvents ColumnHeader26 As System.Windows.Forms.ColumnHeader
     Friend WithEvents ColumnHeader27 As System.Windows.Forms.ColumnHeader
     Friend WithEvents MenuItem7 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents TabControl2 As System.Windows.Forms.TabControl
+    Friend WithEvents TabPage3 As System.Windows.Forms.TabPage
+    Friend WithEvents TabPage4 As System.Windows.Forms.TabPage
+    Friend WithEvents ListView5 As System.Windows.Forms.ListView
+    Friend WithEvents ColumnHeader28 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader29 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader30 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader31 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader32 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader33 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader34 As System.Windows.Forms.ColumnHeader
 
 End Class
