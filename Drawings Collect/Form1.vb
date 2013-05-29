@@ -430,13 +430,18 @@ ErrHand:
         Dim file As IEdmFile5
         Dim item As New ListViewItem()
         Dim verEnum As IEdmEnumeratorVersion5
-        Dim pos As IEdmPos5
+        Dim pos, pos2 As IEdmPos5
         Dim ver As IEdmVersion5
+        Dim rev As IEdmRevision5
         Dim folder As IEdmFolder5
+        Dim revs As New List(Of Integer)
+        Dim temp, groupid
+        groupid = 0
+        temp = ""
         folder = Nothing
-        'Προσθέτω και τα revision στη λίστα
         file = vault.GetFileFromPath(path, folder)
         verEnum = file
+
         pos = verEnum.GetFirstVersionPosition
         While Not pos.IsNull
             item = New ListViewItem()
@@ -446,21 +451,43 @@ ErrHand:
             item.SubItems.Add(ver.User.Name)
             item.SubItems.Add(ver.VersionDate)
             If Not (MenuItem7.Checked = False And ver.Comment = "") Then
-                If UserInGroup("Engineering - Staff") = False And ver.Comment.StartsWith("!!") = True Then
+                If UserInGroup("Engineering - Staff") Or ver.Comment.StartsWith("!!") Then
                     If item.SubItems(1).Text.StartsWith("!!") = True Then
                         item.SubItems(1).Text = item.SubItems(1).Text.TrimStart("!!")
                         item.Font = New Font(item.Font, FontStyle.Bold)
                     End If
-                    ListView4.Items.Insert(0, item)
-                ElseIf UserInGroup("Engineering - Staff") = True Then
-                    If item.SubItems(1).Text.StartsWith("!!") = True Then
-                        item.SubItems(1).Text = item.SubItems(1).Text.TrimStart("!!")
-                        item.Font = New Font(item.Font, FontStyle.Bold)
-                    End If
-                    ListView4.Items.Insert(0, item)
+                    'For i = 0 To revs.Count - 1
+                    '    If revs.Item(i) >= ver.VersionNo Then
+                    '        groupid = revs.Count - 1 - i
+                    '        Exit For
+                    '    End If
+                    'Next
+                    ListView4.Items.Insert(0, item) '.Group = ListView4.Groups(groupid)
+
                 End If
             End If
         End While
+
+        pos2 = verEnum.GetFirstRevisionPosition
+        While Not pos2.IsNull
+            rev = verEnum.GetNextRevision(pos2)
+            If temp <> rev.Name Then
+                revs.Add(rev.VersionNo)
+                ListView4.Groups.Insert(0, New ListViewGroup("Revision " & rev.Name, HorizontalAlignment.Left))
+                temp = rev.Name
+            Else
+                revs.Item(revs.Count - 1) = rev.VersionNo
+            End If
+        End While
+
+        For Each tmpitem As ListViewItem In ListView4.Items
+            For i = 0 To revs.Count - 1
+                If revs.Item(i) >= tmpitem.SubItems.Item(0).Text Then
+                    tmpitem.Group = ListView4.Groups(revs.Count - 1 - i)
+                    Exit For
+                End If
+            Next
+        Next
     End Sub
 
     Private Sub PopulateTree(path As String, ver As String, Optional level As Integer = 0)
@@ -839,6 +866,7 @@ ErrHand:
     Private Sub showaboutbox()
         AboutBox1.Show()
         AboutBox1.TextBoxDescription.Text =
+                "V0.10.5 Added Revisions in comments" & vbCrLf & _
                 "V0.10.4 Added contains tab, fixed '!!' comments display" & vbCrLf & _
                 "V0.10.3 Users not in Engineering - Staff will see only comments starting with '!!', added menu to hide blank comments" & vbCrLf & _
                 "V0.10.2 Design updates, fixed changed date check" & vbCrLf & _

@@ -371,6 +371,7 @@ Partial Class Form1
         Me.ListView4.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader24, Me.ColumnHeader25, Me.ColumnHeader26, Me.ColumnHeader27})
         Me.ListView4.Dock = System.Windows.Forms.DockStyle.Fill
         Me.ListView4.FullRowSelect = True
+        Me.ListView4.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
         Me.ListView4.Location = New System.Drawing.Point(3, 16)
         Me.ListView4.MultiSelect = False
         Me.ListView4.Name = "ListView4"
