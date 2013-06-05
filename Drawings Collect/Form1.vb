@@ -6,6 +6,8 @@ Public Class Form1
     'Dim collectfiles() As String
     Dim fileCollectionOnlyParent As New List(Of String)
     Dim fileCollectionInDepth As New List(Of String)
+    Dim fileCollectionOnlyChanged As New List(Of String)
+    Dim changesTxt As New List(Of String)
 
     Private Sub Form1_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
         If RememverColumnWidthAndOrderToolStripMenuItem.Checked = True Then
@@ -344,9 +346,12 @@ ErrHand:
         End If
         Me.Cursor = Cursors.AppStarting
 
+        ListView4.Items.Clear()
         ListView3.Items.Clear()
         fileCollectionInDepth.Clear()
         fileCollectionOnlyParent.Clear()
+        fileCollectionOnlyChanged.Clear()
+        changesTXT.Clear()
 
         PopulateWhereUsed(ListView2.SelectedItems.Item(0).SubItems.Item(5).Text, ListView2.SelectedItems.Item(0).SubItems.Item(2).Text)
         PopulateContains(ListView2.SelectedItems.Item(0).SubItems.Item(5).Text, ListView2.SelectedItems.Item(0).SubItems.Item(2).Text)
@@ -427,6 +432,7 @@ ErrHand:
 
     Private Sub PopulateComments(path As String, version As String)
         ListView4.Items.Clear()
+        ListView4.Groups.Clear()
         Dim file As IEdmFile5
         Dim item As New ListViewItem()
         Dim verEnum As IEdmEnumeratorVersion5
@@ -451,29 +457,21 @@ ErrHand:
             item.SubItems.Add(ver.User.Name)
             item.SubItems.Add(ver.VersionDate)
             If Not (MenuItem7.Checked = False And ver.Comment = "") Then
-                If UserInGroup("Engineering - Staff") Or ver.Comment.StartsWith("!!") Then
-                    If item.SubItems(1).Text.StartsWith("!!") = True Then
-                        item.SubItems(1).Text = item.SubItems(1).Text.TrimStart("!!")
+                If UserInGroup("Engineering - Staff") Or commentLanguage(ver.Comment, "Check") = "True" Then
+                    If commentLanguage(item.SubItems(1).Text, "Check") = "True" Then
+                        item.SubItems(1).Text = commentLanguage(item.SubItems(1).Text, "ALL")
                         item.Font = New Font(item.Font, FontStyle.Bold)
                     End If
-                    'For i = 0 To revs.Count - 1
-                    '    If revs.Item(i) >= ver.VersionNo Then
-                    '        groupid = revs.Count - 1 - i
-                    '        Exit For
-                    '    End If
-                    'Next
-                    ListView4.Items.Insert(0, item) '.Group = ListView4.Groups(groupid)
-
+                    ListView4.Items.Insert(0, item)
                 End If
             End If
         End While
-
         pos2 = verEnum.GetFirstRevisionPosition
         While Not pos2.IsNull
             rev = verEnum.GetNextRevision(pos2)
             If temp <> rev.Name Then
                 revs.Add(rev.VersionNo)
-                ListView4.Groups.Insert(0, New ListViewGroup("Revision " & rev.Name, HorizontalAlignment.Left))
+                ListView4.Groups.Insert(0, New ListViewGroup(rev.Name, HorizontalAlignment.Left))
                 temp = rev.Name
             Else
                 revs.Item(revs.Count - 1) = rev.VersionNo
@@ -510,6 +508,8 @@ ErrHand:
         If level = 0 Then
             item = addTreeLine(ref, level)
             topParent = True
+            'Αποθήκευση σχολίων αλλαγών
+            collectChangesSinceDate(ref, DateTimePicker1.Text, 0)
         End If
         'Εμφανίζονται πρώτα τα σχέδια στο δέντρο
         ref2 = ref
@@ -557,6 +557,11 @@ ErrHand:
                 End If
                 If checkDateChanged(ref2) = False And MenuItem6.Checked = True Then
                     item2.Font = New Font(item2.Font, FontStyle.Bold)
+                    If check2 = "Collect" Then
+                        fileCollectionOnlyChanged.Add(ref2.FoundPath)
+                    End If
+                    'Αποθήκευση σχολίων αλλαγών
+                    collectChangesSinceDate(ref2, DateTimePicker1.Text, 1)
                 End If
                 ref3 = ref2.File.GetReferenceTree(folder.ID, ref2.VersionRef)
                 pos2 = ref3.GetFirstParentPosition(ref2.VersionRef, False)
@@ -571,6 +576,9 @@ ErrHand:
                         End If
                         If checkDateChanged(ref3) = False And MenuItem6.Checked = True Then
                             item3.Font = New Font(item3.Font, FontStyle.Bold)
+                            fileCollectionOnlyChanged.Add(ref3.FoundPath)
+                            'Αποθήκευση σχολίων αλλαγών
+                            collectChangesSinceDate(ref3, DateTimePicker1.Text, 1)
                         End If
                         item3.ForeColor = Color.DarkGreen
                         'temp3.NodeFont = New Font(temp3.NodeFont, FontStyle.Bold)
@@ -596,6 +604,8 @@ ErrHand:
                 End If
                 If checkDateChanged(ref) = False And MenuItem6.Checked = True Then
                     item2.Font = New Font(item2.Font, FontStyle.Bold)
+                    'Αποθήκευση σχολίων αλλαγών
+                    collectChangesSinceDate(ref, DateTimePicker1.Text, 0)
                 End If
                 PopulateTree(ref.FoundPath, ref.VersionRef, level + 1)
             End If
@@ -661,10 +671,14 @@ ErrHand:
     Private Sub CollectButton_Click(sender As Object, e As EventArgs) Handles CollectButton.Click
         'On Error GoTo ErrHand
         Dim printList As New List(Of String)
-        If CheckBox1.Checked = True Then
-            printList = fileCollectionInDepth
+        If CheckBox2.Checked = True Then
+            printList = fileCollectionOnlyChanged
         Else
-            printList = fileCollectionOnlyParent
+            If CheckBox1.Checked = True Then
+                printList = fileCollectionInDepth
+            Else
+                printList = fileCollectionOnlyParent
+            End If
         End If
         If printList.Count <= 0 Then
             MsgBox("No drawings in state 'In sync with ERP' found")
@@ -695,6 +709,15 @@ ErrHand:
                     System.IO.File.Copy(temp, destFolder & file.Name, True)
                 End If
             Next
+
+            'Γράφω τα comments σε ένα αρχείο changes.txt
+            If changesTxt.Count > 1 Then
+                Dim obj As New System.IO.StreamWriter(destFolder & "changes.txt", True)
+                For i = 0 To changesTxt.Count - 1
+                    obj.WriteLine(changesTxt(i))
+                Next
+                obj.Close()
+            End If
             MsgBox("Drawings saved in folder: " & destFolder)
         Else
             MsgBox("Folder with drawings of the selected part allready exists. Save is not completed, delete folder and try again.")
@@ -707,6 +730,159 @@ ErrHand:
         MsgBox(ename + vbLf + edesc)
 
     End Sub
+
+    ''' <summary>
+    ''' Returns the comment in the desired language or check if comment has language
+    ''' </summary>
+    ''' <param name="comment">The comment as retrieved from ePDM</param>
+    ''' <param name="lang ">The lang to return (EN for English, GR for Greek, ALL for all languages, RAW entire comment, Check to check</param>
+    ''' <remarks></remarks>    
+    Private Function commentLanguage(comment As String, lang As String) As String
+        Dim check As String
+        Dim temp As String
+        check = "False"
+        If comment <> "" Then
+            Select Case lang
+                Case "GR"
+                    If comment.Contains("<GR>") Then
+                        temp = comment.Substring(InStr(comment, "<GR>") + 3)
+                        If InStr(temp, "<GR>") > 0 Then
+                            temp = Strings.Left(temp, InStr(temp, "<GR>") - 1)
+                        End If
+                        check = temp
+                    End If
+                Case "EN"
+                    If comment.Contains("<EN>") Then
+                        temp = comment.Substring(InStr(comment, "<EN>") + 3)
+                        If InStr(temp, "<EN>") > 0 Then
+                            temp = Strings.Left(temp, InStr(temp, "<EN>") - 1)
+                        End If
+                        check = temp
+                    End If
+                Case "ALL"
+                    If comment.Contains("<GR>") Or comment.Contains("<EN>") Then
+                        temp = comment.Substring(InStr(comment, "<GR>") + 3)
+                        If InStr(temp, "<GR>") > 0 Then
+                            temp = Strings.Left(temp, InStr(temp, "<GR>") - 1)
+                        End If
+                        check = temp
+                        temp = comment.Substring(InStr(comment, "<EN>") + 3)
+                        If InStr(temp, "<EN>") > 0 Then
+                            temp = Strings.Left(temp, InStr(temp, "<EN>") - 1)
+                        End If
+                        check = check & " / " & temp
+                        'check = comment.Replace(vbCrLf, " ")
+                    End If
+                Case "RAW"
+                    check = comment.Replace(vbCrLf, " ")
+                Case "Check"
+                    If comment.Contains("<GR>") Or comment.Contains("<EN>") Or comment.Contains("!!") Then
+                        check = "True"
+                    End If
+            End Select
+        End If
+        Return check
+    End Function
+
+    ''' <summary>
+    ''' Collects all marked comments that indicate changes in part and drawings
+    ''' </summary>
+    ''' <param name="ref">File to retrieve comments</param>
+    ''' <param name="datesince ">Date from which the comments are collected</param>
+    ''' <param name="type">Type of file. 0: Part, 1: Drawing</param>
+    ''' <remarks></remarks>    
+    Private Sub collectChangesSinceDate(ref As IEdmReference5, datesince As Date, type As Integer)
+        If changesTxt.Count = 0 Then
+            Select Case ComboLanguage.Text
+                Case "GR"
+                    changesTxt.Add("Αλλαγές από " & DateTimePicker1.Text)
+                Case "EN"
+                    changesTxt.Add("Changes since " & DateTimePicker1.Text)
+            End Select
+        End If
+        Select Case type
+            Case 0
+                'Λαμβάνω υπόψη μόνο τα σχόλια των Parts και Assemblies
+                If System.IO.Path.GetExtension(ref.File.Name).ToLower = ".sldasm" Or System.IO.Path.GetExtension(ref.File.Name).ToLower = ".sldprt" Then
+                    Select Case ComboLanguage.Text
+                        Case "GR"
+                            changesTxt.Add(vbCrLf & "Αλλαγές στο τεμάχιο με PartNo: " & getVariable(ref, "PartNo"))
+                        Case "EN"
+                            changesTxt.Add(vbCrLf & "PartNo " & getVariable(ref, "PartNo") & " Changes:")
+                    End Select
+                    If collectCommentsSinceDate(ref.File, datesince) = False Then
+                        changesTxt.RemoveAt(changesTxt.Count - 1)
+                    End If
+                End If
+            Case 1
+                'Λαμβάνω υπόψη μόνο τα σχόλια των Drawings
+                If System.IO.Path.GetExtension(ref.File.Name).ToLower = ".slddrw" Then
+                    Select ComboLanguage.Text
+                        Case "GR"
+                            changesTxt.Add(vbCrLf & vbTab & "Αλλαγές στο σχέδιο του τεμαχίου με PartNo: " & getVariable(ref, "PartNo"))
+                        Case "EN"
+                            changesTxt.Add(vbCrLf & vbTab & "Drawing Changes for PartNo " & getVariable(ref, "PartNo"))
+                    End Select
+                    If collectCommentsSinceDate(ref.File, datesince) = False Then
+                        changesTxt.RemoveAt(changesTxt.Count - 1)
+                    End If
+                End If
+        End Select
+    End Sub
+
+    Function collectCommentsSinceDate(file As IEdmFile5, datesince As Date) As Boolean
+        Dim verEnum As IEdmEnumeratorVersion5
+        Dim pos As IEdmPos5
+        Dim ver As IEdmVersion5
+        Dim rev As IEdmRevision5
+        Dim revs, vers As New List(Of Comments)
+        Dim tmpcomment As New Comments
+        Dim temp, previousrev
+        Dim check As Boolean
+        check = False
+        previousrev = -1
+        temp = ""
+        verEnum = file
+        'Γεμίζω τη λίστα με τα Revision
+        pos = verEnum.GetFirstRevisionPosition
+        While Not pos.IsNull
+            rev = verEnum.GetNextRevision(pos)
+            If temp <> rev.Name Then
+                tmpcomment = New Comments
+                tmpcomment.version = rev.VersionNo
+                tmpcomment.comment = rev.Name
+                revs.Insert(0, tmpcomment)
+                temp = rev.Name
+            Else
+                revs.Item(0).version = rev.VersionNo
+            End If
+        End While
+        'Γεμίζω τη λίστα με τα Version
+        pos = verEnum.GetFirstVersionPosition
+        While Not pos.IsNull
+            ver = verEnum.GetNextVersion(pos)
+            If Date.Compare(Date.Parse(ver.VersionDate), Date.Parse(datesince)) >= 0 And commentLanguage(ver.Comment, ComboLanguage.Text) <> "False" Then
+                tmpcomment = New Comments
+                tmpcomment.version = ver.VersionNo
+                tmpcomment.comment = commentLanguage(ver.Comment, ComboLanguage.Text)
+                vers.Insert(0, tmpcomment)
+            End If
+        End While
+
+        For i = 0 To vers.Count - 1
+            For j = 0 To revs.Count - 2
+                If revs(j).version > vers(i).version And revs(j + 1).version < vers(i).version Then
+                    If j <> previousrev Then
+                        previousrev = j
+                        changesTxt.Add(vbTab & "From " & revs(j + 1).comment & " To " & revs(j).comment)
+                        check = True
+                    End If
+                    changesTxt.Add(vbTab & vbTab & vers(i).comment)
+                End If
+            Next
+        Next
+        Return check
+    End Function
 
     ''' <summary>
     ''' Returns the variable value of the file regardless configuration
@@ -863,9 +1039,20 @@ ErrHand:
         End If
     End Sub
 
+    Private Sub CheckBox2_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox2.CheckedChanged
+        If CheckBox2.Checked = True Then
+            CheckBox1.Checked = True
+            CheckBox1.Enabled = False
+        Else
+            CheckBox1.Enabled = True
+        End If
+    End Sub
+
     Private Sub showaboutbox()
         AboutBox1.Show()
         AboutBox1.TextBoxDescription.Text =
+                "V0.11.1 Fixed changes txt" & vbCrLf & _
+                "V0.11.0 Added collect only changed drawings, added changes txt" & vbCrLf & _
                 "V0.10.5 Added Revisions in comments" & vbCrLf & _
                 "V0.10.4 Added contains tab, fixed '!!' comments display" & vbCrLf & _
                 "V0.10.3 Users not in Engineering - Staff will see only comments starting with '!!', added menu to hide blank comments" & vbCrLf & _
@@ -926,4 +1113,20 @@ ErrHand:
         My.Settings.List5Width = ""
     End Sub
 
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        Dim message
+        message = ""
+        For i = 0 To changesTxt.Count - 1
+            message = message & changesTxt(i) & vbCrLf
+        Next
+        'If changesTxt.Count < 2 Then
+        '    message = "No changes found"
+        'End If
+        MsgBox(message)
+    End Sub
+End Class
+
+Public Class Comments
+    Public Property version As Integer
+    Public Property comment As String
 End Class
