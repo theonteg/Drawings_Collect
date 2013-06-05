@@ -91,7 +91,6 @@ Partial Class Form1
         Me.MenuItem4 = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuItem5 = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuItem6 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.MenuItem7 = New System.Windows.Forms.ToolStripMenuItem()
         Me.ViewToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.RememverColumnWidthAndOrderToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ResetAllColumnWidthAndOrderToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -120,6 +119,11 @@ Partial Class Form1
         Me.ColumnHeader32 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader33 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader34 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.TableLayoutPanel3 = New System.Windows.Forms.TableLayoutPanel()
+        Me.Panel4 = New System.Windows.Forms.Panel()
+        Me.CheckBox3 = New System.Windows.Forms.CheckBox()
+        Me.CheckBox4 = New System.Windows.Forms.CheckBox()
         Me.StatusStrip1.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.TableLayoutPanel1.SuspendLayout()
@@ -147,6 +151,9 @@ Partial Class Form1
         Me.TabControl2.SuspendLayout()
         Me.TabPage3.SuspendLayout()
         Me.TabPage4.SuspendLayout()
+        Me.GroupBox2.SuspendLayout()
+        Me.TableLayoutPanel3.SuspendLayout()
+        Me.Panel4.SuspendLayout()
         Me.SuspendLayout()
         '
         'CollectButton
@@ -327,7 +334,7 @@ Partial Class Form1
         Me.ListView1.HideSelection = False
         Me.ListView1.Location = New System.Drawing.Point(3, 3)
         Me.ListView1.Name = "ListView1"
-        Me.ListView1.Size = New System.Drawing.Size(352, 208)
+        Me.ListView1.Size = New System.Drawing.Size(346, 189)
         Me.ListView1.TabIndex = 15
         Me.ListView1.UseCompatibleStateImageBehavior = False
         Me.ListView1.View = System.Windows.Forms.View.Details
@@ -374,10 +381,10 @@ Partial Class Form1
         Me.ListView4.Dock = System.Windows.Forms.DockStyle.Fill
         Me.ListView4.FullRowSelect = True
         Me.ListView4.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
-        Me.ListView4.Location = New System.Drawing.Point(3, 16)
+        Me.ListView4.Location = New System.Drawing.Point(3, 30)
         Me.ListView4.MultiSelect = False
         Me.ListView4.Name = "ListView4"
-        Me.ListView4.Size = New System.Drawing.Size(404, 221)
+        Me.ListView4.Size = New System.Drawing.Size(398, 188)
         Me.ListView4.TabIndex = 0
         Me.ListView4.UseCompatibleStateImageBehavior = False
         Me.ListView4.View = System.Windows.Forms.View.Details
@@ -579,7 +586,7 @@ Partial Class Form1
         '
         'OptionsToolStripMenuItem
         '
-        Me.OptionsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MenuItem1, Me.MenuItem2, Me.MenuItem3, Me.MenuItem4, Me.MenuItem5, Me.MenuItem6, Me.MenuItem7})
+        Me.OptionsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MenuItem1, Me.MenuItem2, Me.MenuItem3, Me.MenuItem4, Me.MenuItem5, Me.MenuItem6})
         Me.OptionsToolStripMenuItem.Name = "OptionsToolStripMenuItem"
         Me.OptionsToolStripMenuItem.Size = New System.Drawing.Size(61, 20)
         Me.OptionsToolStripMenuItem.Text = "&Options"
@@ -633,13 +640,6 @@ Partial Class Form1
         Me.MenuItem6.Name = "MenuItem6"
         Me.MenuItem6.Size = New System.Drawing.Size(402, 22)
         Me.MenuItem6.Text = "Mark changed documents from selected date as bold"
-        '
-        'MenuItem7
-        '
-        Me.MenuItem7.CheckOnClick = True
-        Me.MenuItem7.Name = "MenuItem7"
-        Me.MenuItem7.Size = New System.Drawing.Size(402, 22)
-        Me.MenuItem7.Text = "Show all comments (include blank comments)"
         '
         'ViewToolStripMenuItem
         '
@@ -774,7 +774,7 @@ Partial Class Form1
         '
         'GroupBox1
         '
-        Me.GroupBox1.Controls.Add(Me.ListView4)
+        Me.GroupBox1.Controls.Add(Me.TableLayoutPanel3)
         Me.GroupBox1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.GroupBox1.Location = New System.Drawing.Point(0, 0)
         Me.GroupBox1.Name = "GroupBox1"
@@ -836,7 +836,7 @@ Partial Class Form1
         '
         'SplitContainer3.Panel2
         '
-        Me.SplitContainer3.Panel2.Controls.Add(Me.TabControl2)
+        Me.SplitContainer3.Panel2.Controls.Add(Me.GroupBox2)
         Me.SplitContainer3.Size = New System.Drawing.Size(781, 240)
         Me.SplitContainer3.SplitterDistance = 410
         Me.SplitContainer3.SplitterWidth = 5
@@ -847,10 +847,10 @@ Partial Class Form1
         Me.TabControl2.Controls.Add(Me.TabPage3)
         Me.TabControl2.Controls.Add(Me.TabPage4)
         Me.TabControl2.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TabControl2.Location = New System.Drawing.Point(0, 0)
+        Me.TabControl2.Location = New System.Drawing.Point(3, 16)
         Me.TabControl2.Name = "TabControl2"
         Me.TabControl2.SelectedIndex = 0
-        Me.TabControl2.Size = New System.Drawing.Size(366, 240)
+        Me.TabControl2.Size = New System.Drawing.Size(360, 221)
         Me.TabControl2.TabIndex = 30
         '
         'TabPage3
@@ -859,7 +859,7 @@ Partial Class Form1
         Me.TabPage3.Location = New System.Drawing.Point(4, 22)
         Me.TabPage3.Name = "TabPage3"
         Me.TabPage3.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage3.Size = New System.Drawing.Size(358, 214)
+        Me.TabPage3.Size = New System.Drawing.Size(352, 195)
         Me.TabPage3.TabIndex = 0
         Me.TabPage3.Text = "Where Used"
         Me.TabPage3.UseVisualStyleBackColor = True
@@ -924,6 +924,64 @@ Partial Class Form1
         Me.ColumnHeader34.Text = "Path"
         Me.ColumnHeader34.Width = 0
         '
+        'GroupBox2
+        '
+        Me.GroupBox2.Controls.Add(Me.TabControl2)
+        Me.GroupBox2.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.GroupBox2.Location = New System.Drawing.Point(0, 0)
+        Me.GroupBox2.Name = "GroupBox2"
+        Me.GroupBox2.Size = New System.Drawing.Size(366, 240)
+        Me.GroupBox2.TabIndex = 31
+        Me.GroupBox2.TabStop = False
+        Me.GroupBox2.Text = "References"
+        '
+        'TableLayoutPanel3
+        '
+        Me.TableLayoutPanel3.ColumnCount = 1
+        Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.TableLayoutPanel3.Controls.Add(Me.ListView4, 0, 1)
+        Me.TableLayoutPanel3.Controls.Add(Me.Panel4, 0, 0)
+        Me.TableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TableLayoutPanel3.Location = New System.Drawing.Point(3, 16)
+        Me.TableLayoutPanel3.Name = "TableLayoutPanel3"
+        Me.TableLayoutPanel3.RowCount = 2
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 27.0!))
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.TableLayoutPanel3.Size = New System.Drawing.Size(404, 221)
+        Me.TableLayoutPanel3.TabIndex = 1
+        '
+        'Panel4
+        '
+        Me.Panel4.Controls.Add(Me.CheckBox4)
+        Me.Panel4.Controls.Add(Me.CheckBox3)
+        Me.Panel4.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Panel4.Location = New System.Drawing.Point(3, 3)
+        Me.Panel4.Name = "Panel4"
+        Me.Panel4.Size = New System.Drawing.Size(398, 21)
+        Me.Panel4.TabIndex = 1
+        '
+        'CheckBox3
+        '
+        Me.CheckBox3.AutoSize = True
+        Me.CheckBox3.Location = New System.Drawing.Point(4, 4)
+        Me.CheckBox3.Name = "CheckBox3"
+        Me.CheckBox3.Size = New System.Drawing.Size(118, 17)
+        Me.CheckBox3.TabIndex = 0
+        Me.CheckBox3.Text = "Show all Comments"
+        Me.CheckBox3.UseVisualStyleBackColor = True
+        '
+        'CheckBox4
+        '
+        Me.CheckBox4.AutoSize = True
+        Me.CheckBox4.Checked = True
+        Me.CheckBox4.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.CheckBox4.Location = New System.Drawing.Point(127, 5)
+        Me.CheckBox4.Name = "CheckBox4"
+        Me.CheckBox4.Size = New System.Drawing.Size(173, 17)
+        Me.CheckBox4.TabIndex = 1
+        Me.CheckBox4.Text = "Show Only Revision Comments"
+        Me.CheckBox4.UseVisualStyleBackColor = True
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -970,6 +1028,10 @@ Partial Class Form1
         Me.TabControl2.ResumeLayout(False)
         Me.TabPage3.ResumeLayout(False)
         Me.TabPage4.ResumeLayout(False)
+        Me.GroupBox2.ResumeLayout(False)
+        Me.TableLayoutPanel3.ResumeLayout(False)
+        Me.Panel4.ResumeLayout(False)
+        Me.Panel4.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1056,7 +1118,6 @@ Partial Class Form1
     Friend WithEvents SplitContainer3 As System.Windows.Forms.SplitContainer
     Friend WithEvents ColumnHeader26 As System.Windows.Forms.ColumnHeader
     Friend WithEvents ColumnHeader27 As System.Windows.Forms.ColumnHeader
-    Friend WithEvents MenuItem7 As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents TabControl2 As System.Windows.Forms.TabControl
     Friend WithEvents TabPage3 As System.Windows.Forms.TabPage
     Friend WithEvents TabPage4 As System.Windows.Forms.TabPage
@@ -1070,5 +1131,10 @@ Partial Class Form1
     Friend WithEvents ColumnHeader34 As System.Windows.Forms.ColumnHeader
     Friend WithEvents CheckBox2 As System.Windows.Forms.CheckBox
     Friend WithEvents Button1 As System.Windows.Forms.Button
+    Friend WithEvents TableLayoutPanel3 As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents Panel4 As System.Windows.Forms.Panel
+    Friend WithEvents CheckBox4 As System.Windows.Forms.CheckBox
+    Friend WithEvents CheckBox3 As System.Windows.Forms.CheckBox
+    Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
 
 End Class

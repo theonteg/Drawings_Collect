@@ -71,7 +71,7 @@ Public Class Form1
         MenuItem1.Checked = My.Settings.Menu1
         MenuItem2.Checked = My.Settings.Menu2
         MenuItem5.Checked = My.Settings.Menu5
-        MenuItem7.Checked = My.Settings.Comments
+        CheckBox3.Checked = My.Settings.Comments
 
         RememverColumnWidthAndOrderToolStripMenuItem.Checked = My.Settings.KeepListChanges
         Dim columnorder As String()
@@ -223,6 +223,13 @@ Public Class Form1
                 ListView2.Enabled = False
             End If
         End If
+
+        If UserInGroup("Engineering - Staff") = False Then
+            CheckBox4.Visible = False
+            CheckBox4.Enabled = False
+            CheckBox4.Checked = True
+        End If
+
     End Sub
 
     Private Sub Search_Click(sender As Object, e As EventArgs) Handles Search.Click
@@ -456,8 +463,8 @@ ErrHand:
             item.SubItems.Add(ver.Comment.Replace(vbCrLf, " "))
             item.SubItems.Add(ver.User.Name)
             item.SubItems.Add(ver.VersionDate)
-            If Not (MenuItem7.Checked = False And ver.Comment = "") Then
-                If UserInGroup("Engineering - Staff") Or commentLanguage(ver.Comment, "Check") = "True" Then
+            If Not (CheckBox3.Checked = False And ver.Comment = "") Then
+                If (UserInGroup("Engineering - Staff") And CheckBox4.Checked = False) Or commentLanguage(ver.Comment, "Check") = "True" Then
                     If commentLanguage(item.SubItems(1).Text, "Check") = "True" Then
                         item.SubItems(1).Text = commentLanguage(item.SubItems(1).Text, "ALL")
                         item.Font = New Font(item.Font, FontStyle.Bold)
@@ -1020,8 +1027,14 @@ ErrHand:
         My.Settings.Menu5 = MenuItem5.Checked
     End Sub
 
-    Private Sub MenuItem7_Click(sender As Object, e As EventArgs) Handles MenuItem7.Click
-        My.Settings.Comments = MenuItem7.Checked
+    Private Sub CheckBox3_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox3.CheckedChanged
+        My.Settings.Comments = CheckBox3.Checked
+        If ListView3.SelectedItems.Count > 0 Then
+            PopulateComments(ListView3.SelectedItems.Item(0).SubItems(9).Text, Split(ListView3.SelectedItems.Item(0).SubItems(3).Text, "/")(0))
+        End If
+    End Sub
+
+    Private Sub CheckBox4_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox4.CheckedChanged
         If ListView3.SelectedItems.Count > 0 Then
             PopulateComments(ListView3.SelectedItems.Item(0).SubItems(9).Text, Split(ListView3.SelectedItems.Item(0).SubItems(3).Text, "/")(0))
         End If
@@ -1051,6 +1064,7 @@ ErrHand:
     Private Sub showaboutbox()
         AboutBox1.Show()
         AboutBox1.TextBoxDescription.Text =
+                "V0.11.2 Added checkbox to show only revision comments" & vbCrLf & _
                 "V0.11.1 Fixed changes txt" & vbCrLf & _
                 "V0.11.0 Added collect only changed drawings, added changes txt" & vbCrLf & _
                 "V0.10.5 Added Revisions in comments" & vbCrLf & _
@@ -1124,6 +1138,7 @@ ErrHand:
         'End If
         MsgBox(message)
     End Sub
+
 End Class
 
 Public Class Comments

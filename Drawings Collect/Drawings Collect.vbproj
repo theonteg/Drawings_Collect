@@ -27,8 +27,8 @@
     <ProductName>Manufacturing Data Collector</ProductName>
     <PublisherName>Mechatron</PublisherName>
     <TrustUrlParameters>true</TrustUrlParameters>
-    <ApplicationRevision>53</ApplicationRevision>
-    <ApplicationVersion>0.11.1.%2a</ApplicationVersion>
+    <ApplicationRevision>54</ApplicationRevision>
+    <ApplicationVersion>0.11.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
